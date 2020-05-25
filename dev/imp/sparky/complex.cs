@@ -1,9 +1,9 @@
-
 /********************************************
 *  Author Name : Surujlal 'Sparky' Dasrath  *
 *  Date        : July 10 2007               *
 *  Updated On  : November 16 2007           * 
-*  Contact    : sdasrath@gmail.com        *
+*  Contact     : sdasrath@gmail.com         *
+*  License     : MIT                        *
 * *******************************************
 */
 using System;
