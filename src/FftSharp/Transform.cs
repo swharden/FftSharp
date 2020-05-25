@@ -98,13 +98,33 @@ namespace FftSharp
         /// <summary>
         /// Return frequencies for each point in an FFT
         /// </summary>
-        public static double[] FFTfreq(int sampleRate, int pointCount)
+        public static double[] FFTfreq(int sampleRate, int pointCount, bool mirror = false)
         {
-            double fftPeriodHz = (double)sampleRate / pointCount / 2;
             double[] freqs = new double[pointCount];
-            for (int i = 0; i < pointCount; i++)
-                freqs[i] = i * fftPeriodHz;
-            return freqs;
+
+            if (mirror == false)
+            {
+                double fftPeriodHz = (double)sampleRate / pointCount / 2;
+
+                // freqs start at 0 and approach maxFreq
+                for (int i = 0; i < pointCount; i++)
+                    freqs[i] = i * fftPeriodHz;
+                return freqs;
+            }
+            else
+            {
+                double fftPeriodHz = (double)sampleRate / pointCount;
+
+                // first half: freqs start a 0 and approach maxFreq
+                int halfIndex = pointCount / 2;
+                for (int i = 0; i < halfIndex; i++)
+                    freqs[i] = i * fftPeriodHz;
+
+                // second half: then start at -maxFreq and approach 0
+                for (int i = halfIndex; i < pointCount; i++)
+                    freqs[i] = -(pointCount - i) * fftPeriodHz;
+                return freqs;
+            }
         }
 
         /// <summary>
