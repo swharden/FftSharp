@@ -2,6 +2,23 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/swharden/FftSharp</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>A collection of simple FFT methods for .NET</Description>
+    <Authors>Scott Harden</Authors>
+    <Company>Harden Technologies, LLC</Company>
+    <PackageIcon>icon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/swharden/FftSharp</RepositoryUrl>
+    <PackageTags>fft ifft fourier transform audio signal sound</PackageTags>
+    <PackageReleaseNotes>https://github.com/swharden/FftSharp</PackageReleaseNotes>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
