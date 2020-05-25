@@ -8,6 +8,11 @@
 
 </div>
 
+## Installation
+
+NuGet is available on NuGet:
+* https://www.nuget.org/packages/FftSharp/
+
 ## Quickstart
 
 > **⚠️ WARNING:** FftSharp is early in development and its public API may change as it matures.
