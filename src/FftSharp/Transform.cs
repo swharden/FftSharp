@@ -151,6 +151,18 @@ namespace FftSharp
         }
 
         /// <summary>
+        /// Calculte FFT and return the magnitude of the complex values
+        /// </summary>
+        /// <param name="input">real input</param>
+        /// <param name="half">return only the first half of the data (useful if result is mirrored)</param>
+        /// <returns>Magnitudes (not log transformed)</returns>
+        public static double[] FFTmagnitude(double[] input, bool half = true)
+        {
+            Complex[] fft = FFT(Complex(input));
+            return Magnitude(fft, half);
+        }
+
+        /// <summary>
         /// Calculte FFT magnitude and convert to dB
         /// </summary>
         /// <param name="multiplier">10 for amplitude, 20 for power</param>

@@ -91,7 +91,7 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Sine waves: 5";
             // 
-            // Form1
+            // FormQuickstart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -99,7 +99,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.trackBar1);
-            this.Name = "Form1";
+            this.Name = "FormQuickstart";
             this.Text = "FftSharp Demo";
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();

@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing, Version=5.8.64.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\runtime.osx.10.10-x64.CoreCompat.System.Drawing.5.8.64\lib\netstandard2.0\runtime.osx.10.10-x64.CoreCompat.System.Drawing.dll</HintPath>
@@ -116,6 +119,9 @@
       <Project>{43680bfa-9d82-41f2-a56a-6b93433ae4e1}</Project>
       <Name>FftSharp</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
