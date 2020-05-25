@@ -11,10 +11,11 @@ namespace FftSharp.Quickstart
             int pointCount = 512;
 
             // create a signal with noise and sine waves at 500, 1200, and 1500 Hz
-            double[] audio = FftSharp.SampleData.WhiteNoise(pointCount);
-            audio = FftSharp.SampleData.AddSin(audio, sampleRate, 2_000, 2);
-            audio = FftSharp.SampleData.AddSin(audio, sampleRate, 10_000, 1);
-            audio = FftSharp.SampleData.AddSin(audio, sampleRate, 20_000, .5);
+            double[] audio = new double[pointCount];
+            FftSharp.SampleData.AddWhiteNoise(audio);
+            FftSharp.SampleData.AddSin(audio, sampleRate, 2_000, 2);
+            FftSharp.SampleData.AddSin(audio, sampleRate, 10_000, 1);
+            FftSharp.SampleData.AddSin(audio, sampleRate, 20_000, .5);
 
             // create an array of audio sample times to aid plotting
             double[] times = FftSharp.SampleData.Times(sampleRate, audio.Length);
