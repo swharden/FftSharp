@@ -1,0 +1,41 @@
+# ---- for GNU gcc ----
+
+CC = gcc
+
+CFLAGS = -Wall -DUSE_CDFT_PTHREADS
+
+OFLAGS_FFT = -O6 -ffast-math
+OFLAGS_PI = -O6 -ffast-math
+
+# ---- for SUN WS cc ----
+#
+#CC = cc
+#
+#CFLAGS = -DUSE_CDFT_PTHREADS
+#
+#OFLAGS_FFT = -fast -xO5
+#OFLAGS_PI = -fast -xO5
+
+
+
+
+all: pi_fftsgpt
+
+
+pi_fftsgpt : pi_fft.o fftsgpt.o
+	$(CC) pi_fft.o fftsgpt.o -lm -lpthread -o pi_fftsgpt
+
+
+pi_fft.o : pi_fft.c
+	$(CC) $(CFLAGS) $(OFLAGS_PI) -c pi_fft.c -o pi_fft.o
+
+
+fftsgpt.o : ../fftsg.c
+	$(CC) $(CFLAGS) $(OFLAGS_FFT) -c ../fftsg.c -o fftsgpt.o
+
+
+
+
+clean:
+	rm -f *.o
+

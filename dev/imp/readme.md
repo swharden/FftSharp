@@ -10,6 +10,12 @@ The [KISS FFT project](https://github.com/mborgerding/kissfft) aims to provide a
 
 This library implements some very creative optimizations for maximizing performance while maintaining thread-safety.
 
+## Takuya (C/Fortran)
+
+This is a package to calculate Discrete Fourier/Cosine/Sine Transforms of 1-dimensional sequences of length 2^N. This package contains C and Fortran FFT codes. The original webpage is [here](http://www.kurims.kyoto-u.ac.jp/~ooura/fft.html) and a copy of the source code has been added to this repository. The author has a webpage of [performance assessments](http://www.kurims.kyoto-u.ac.jp/~ooura/fftbmk.html).
+
+* Source code: [ooura](ooura)
+
 ## FFTW (C)
 
 [FFTW](http://www.fftw.org/) is an open-source C library for computing the discrete Fourier transform (DFT) in one or more dimensions, of arbitrary input size, and of both real and complex data. They have [extensive documentation](http://www.fftw.org/fftw3.pdf) which is useful to review.
@@ -19,7 +25,7 @@ FFTW is GPL-licensed, so it may not be suitable for many commercial applications
 ## Trasformata di Fourier veloce (C++)
 A C++ implementation of the [Cooley–Tukey FFT algorithm](https://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm) can be found on this page (code comments are in Italian). I'm unsure of the copyright or licensing which may apply.
 
-* https://it.wikipedia.org/wiki/Trasformata_di_Fourier_veloce
+* Source code: [wiki/Trasformata_di_Fourier_veloce](https://it.wikipedia.org/wiki/Trasformata_di_Fourier_veloce)
 
 ## Oakley (C#)
 
