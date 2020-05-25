@@ -10,7 +10,7 @@
 
 ## Installation
 
-NuGet is available on NuGet:
+FftSharp is available on NuGet:
 * https://www.nuget.org/packages/FftSharp/
 
 ## Quickstart
