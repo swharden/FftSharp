@@ -1,10 +1,20 @@
 ﻿using System;
+using System.Drawing;
 using System.Numerics;
 
 namespace FftSharp
 {
     public static class SampleData
     {
+        public static double[] Times(int sampleRate, int pointCount)
+        {
+            double periodSec = 1.0 / sampleRate;
+            double[] times = new double[pointCount];
+            for (int i = 0; i < pointCount; i++)
+                times[i] = i * periodSec;
+            return times;
+        }
+
         public static double[] OddSines(int pointCount = 128, int sineCount = 2)
         {
             double[] values = new double[pointCount];
@@ -29,6 +39,15 @@ namespace FftSharp
         public static double[] AddWhiteNoise(double[] data, double magnitude = 1, int? seed = 0)
         {
             Random rand = (seed.HasValue) ? new Random(seed.Value) : new Random();
+            for (int i = 0; i < data.Length; i++)
+                data[i] += (rand.NextDouble() - .5) * magnitude;
+            return data;
+        }
+
+        public static double[] WhiteNoise(int pointCount, double magnitude = 1, int? seed = 0)
+        {
+            Random rand = (seed.HasValue) ? new Random(seed.Value) : new Random();
+            double[] data = new double[pointCount];
             for (int i = 0; i < data.Length; i++)
                 data[i] += (rand.NextDouble() - .5) * magnitude;
             return data;

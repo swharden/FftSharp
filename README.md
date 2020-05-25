@@ -15,53 +15,47 @@ FftSharp is available on NuGet:
 
 ## Quickstart
 
+A quickstart application ([Program.cs](src/FftSharp.Quickstart/Program.cs)) demonstrates common FftSharp features. The quickstart program generates the graphs shown here, but plotting-related code has been omitted from these code samples.
+
 > **⚠️ WARNING:** FftSharp is early in development and its public API may change as it matures.
 
-`FFT()` can be run with `Complex[]` input, but an overload also accepts `double[]` and automatically generates the complex input with the input values assigned to the real component.
+### Generate Sample Data
 
 ```cs
-// create sample data containing two sine waves
-double[] sampleData = new double[128];
-for (int i = 0; i < sampleData.Length; i++){
-    double wave1 = Math.Sin(i / Math.PI);
-    double wave2 = Math.Sin(3 * i / Math.PI) * 0.333;
-    sampleData[i] = wave1 + wave2;
-}
+int sampleRate = 48_000;
+int pointCount = 512;
 
-// Calculate the FFT with FftSharp
-Complex[] fft = FftSharp.Transform.FFT(sampleData);
+// create a signal with noise and sine waves at 500, 1200, and 1500 Hz
+double[] audio = FftSharp.SampleData.WhiteNoise(pointCount);
+audio = FftSharp.SampleData.AddSin(audio, sampleRate, 2_000, 2);
+audio = FftSharp.SampleData.AddSin(audio, sampleRate, 10_000, 1);
+audio = FftSharp.SampleData.AddSin(audio, sampleRate, 20_000, .5);
 
-// convert the output to Decibels for graphing
-double[] fftPower = FftSharp.Convert.ToDecibelPower(fft);
+// You could get the FFT as a complex result
+System.Numerics.Complex[] fft = FftSharp.Transform.FFT(audio);
+
+// For audio we typically want the FFT amplitude (in dB)
+double[] fftAmp = FftSharp.Transform.FFTamplitude(audio);
+
+// Create an array of frequencies for each point of the FFT
+double[] freqs = FftSharp.Transform.FFTfreq(sampleRate, fftAmp.Length);
 ```
 
-## Simulate Audio Data
+![](src/FftSharp.Quickstart/output/audio.png)
 
-A demo application is included which simulates audio data by creating a 48kHz signal then letting the user add components to the signal such as noise and sine waves of various amplitudes.
+### Get the Fast Fourier Transform (FFT)
+
+While you could choose to work with the `Complex` datatype (which has real and imaginary components), with FftSharp you don't have to. Methods have been created to calculate FFT amplitude and FFT power (both with dB units), which are the most common uses for the FFT in audio applications.
 
 ```cs
-int sampleRate = 48000;
-int fftSize = 4096; // 2^12
-double[] data = new double[fftSize];
-data = FftSharp.SampleData.AddWhiteNoise(data, 1);
+// You could get the FFT as a complex result
+System.Numerics.Complex[] fft = FftSharp.Transform.FFT(audio);
 
-// add sine waves at 500, 1200, and 1500 Hz
-data = FftSharp.SampleData.AddSin(data, sampleRate, 500, 1);
-data = FftSharp.SampleData.AddSin(data, sampleRate, 1200, .5);
-data = FftSharp.SampleData.AddSin(data, sampleRate, 1500, 2);
+// For audio we typically want the FFT amplitude (in dB)
+double[] fftAmp = FftSharp.Transform.FFTamplitude(audio);
+
+// Create an array of frequencies for each point of the FFT
+double[] freqs = FftSharp.Transform.FFTfreq(sampleRate, fftAmp.Length);
 ```
 
-FftSharp makes it easy to obtain the FFT and convert it to Decibels:
-
-```cs
-Complex[] fft = FftSharp.Transform.FFT(data);
-double[] fftPower = FftSharp.Convert.ToDecibelPower(fft);
-```
-
-Inspection of the output confirms peaks at the 3 expected frequencies.
-
-<div align="center">
-
-![](dev/screenshot2.png)
-
-</div>
+![](src/FftSharp.Quickstart/output/fft.png)
