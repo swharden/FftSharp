@@ -52,3 +52,5 @@ and Measurement ](https://www.sjsu.edu/people/burford.furman/docs/me120/FFT_tuto
 * [FFT Spectrum and Spectral Densities](https://www.ap.com/blog/fft-spectrum-and-spectral-densities-same-data-different-scaling/)
 
 * [Frequency and the Fast Fourier Transform](https://www.oreilly.com/library/view/elegant-scipy/9781491922927/ch04.html)
+
+* [FTT and power spectra](http://faculty.jsd.claremont.edu/jmilton/Math_Lab_tool/Labs/Lab9.pdf) with notes about application in biological contexts
