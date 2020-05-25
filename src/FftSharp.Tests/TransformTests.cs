@@ -3,29 +3,35 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 
 namespace FftSharp.Tests
 {
     public class TransformTests
     {
-        int sampleRate = 48_000;
-        int pointCount = 512;
-        double[] audio;
-
-        [SetUp]
-        public void MakeSampleAudio()
+        [Test]
+        public void Test_Display_SampleData()
         {
-            // create noisy audio with multiple sine waves NOT centered at 0
-            audio = new double[pointCount];
-            SampleData.AddWhiteNoise(audio, offset: .1);
-            SampleData.AddSin(audio, sampleRate, 2_000, 2);
-            SampleData.AddSin(audio, sampleRate, 10_000, 1);
-            SampleData.AddSin(audio, sampleRate, 20_000, .5);
+            double[] audio = SampleData.SampleAudio1();
+
+            // use this to test FFT algos in other programming langauges
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < audio.Length; i++)
+            {
+                if (i % 16 == 0)
+                    sb.Append("\n");
+                double value = audio[i];
+                string s = (value < 0) ? $"{value:N2}, " : $"+{value:N2}, ";
+                sb.Append(s);
+            }
+            Console.WriteLine(sb);
         }
 
         [Test]
         public void Test_DFTvsFFT_ProduceIdenticalOutput()
         {
+            double[] audio = SampleData.SampleAudio1();
+
             // FFT and DST output should be identical (aside from floating-point errors)
             Complex[] fft = Transform.FFT(audio);
             Complex[] dft = Transform.DFT(audio);
@@ -41,6 +47,9 @@ namespace FftSharp.Tests
         [Test]
         public void Test_Inspect_PosNeg()
         {
+            double[] audio = SampleData.SampleAudio1();
+            int sampleRate = 48_000;
+
             Complex[] fft = Transform.FFT(audio);
 
             double[] fftAmp = fft.Select(x => x.Magnitude).ToArray();
@@ -61,8 +70,10 @@ namespace FftSharp.Tests
         [Test]
         public void Test_PosNeg_AreSymmetical()
         {
-            // FFT produce positive/negative values that are exactly symmetrical
+            double[] audio = SampleData.SampleAudio1();
+            int sampleRate = 48_000;
 
+            // FFT produce positive/negative values that are exactly symmetrical
             Complex[] fft = Transform.FFT(audio);
             double[] fftAmp = fft.Select(x => x.Magnitude).ToArray();
             int halfLength = fftAmp.Length / 2;
