@@ -29,9 +29,7 @@ A C++ implementation of the [Cooley–Tukey FFT algorithm](https://en.wikipedia.
 
 ## Oakley (C#)
 
-This C# FFT implementation came from a [2010 lecture](http://csclab.murraystate.edu/~bob.pilgrim/565/lectures/lecture_08.pdf) and a 2011 [write-up of a capstone project](https://www.egr.msu.edu/classes/ece480/capstone/fall11/group06/style/Application_Note_ChrisOakley.pdf) by Christopher Oakley. Neither document indicates a source code or license.
-
-These documents are useful because they provide graphs of input waveforms alongside the FFT output.
+This C# FFT implementation came from a [2010 lecture](http://csclab.murraystate.edu/~bob.pilgrim/565/lectures/lecture_08.pdf) and a 2011 [write-up of a capstone project](https://www.egr.msu.edu/classes/ece480/capstone/fall11/group06/style/Application_Note_ChrisOakley.pdf) by Christopher Oakley. The author was contacted on May 25, 2020 and agreed to its redistribution under a MIT license. These documents are useful because they provide graphs of input waveforms alongside the FFT output.
 
 * [complex.cs](oakley/complex.cs)
 * [fft.cs](oakley/fft.cs)
