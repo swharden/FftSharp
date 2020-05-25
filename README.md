@@ -30,15 +30,6 @@ double[] audio = FftSharp.SampleData.WhiteNoise(pointCount);
 audio = FftSharp.SampleData.AddSin(audio, sampleRate, 2_000, 2);
 audio = FftSharp.SampleData.AddSin(audio, sampleRate, 10_000, 1);
 audio = FftSharp.SampleData.AddSin(audio, sampleRate, 20_000, .5);
-
-// You could get the FFT as a complex result
-System.Numerics.Complex[] fft = FftSharp.Transform.FFT(audio);
-
-// For audio we typically want the FFT amplitude (in dB)
-double[] fftAmp = FftSharp.Transform.FFTamplitude(audio);
-
-// Create an array of frequencies for each point of the FFT
-double[] freqs = FftSharp.Transform.FFTfreq(sampleRate, fftAmp.Length);
 ```
 
 ![](src/FftSharp.Quickstart/output/audio.png)
