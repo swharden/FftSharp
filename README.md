@@ -26,6 +26,37 @@ for (int i = 0; i < sampleData.Length; i++){
 // Calculate the FFT with FftSharp
 Complex[] fft = FftSharp.Transform.FFT(sampleData);
 
-// convert the output to a double array for graphing
-double[] fftMag = FftSharp.Convert.GetMagnitude(fft);
+// convert the output to Decibels for graphing
+double[] fftPower = FftSharp.Convert.ToDecibelPower(fft);
 ```
+
+## Simulate Audio Data
+
+A demo application is included which simulates audio data by creating a 48kHz signal then letting the user add components to the signal such as noise and sine waves of various amplitudes.
+
+```cs
+int sampleRate = 48000;
+int fftSize = 4096; // 2^12
+double[] data = new double[fftSize];
+data = FftSharp.SampleData.AddWhiteNoise(data, 1);
+
+// add sine waves at 500, 1200, and 1500 Hz
+data = FftSharp.SampleData.AddSin(data, sampleRate, 500, 1);
+data = FftSharp.SampleData.AddSin(data, sampleRate, 1200, .5);
+data = FftSharp.SampleData.AddSin(data, sampleRate, 1500, 2);
+```
+
+FftSharp makes it easy to obtain the FFT and convert it to Decibels:
+
+```cs
+Complex[] fft = FftSharp.Transform.FFT(data);
+double[] fftPower = FftSharp.Convert.ToDecibelPower(fft);
+```
+
+Inspection of the output confirms peaks at the 3 expected frequencies.
+
+<div align="center">
+
+![](dev/screenshot2.png)
+
+</div>

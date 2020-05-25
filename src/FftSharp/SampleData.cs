@@ -18,5 +18,20 @@ namespace FftSharp
             }
             return values;
         }
+
+        public static double[] AddSin(double[] data, int sampleRate, double frequency, double magnitude = 1)
+        {
+            for (int i = 0; i < data.Length; i++)
+                data[i] += Math.Sin(i * frequency / sampleRate * 2 * Math.PI) * magnitude;
+            return data;
+        }
+
+        public static double[] AddWhiteNoise(double[] data, double magnitude = 1, int? seed = 0)
+        {
+            Random rand = (seed.HasValue) ? new Random(seed.Value) : new Random();
+            for (int i = 0; i < data.Length; i++)
+                data[i] += (rand.NextDouble() - .5) * magnitude;
+            return data;
+        }
     }
 }

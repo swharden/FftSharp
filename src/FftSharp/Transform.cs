@@ -6,7 +6,7 @@ namespace FftSharp
     public static class Transform
     {
         /// <summary>
-        /// fast Fourier transform (DFT)
+        /// fast Fourier transform
         /// </summary>
         public static Complex[] FFT(double[] input)
         {
@@ -14,7 +14,7 @@ namespace FftSharp
         }
 
         /// <summary>
-        /// fast Fourier transform (DFT)
+        /// fast Fourier transform
         /// </summary>
         public static Complex[] FFT(Complex[] input)
         {
@@ -57,7 +57,7 @@ namespace FftSharp
         }
 
         /// <summary>
-        /// discrete Fourier transform (DFT)
+        /// discrete Fourier transform
         /// </summary>
         public static Complex[] DFT(double[] input)
         {
@@ -65,7 +65,7 @@ namespace FftSharp
         }
 
         /// <summary>
-        /// discrete Fourier transform (DFT)
+        /// discrete Fourier transform
         /// </summary>
         public static Complex[] DFT(Complex[] input)
         {

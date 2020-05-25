@@ -5,9 +5,9 @@ using System.Windows.Forms;
 
 namespace FftSharp.Demo
 {
-    public partial class Form1 : Form
+    public partial class FormQuickstart : Form
     {
-        public Form1()
+        public FormQuickstart()
         {
             InitializeComponent();
 
