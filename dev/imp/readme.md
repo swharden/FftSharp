@@ -42,3 +42,9 @@ This C# FFT/IFFT implementation came from a 2007 blogspot article [Fast Fourier 
 
 * [fftifft.cs](sparky/fftifft.cs)
 * [complex.cs](sparky/complex.cs)
+
+## FFTPACK (Fortran)
+
+Many modern FFT implementations are translated versions of [FFTPACK](https://www.netlib.org/fftpack/) for Fortran. On example of this is [scipy.fftpack.fft](https://docs.scipy.org/doc/scipy/reference/generated/scipy.fftpack.fft.html) for Python.
+
+I found a C# version of FFTPACK on [dcprojects/SharpFFTPACK](https://github.com/dcprojects/SharpFFTPACK). This looks like it should a useful reference. It is released under the permissive "unlicense" and seems to be a C# translation of [jfftpack](https://github.com/fjfdeztoro/fftpack).

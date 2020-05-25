@@ -1,6 +1,6 @@
 # FftSharp
 
-**FftSharp is a collection of simple FFT and IFFT methods for .NET.** FftSharp is provided under the permissive [MIT license](LICENSE) so it is suitable for use in commercial products. FftSharp targets .NET Standard and it has no dependencies so it can be easily used in cross-platform .NET Framework and .NET Core applications.
+**FftSharp is a collection of simple FFT and IFFT methods for .NET.** FftSharp is provided under the permissive [MIT license](LICENSE) so it is suitable for use in commercial applications. FftSharp targets .NET Standard and has no dependencies so it can be easily used in cross-platform .NET Framework and .NET Core applications.
 
 <div align="center">
 
@@ -17,7 +17,7 @@ FftSharp is available on NuGet:
 
 A quickstart application ([Program.cs](src/FftSharp.Quickstart/Program.cs)) demonstrates common FftSharp features. The quickstart program generates the graphs shown here, but plotting-related code has been omitted from these code samples.
 
-> **⚠️ WARNING:** FftSharp is early in development and its public API may change as it matures.
+> **⚠️ WARNING:** FftSharp is early in development and its public API may change as it continues to mature. Source code and examples in this repository may deviate from the API in the latest NuGet package.
 
 ### Generate Sample Data
 
