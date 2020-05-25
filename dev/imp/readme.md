@@ -40,7 +40,7 @@ These documents are useful because they provide graphs of input waveforms alongs
 
 ## Sparky (C#)
 
-This C# FFT/IFFT implementation came from a 2007 blogspot article [Fast Fourier Transform (FFT/IFFT) in C#](http://sdasrath.blogspot.com/2007/11/20071101-fast-fourier-transform-fftifft.html) by Surujlal 'Sparky' Dasrath. Source code indicates a copyright but no license is indicated.
+This C# FFT/IFFT implementation came from a 2007 blogspot article [Fast Fourier Transform (FFT/IFFT) in C#](http://sdasrath.blogspot.com/2007/11/20071101-fast-fourier-transform-fftifft.html) by Surujlal 'Sparky' Dasrath. Source code indicates a copyright but no license. The original author was contacted on May 24, 2020 and agreed to its redistribution under a MIT license.
 
 * [fftifft.cs](sparky/fftifft.cs)
 * [complex.cs](sparky/complex.cs)
