@@ -1,3 +1,4 @@
+// The author (Christopher Oakley) agreed to release this code under MIT license (May 25, 2020)
 static void Main(string[] args)
 {
     int N = 128;

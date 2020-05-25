@@ -1,3 +1,4 @@
+// The author (Christopher Oakley) agreed to release this code under MIT license (May 25, 2020)
 // https://www.egr.msu.edu/classes/ece480/capstone/fall11/group06/style/Application_Note_ChrisOakley.pdf
 // http://csclab.murraystate.edu/~bob.pilgrim/565/lectures/lecture_08.pdf
 
