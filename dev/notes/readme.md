@@ -49,4 +49,4 @@ and Measurement ](https://www.sjsu.edu/people/burford.furman/docs/me120/FFT_tuto
 
 * [FTT and power spectra](http://faculty.jsd.claremont.edu/jmilton/Math_Lab_tool/Labs/Lab9.pdf) with notes about application in biological contexts
 
-* []()
+* [Cooley–Tukey FFT algorithm](https://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm) on Wikipedia
