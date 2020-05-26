@@ -65,3 +65,15 @@ The FFT is typically calculated using a complex number array as input. However, 
 A graphical demo application is included in this project which uses [ScottPlot](https://swharden.com/scottplot/) to interactively display an audio signal next to its FFT.
 
 ![](src/FftSharp.Demo/screenshot2.png)
+
+## Windowing
+
+Often audio samples are _windowed_ prior to FFT analysis. Windowing is essentially multiplying the waveform by a bell-shaped curve prior to analysis. The `FftSharp.Window` module provides easy access to many common window functions.
+
+![](dev/fft-window.png)
+
+The Hanning window is most commonly used for FFT analyses.
+
+```cs
+double[] window = FftSharp.Window.Hanning(100);
+```
