@@ -5,13 +5,12 @@ namespace FftSharp
 {
     public static class Transform
     {
-        /*
         /// <summary>
         /// Test if a number is an even power of 2
         /// </summary>
         public static bool IsPowerOfTwo(int x)
         {
-            return ((x & (x - 1)) == 0) && (x > 1);
+            return ((x & (x - 1)) == 0) && (x > 0);
         }
 
         /// <summary>
@@ -34,7 +33,6 @@ namespace FftSharp
 
             return padded;
         }
-        */
 
         /// <summary>
         /// Create an array of Complex data given the real component
@@ -62,10 +60,11 @@ namespace FftSharp
         /// </summary>
         /// <param name="input">complex input</param>
         /// <returns>transformed input</returns>
-        public static Complex[] FFT(Complex[] input)
+        public static Complex[] FFT(Complex[] input, bool checkLength = true)
         {
-            //if (IsPowerOfTwo(input.Length) == false)
-                //throw new ArgumentException($"FFT input length ({input.Length}) must be an even power of two. Use the ZeroPad method to achieve this.");
+            if (checkLength)
+                if (IsPowerOfTwo(input.Length) == false)
+                    throw new ArgumentException($"FFT input length ({input.Length}) must be an even power of two. Use the ZeroPad method to achieve this.");
 
             int N = input.Length;
             Complex[] output = new Complex[N];
@@ -87,8 +86,8 @@ namespace FftSharp
                 d[k] = input[2 * k + 1];
             }
 
-            D = FFT(d);
-            E = FFT(e);
+            D = FFT(d, false);
+            E = FFT(e, false);
 
             for (k = 0; k < N / 2; k++)
             {
