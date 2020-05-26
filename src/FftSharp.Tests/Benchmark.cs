@@ -35,7 +35,7 @@ namespace FftSharp.Tests
                 sw.Restart();
                 for (int j = 0; j < reps; j++)
                 {
-                    Transform.FFT(input);
+                    FftSharp.Transform.FFT(input);
                 }
                 sw.Stop();
                 double sec = (double)sw.ElapsedTicks / Stopwatch.Frequency;
@@ -70,7 +70,7 @@ namespace FftSharp.Tests
             sw.Restart();
             for (int j = 0; j < reps; j++)
             {
-                Transform.FFT(input);
+                FftSharp.Transform.FFT(input);
             }
             sw.Stop();
             double fftMsec = 1000.0 * sw.ElapsedTicks / Stopwatch.Frequency;
@@ -80,7 +80,7 @@ namespace FftSharp.Tests
             sw.Restart();
             for (int j = 0; j < reps; j++)
             {
-                Transform.DFT(input);
+                FftSharp.Transform.DFT(input);
             }
             sw.Stop();
             double dftMsec = 1000.0 * sw.ElapsedTicks / Stopwatch.Frequency;

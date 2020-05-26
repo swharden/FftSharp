@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FftSharp.Tests
 {
-    class Values
+    class Value
     {
 
         [Test]
@@ -18,7 +18,7 @@ namespace FftSharp.Tests
             // https://numpy.org/doc/1.18/reference/generated/numpy.fft.fft.html
             // This test assserts our FFT results match Numpy's
 
-            Complex[] fft = Transform.FFT(audio);
+            Complex[] fft = FftSharp.Transform.FFT(audio);
             for (int i = 0; i < fft.Length; i++)
             {
                 Assert.AreEqual(numpyFFT[i].Real, fft[i].Real, 1e-12);

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FftSharp.Tests
 {
-    public class TransformTests
+    public class Transform
     {
         [Test]
         public void Test_Display_SampleData()
@@ -33,8 +33,8 @@ namespace FftSharp.Tests
             double[] audio = SampleData.SampleAudio1();
 
             // FFT and DST output should be identical (aside from floating-point errors)
-            Complex[] fft = Transform.FFT(audio);
-            Complex[] dft = Transform.DFT(audio);
+            Complex[] fft = FftSharp.Transform.FFT(audio);
+            Complex[] dft = FftSharp.Transform.DFT(audio);
 
             for (int i = 0; i < fft.Length; i++)
             {
@@ -50,10 +50,10 @@ namespace FftSharp.Tests
             double[] audio = SampleData.SampleAudio1();
             int sampleRate = 48_000;
 
-            Complex[] fft = Transform.FFT(audio);
+            Complex[] fft = FftSharp.Transform.FFT(audio);
 
             double[] fftAmp = fft.Select(x => x.Magnitude).ToArray();
-            double[] fftFreq = Transform.FFTfreq(sampleRate, fftAmp.Length, oneSided: true);
+            double[] fftFreq = FftSharp.Transform.FFTfreq(sampleRate, fftAmp.Length, oneSided: true);
 
             var plt = new ScottPlot.Plot(600, 400);
 
@@ -74,12 +74,12 @@ namespace FftSharp.Tests
             int sampleRate = 48_000;
 
             // FFT produce positive/negative values that are exactly symmetrical
-            Complex[] fft = Transform.FFT(audio);
+            Complex[] fft = FftSharp.Transform.FFT(audio);
             double[] fftAmp = fft.Select(x => x.Magnitude).ToArray();
             int halfLength = fftAmp.Length / 2;
 
             // create arrays which isolate positive and negative components
-            double[] fftFreq = Transform.FFTfreq(sampleRate, halfLength);
+            double[] fftFreq = FftSharp.Transform.FFTfreq(sampleRate, halfLength);
             double[] fftAmpNeg = new double[halfLength];
             double[] fftAmpPos = new double[halfLength];
             for (int i = 0; i < halfLength; i++)
@@ -106,9 +106,9 @@ namespace FftSharp.Tests
         [Test]
         public void Test_FftInput_ThrowsIfNotPowerOfTwo()
         {
-            Assert.Throws<ArgumentException>(() => { Transform.FFT(new Complex[0]); });
-            Assert.Throws<ArgumentException>(() => { Transform.FFT(new Complex[123]); });
-            Assert.Throws<ArgumentException>(() => { Transform.FFT(new Complex[1234]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(new Complex[0]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(new Complex[123]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(new Complex[1234]); });
         }
 
         [Test]
@@ -117,14 +117,14 @@ namespace FftSharp.Tests
             Complex[] complex = new Complex[128];
             for (int i=0; i<complex.Length; i++)
                 complex[i] = new Complex(0, 0);
-            Transform.DFT(complex);
+            FftSharp.Transform.DFT(complex);
         }
 
         [Test]
         public void Test_FftInput_Uninitialized()
         {
             Complex[] complex = new Complex[128];
-            Transform.DFT(complex);
+            FftSharp.Transform.DFT(complex);
         }
     }
 }
