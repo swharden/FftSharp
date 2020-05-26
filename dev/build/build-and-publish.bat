@@ -6,6 +6,7 @@
 echo.
 echo ### DELETING OLD PACKAGES ###
 DEL *.nupkg
+DEL *.snupkg
 
 echo.
 echo ### DELETING RELEASE FOLDERS ###
