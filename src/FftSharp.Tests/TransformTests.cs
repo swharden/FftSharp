@@ -102,5 +102,30 @@ namespace FftSharp.Tests
             plt.XLabel("Frequency (Hz)");
             plt.SaveFig("test-negpos.png");
         }
+
+        [Test]
+        public void Test_FftInput_ThrowsIfNotPowerOfTwo()
+        {
+            Assert.Throws<ArgumentException>(() => { Transform.FFT(new Complex[0]); });
+            Assert.Throws<ArgumentException>(() => { Transform.FFT(new Complex[1]); });
+            Assert.Throws<ArgumentException>(() => { Transform.FFT(new Complex[123]); });
+            Assert.Throws<ArgumentException>(() => { Transform.FFT(new Complex[1234]); });
+        }
+
+        [Test]
+        public void Test_FftInput_ContainsAllZeros()
+        {
+            Complex[] complex = new Complex[128];
+            for (int i=0; i<complex.Length; i++)
+                complex[i] = new Complex(0, 0);
+            Transform.DFT(complex);
+        }
+
+        [Test]
+        public void Test_FftInput_Uninitialized()
+        {
+            Complex[] complex = new Complex[128];
+            Transform.DFT(complex);
+        }
     }
 }
