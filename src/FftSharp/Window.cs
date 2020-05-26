@@ -6,6 +6,35 @@ namespace FftSharp
 {
     public static class Window
     {
+        public static double[] Apply(double[] window, double[] signal, bool normalize = false)
+        {
+            if (window.Length != signal.Length)
+                throw new ArgumentException("window and signal must be same size");
+
+            if (normalize)
+            {
+                throw new NotImplementedException();
+            }
+
+            double[] output = new double[signal.Length];
+            for (int i = 0; i < signal.Length; i++)
+                output[i] = signal[i] * window[i];
+            return output;
+        }
+
+        public static void ApplyInPlace(double[] window, double[] signal, bool normalize = false)
+        {
+            if (window.Length != signal.Length)
+                throw new ArgumentException("window and signal must be same size");
+
+            if (normalize)
+            {
+                throw new NotImplementedException();
+            }
+
+            for (int i = 0; i < signal.Length; i++)
+                signal[i] *= window[i];
+        }
 
         public static double[] Hanning(int pointCount)
         {

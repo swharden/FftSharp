@@ -7,9 +7,22 @@ namespace FftSharp.Quickstart
     {
         static void Main(string[] args)
         {
+            SimpleFftWithGraphs(useWindow: false);
+            SimpleFftWithGraphs(useWindow: true);
+        }
+
+        static void SimpleFftWithGraphs(bool useWindow = false)
+        {
             // load sample audio with noise and sine waves at 500, 1200, and 1500 Hz
             double[] audio = FftSharp.SampleData.SampleAudio1();
             int sampleRate = 48_000;
+
+            // optionally apply a window to the data before calculating the FFT
+            if (useWindow)
+            {
+                double[] window = FftSharp.Window.Hanning(audio.Length);
+                FftSharp.Window.ApplyInPlace(window, audio);
+            }
 
             // You could get the FFT as a complex result
             System.Numerics.Complex[] fft = FftSharp.Transform.FFT(audio);
@@ -30,7 +43,6 @@ namespace FftSharp.Quickstart
             plt1.YLabel("Amplitude");
             plt1.XLabel("Time (milliseconds)");
             plt1.AxisAuto(0);
-            plt1.SaveFig("../../../output/audio.png");
 
             // plot the FFT amplitude
             var plt2 = new ScottPlot.Plot(600, 300);
@@ -39,7 +51,44 @@ namespace FftSharp.Quickstart
             plt2.YLabel("Power (dB)");
             plt2.XLabel("Frequency (Hz)");
             plt2.AxisAuto(0);
-            plt2.SaveFig("../../../output/fft.png");
+
+            // save output
+            if (useWindow)
+            {
+                plt1.SaveFig("../../../output/audio-windowed.png");
+                plt2.SaveFig("../../../output/fft-windowed.png");
+            }
+            else
+            {
+                plt1.SaveFig("../../../output/audio.png");
+                plt2.SaveFig("../../../output/fft.png");
+            }
+        }
+
+        static void ShowAllWindows()
+        {
+            var plt = new ScottPlot.Plot();
+            double[] xs = ScottPlot.DataGen.Range(-1, 1, .01, true);
+            plt.PlotScatter(xs, FftSharp.Window.Hanning(xs.Length), label: "Hanning");
+            plt.PlotScatter(xs, FftSharp.Window.Hamming(xs.Length), label: "Hamming");
+            plt.PlotScatter(xs, FftSharp.Window.Blackman(xs.Length), label: "Blackman");
+            plt.PlotScatter(xs, FftSharp.Window.BlackmanExact(xs.Length), label: "BlackmanExact");
+            plt.PlotScatter(xs, FftSharp.Window.BlackmanHarris(xs.Length), label: "BlackmanHarris");
+            plt.PlotScatter(xs, FftSharp.Window.FlatTop(xs.Length), label: "FlatTop");
+            plt.PlotScatter(xs, FftSharp.Window.Bartlett(xs.Length), label: "Bartlett");
+
+            // customize line styles post-hoc
+            foreach (var p in plt.GetPlottables())
+            {
+                if (p is ScottPlot.PlottableScatter)
+                {
+                    ((ScottPlot.PlottableScatter)p).markerSize = 0;
+                    ((ScottPlot.PlottableScatter)p).lineWidth = 4;
+                }
+            }
+
+            plt.Legend(location: ScottPlot.legendLocation.upperRight);
+            plt.SaveFig("../test-windows.png");
         }
     }
 }

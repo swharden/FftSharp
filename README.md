@@ -5,22 +5,35 @@
 
 **FftSharp is a collection of Fast Fourier Transform (FFT) tools for .NET.** FftSharp is provided under the permissive [MIT license](LICENSE) so it is suitable for use in commercial applications. FftSharp targets .NET Standard and has no dependencies so it can be easily used in cross-platform .NET Framework and .NET Core applications.
 
-<div align="center">
+### Quickstart
 
-![](dev/screenshot.png)
+```cs
+// Start with some data
+double[] audio = FftSharp.SampleData.SampleAudio1();
 
-</div>
+// Window your signal
+double[] window = FftSharp.Window.Hanning(audio.Length);
+FftSharp.Window.ApplyInPlace(window, audio);
 
-## Installation
+// Calculate power spectrum density (dB)
+double[] fftPower = FftSharp.Transform.FFTpower(audio);
+```
+
+Original | Windowed | FFT
+---|---|---
+![](src/FftSharp.Quickstart/output/audio.png)|![](src/FftSharp.Quickstart/output/audio-windowed.png)|![](src/FftSharp.Quickstart/output/fft-windowed.png)
+
+A quickstart application ([Program.cs](src/FftSharp.Quickstart/Program.cs)) demonstrates common FftSharp features. The quickstart program generates the graphs shown here, but plotting-related code has been omitted from these code samples.
+
+## Usage
+
+> **⚠️ WARNING:** FftSharp is early in development and its public API may change as it continues to mature. Source code and examples in this repository may deviate from the API in the latest NuGet package.
+
+### Installation
 
 FftSharp is available on NuGet:
 * https://www.nuget.org/packages/FftSharp/
 
-## Quickstart
-
-A quickstart application ([Program.cs](src/FftSharp.Quickstart/Program.cs)) demonstrates common FftSharp features. The quickstart program generates the graphs shown here, but plotting-related code has been omitted from these code samples.
-
-> **⚠️ WARNING:** FftSharp is early in development and its public API may change as it continues to mature. Source code and examples in this repository may deviate from the API in the latest NuGet package.
 
 ### Sample Data
 
@@ -30,7 +43,11 @@ double[] audio = FftSharp.SampleData.SampleAudio1();
 int sampleRate = 48000;
 ```
 
+<div align="center">
+
 ![](src/FftSharp.Quickstart/output/audio.png)
+
+</div>
 
 ### Calculate the Power Spectral Density (PSD)
 
@@ -48,7 +65,11 @@ double[] freqs = FftSharp.Transform.FFTfreq(sampleRate, fftPower.Length);
 
 Power vs. frequency can then be plotted to yield a [periodogram](https://en.wikipedia.org/wiki/Periodogram):
 
+<div align="center">
+
 ![](src/FftSharp.Quickstart/output/fft.png)
+
+</div>
 
 ### Calculate the FFT using Complex Numbers
 
@@ -60,20 +81,34 @@ System.Numerics.Complex[] fft = FftSharp.Transform.FFT(audio);
 
 The FFT is typically calculated using a complex number array as input. However, an overload is available which allows the user to define real values and assume the imaginary values are zero.
 
+### Windowing
+
+Often audio samples are _windowed_ prior to FFT analysis. Windowing is essentially multiplying the waveform by a bell-shaped curve prior to analysis. The `FftSharp.Window` module provides easy access to many common window functions.
+
+```cs
+// The Hanning window is commonly used before FFT analyses
+double[] window = FftSharp.Window.Hanning(audio.Length);
+FftSharp.Window.ApplyInPlace(window, audio);
+```
+
+Without Windowing | With a Hanning Window
+---|---
+![](src/FftSharp.Quickstart/output/audio.png)|![](src/FftSharp.Quickstart/output/audio-windowed.png)
+![](src/FftSharp.Quickstart/output/fft.png)|![](src/FftSharp.Quickstart/output/fft-windowed.png)
+
+FftSharp has many windowing functions to choose from:
+
+![](dev/fft-window.png)
+
 ## Demo Application
 
 A graphical demo application is included in this project which uses [ScottPlot](https://swharden.com/scottplot/) to interactively display an audio signal next to its FFT.
 
+<div align="center">
+
 ![](src/FftSharp.Demo/screenshot2.png)
 
-## Windowing
 
-Often audio samples are _windowed_ prior to FFT analysis. Windowing is essentially multiplying the waveform by a bell-shaped curve prior to analysis. The `FftSharp.Window` module provides easy access to many common window functions.
+![](dev/screenshot.png)
 
-![](dev/fft-window.png)
-
-The Hanning window is most commonly used for FFT analyses.
-
-```cs
-double[] window = FftSharp.Window.Hanning(100);
-```
+</div>
