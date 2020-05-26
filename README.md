@@ -1,7 +1,7 @@
 # FftSharp
 
 [![](https://img.shields.io/azure-devops/build/swharden/swharden/8?label=Build&logo=azure%20pipelines)](https://dev.azure.com/swharden/swharden/_build/latest?definitionId=8&branchName=master)
-[![](https://img.shields.io/nuget/dt/FftSharp?color=004880&label=Installs&logo=nuget)](https://www.nuget.org/packages/FftSharp/)
+<!--[![](https://img.shields.io/nuget/dt/FftSharp?color=004880&label=Installs&logo=nuget)](https://www.nuget.org/packages/FftSharp/)-->
 [![](https://img.shields.io/nuget/v/FftSharp?label=NuGet&logo=nuget)](https://www.nuget.org/packages/FftSharp/)
 
 **FftSharp is a collection of Fast Fourier Transform (FFT) tools for .NET.** FftSharp is provided under the permissive [MIT license](LICENSE) so it is suitable for use in commercial applications. FftSharp targets .NET Standard and has no dependencies so it can be easily used in cross-platform .NET Framework and .NET Core applications.
