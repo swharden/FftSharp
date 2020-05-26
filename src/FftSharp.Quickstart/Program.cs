@@ -34,20 +34,20 @@ namespace FftSharp.Quickstart
             double[] freqs = FftSharp.Transform.FFTfreq(sampleRate, fftPower.Length);
 
             // create an array of audio sample times to aid plotting
-            double[] times = FftSharp.SampleData.Times(sampleRate, audio.Length);
+            double[] times = ScottPlot.DataGen.Consecutive(audio.Length, 1000d / sampleRate);
 
             // plot the sample audio
-            var plt1 = new ScottPlot.Plot(600, 300);
+            var plt1 = new ScottPlot.Plot(400, 300);
             plt1.PlotScatter(times, audio, markerSize: 3);
-            plt1.Title("Audio Signal");
+            //plt1.Title("Audio Signal");
             plt1.YLabel("Amplitude");
-            plt1.XLabel("Time (milliseconds)");
+            plt1.XLabel("Time (ms)");
             plt1.AxisAuto(0);
 
             // plot the FFT amplitude
-            var plt2 = new ScottPlot.Plot(600, 300);
+            var plt2 = new ScottPlot.Plot(400, 300);
             plt2.PlotScatter(freqs, fftPower, markerSize: 3);
-            plt2.Title("Fast Fourier Transformation (FFT)");
+            //plt2.Title("Fast Fourier Transformation (FFT)");
             plt2.YLabel("Power (dB)");
             plt2.XLabel("Frequency (Hz)");
             plt2.AxisAuto(0);
