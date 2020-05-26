@@ -22,6 +22,10 @@ dotnet build ..\..\src\FftSharp\FftSharp.csproj --verbosity quiet --configuratio
 echo.
 echo ### COPYING PACKAGE HERE ###
 copy ..\..\src\FftSharp\bin\Release\*.nupkg .\
+copy ..\..\src\FftSharp\bin\Release\*.snupkg .\
+
+echo ### RUNNING TESTS ###
+dotnet test ..\..\src\FftSharp.sln --configuration Release
 
 echo.
 echo WARNING! This script will UPLOAD packages to nuget.org
