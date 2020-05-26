@@ -28,13 +28,13 @@ namespace FftSharp.Demo
 
             // create noisy signal containing sine waves
             double[] data = new double[fftSize];
-            data = FftSharp.SampleData.AddWhiteNoise(data, 1);
-            data = FftSharp.SampleData.AddSin(data, sampleRate, 2_000, 1);
-            data = FftSharp.SampleData.AddSin(data, sampleRate, 10_000, 2);
-            data = FftSharp.SampleData.AddSin(data, sampleRate, 20_000, .5);
+            SampleData.AddWhiteNoise(data, 1);
+            SampleData.AddSin(data, sampleRate, 2_000, 1);
+            SampleData.AddSin(data, sampleRate, 10_000, 2);
+            SampleData.AddSin(data, sampleRate, 20_000, .5);
 
             // perform the FFT
-            double[] fftAmp = FftSharp.Transform.FFTamplitude(data);
+            double[] fftPower = FftSharp.Transform.FFTpower(data);
 
             // plot the signal
             formsPlot1.plt.Clear();
@@ -47,9 +47,9 @@ namespace FftSharp.Demo
 
             // plot the FFT
             formsPlot2.plt.Clear();
-            formsPlot2.plt.PlotSignal(fftAmp, fftPeriod);
+            formsPlot2.plt.PlotSignal(fftPower, fftPeriod);
             formsPlot2.plt.Title("FFT Signal");
-            formsPlot2.plt.YLabel("Amplitude (dB)");
+            formsPlot2.plt.YLabel("Power (dB)");
             formsPlot2.plt.XLabel("Frequency (Hz)");
             formsPlot2.plt.AxisAuto(0);
             formsPlot2.Render();

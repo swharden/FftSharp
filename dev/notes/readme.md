@@ -28,21 +28,15 @@ for (int i=1; i< N/2; i++)
 Amplitude[0] = Magnitude(FFT[i]) / N
 ```
 
-### Converting to Log Units
-
-Usually amplitude or power spectra are shown in dB units.
-
+**Convert to log units** by applying a dB conversion:
 ```
-dB = 10 * Log10(power / reference)
+Power (dB) = 2 * 10 * Log10(amplitude / reference)
 ```
 
-If our stating point is amplitude, our output becomes:
-
 ```
-dB = 20 * Log10(amplitude / reference)
+magnitude = FFTpos * 2 / N
+dB = 2 * 10 * np.log10(magnitude / reference)
 ```
-
-(because multiplying the decibel ratio by two is equivalent to having a squared ratio)
 
 ## Resources
 
@@ -54,3 +48,5 @@ and Measurement ](https://www.sjsu.edu/people/burford.furman/docs/me120/FFT_tuto
 * [Frequency and the Fast Fourier Transform](https://www.oreilly.com/library/view/elegant-scipy/9781491922927/ch04.html)
 
 * [FTT and power spectra](http://faculty.jsd.claremont.edu/jmilton/Math_Lab_tool/Labs/Lab9.pdf) with notes about application in biological contexts
+
+* []()

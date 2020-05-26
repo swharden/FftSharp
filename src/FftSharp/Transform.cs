@@ -6,6 +6,17 @@ namespace FftSharp
     public static class Transform
     {
         /// <summary>
+        /// Create an array of Complex data given the real component
+        /// </summary>
+        private static Complex[] Complex(double[] real)
+        {
+            Complex[] com = new Complex[real.Length];
+            for (int i = 0; i < real.Length; i++)
+                com[i] = new Complex(real[i], 0);
+            return com;
+        }
+
+        /// <summary>
         /// Compute the 1D discrete Fourier Transform using the Fast Fourier Transform (FFT) algorithm
         /// </summary>
         /// <param name="input">real input</param>
@@ -96,13 +107,52 @@ namespace FftSharp
         }
 
         /// <summary>
+        /// Calculte FFT and return the power
+        /// </summary>
+        /// <param name="input">real input</param>
+        /// <param name="singleSided">combine positive and negative power (useful when symmetrical)</param>
+        /// <returns>Power (dB)</returns>
+        public static double[] FFTpower(double[] input, bool singleSided = true, bool decibels = true)
+        {
+            // first calculate the FFT
+            Complex[] fft = FFT(Complex(input));
+
+            // create an array of the complex magnitudes
+            double[] output;
+            if (singleSided)
+            {
+                output = new double[fft.Length / 2];
+
+                // double to account for negative power
+                for (int i = 0; i < output.Length; i++)
+                    output[i] = fft[i].Magnitude * 2;
+
+                // first point (DC component) is not doubled
+                output[0] = fft[0].Magnitude;
+            }
+            else
+            {
+                output = new double[fft.Length];
+                for (int i = 0; i < output.Length; i++)
+                    output[i] = fft[i].Magnitude;
+            }
+
+            // convert to dB (the 2 comes from the conversion from RMS)
+            if (decibels)
+                for (int i = 0; i < output.Length; i++)
+                    output[i] = 2 * 10 * Math.Log10(output[i]);
+
+            return output;
+        }
+
+        /// <summary>
         /// Return frequencies for each point in an FFT
         /// </summary>
-        public static double[] FFTfreq(int sampleRate, int pointCount, bool mirror = false)
+        public static double[] FFTfreq(int sampleRate, int pointCount, bool oneSided = true)
         {
             double[] freqs = new double[pointCount];
 
-            if (mirror == false)
+            if (oneSided)
             {
                 double fftPeriodHz = (double)sampleRate / pointCount / 2;
 
@@ -125,75 +175,6 @@ namespace FftSharp
                     freqs[i] = -(pointCount - i) * fftPeriodHz;
                 return freqs;
             }
-        }
-
-        /// <summary>
-        /// Create an array of magnitudes for Complex inputs
-        /// </summary>
-        private static double[] Magnitude(Complex[] input, bool half = false)
-        {
-            int length = (half) ? input.Length / 2 : input.Length;
-            double[] output = new double[length];
-            for (int i = 0; i < length; i++)
-                output[i] = input[i].Magnitude;
-            return output;
-        }
-
-        /// <summary>
-        /// Create an array of Complex data given the real component
-        /// </summary>
-        private static Complex[] Complex(double[] real)
-        {
-            Complex[] com = new Complex[real.Length];
-            for (int i = 0; i < real.Length; i++)
-                com[i] = new Complex(real[i], 0);
-            return com;
-        }
-
-        /// <summary>
-        /// Calculte FFT amplitude (10 times the Log10 of the magnitude of the FFT)
-        /// </summary>
-        /// <param name="input">real input</param>
-        /// <returns>Amplitude (dB)</returns>
-        public static double[] FFTamplitude(double[] input)
-        {
-            return FFTdB(input, 10);
-        }
-
-        /// <summary>
-        /// Calculte FFT power (20 times the Log10 of the magnitude of the FFT)
-        /// </summary>
-        /// <param name="input">real input</param>
-        /// <returns>Power (dB)</returns>
-        public static double[] FFTpower(double[] input)
-        {
-            return FFTdB(input, 20);
-        }
-
-        /// <summary>
-        /// Calculte FFT and return the magnitude of the complex values
-        /// </summary>
-        /// <param name="input">real input</param>
-        /// <param name="half">return only the first half of the data (useful if result is mirrored)</param>
-        /// <returns>Magnitudes (not log transformed)</returns>
-        public static double[] FFTmagnitude(double[] input, bool half = true)
-        {
-            Complex[] fft = FFT(Complex(input));
-            return Magnitude(fft, half);
-        }
-
-        /// <summary>
-        /// Calculte FFT magnitude and convert to dB
-        /// </summary>
-        /// <param name="multiplier">10 for amplitude, 20 for power</param>
-        /// <returns>Magnitude (dB)</returns>
-        private static double[] FFTdB(double[] input, double multiplier = 20)
-        {
-            Complex[] fft = FFT(Complex(input));
-            double[] output = Magnitude(fft, half: true);
-            for (int i = 0; i < output.Length; i++)
-                output[i] = Math.Log10(output[i]) * multiplier;
-            return output;
         }
     }
 }

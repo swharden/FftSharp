@@ -53,7 +53,7 @@ namespace FftSharp.Tests
             Complex[] fft = Transform.FFT(audio);
 
             double[] fftAmp = fft.Select(x => x.Magnitude).ToArray();
-            double[] fftFreq = Transform.FFTfreq(sampleRate, fftAmp.Length, mirror: true);
+            double[] fftFreq = Transform.FFTfreq(sampleRate, fftAmp.Length, oneSided: true);
 
             var plt = new ScottPlot.Plot(600, 400);
 
