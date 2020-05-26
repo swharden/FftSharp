@@ -19,7 +19,7 @@ FftSharp.Window.ApplyInPlace(window, audio);
 double[] fftPower = FftSharp.Transform.FFTpower(windowed);
 ```
 
-Original | Windowed | FFT
+Audio | Windowed | Spectral Density
 ---|---|---
 ![](src/FftSharp.Quickstart/output/audio.png)|![](src/FftSharp.Quickstart/output/audio-windowed.png)|![](src/FftSharp.Quickstart/output/fft-windowed.png)
 
