@@ -104,7 +104,7 @@ FftSharp provides several windowing functions available to the experimenter.
 
 <div align="center">
 
-![](dev/fft-window.png)
+![](src/FftSharp.Quickstart/output/windows.png)
 
 </div>
 
