@@ -5,6 +5,8 @@ using System.Diagnostics.Tracing;
 using System.Numerics;
 using System.Text;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 namespace FftSharp.Tests
 {
     class Inverse
@@ -35,8 +37,13 @@ namespace FftSharp.Tests
             for (int i = 0; i < original.Length; i++)
                 original[i] = new Complex(rand.NextDouble() - .5, rand.NextDouble() - .5);
 
-            Complex[] fft = FftSharp.Transform.FFT(original);
-            Complex[] ifft = FftSharp.Transform.IFFT(fft);
+            Complex[] fft = new Complex[original.Length];
+            Array.Copy(original, 0, fft, 0, original.Length);
+            FftSharp.Transform.FFT(fft);
+
+            Complex[] ifft = new Complex[fft.Length];
+            Array.Copy(fft, 0, ifft, 0, fft.Length);
+            FftSharp.Transform.IFFT(ifft);
 
             for (int i = 0; i < ifft.Length; i++)
             {

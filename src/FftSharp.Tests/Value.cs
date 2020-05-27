@@ -37,7 +37,7 @@ namespace FftSharp.Tests
             Complex[] fft = new Complex[audio.Length];
             for (int i = 0; i < audio.Length; i++)
                 fft[i] = new Complex(audio[i], 0);
-            FftSharp.Transform.FFTfast(fft);
+            FftSharp.Transform.FFT(fft);
 
             for (int i = 0; i < fft.Length; i++)
             {

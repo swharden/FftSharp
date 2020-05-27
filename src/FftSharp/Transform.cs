@@ -14,10 +14,10 @@ namespace FftSharp
         }
 
         /// <summary>
-        /// Return the input array ensuring length is a power of 2 (zero-padding if needed)
+        /// Return the input array (or a new zero-padded new one) ensuring length is a power of 2
         /// </summary>
         /// <param name="input">complex array of any length</param>
-        /// <returns>the original array or a padded version</returns>
+        /// <returns>the input array or a zero-padded copy</returns>
         public static Complex[] ZeroPad(Complex[] input)
         {
             if (IsPowerOfTwo(input.Length))
@@ -52,23 +52,19 @@ namespace FftSharp
         /// <returns>transformed input</returns>
         public static Complex[] FFT(double[] input)
         {
-            return FFT(Complex(input));
+            Complex[] buffer = Complex(input);
+            FFT(buffer);
+            return buffer;
         }
 
         /// <summary>
-        /// Compute the 1D discrete Fourier Transform using the Fast Fourier Transform (FFT) algorithm
+        /// An easy-to-read (but non-optimized) implementation of the FFT algorithm
         /// </summary>
         /// <param name="input">complex input</param>
         /// <returns>transformed input</returns>
-        public static Complex[] FFT(Complex[] input, bool checkLength = true)
+        [Obsolete("This method is documentation purposes only.", true)]
+        private static Complex[] FFTstandard(Complex[] input)
         {
-            if (input.Length == 1)
-                return input;
-
-            if (checkLength)
-                if (IsPowerOfTwo(input.Length) == false)
-                    throw new ArgumentException($"FFT input length ({input.Length}) must be an even power of two. Use the ZeroPad method to achieve this.");
-
             Complex[] output = new Complex[input.Length];
 
             int H = input.Length / 2;
@@ -79,8 +75,8 @@ namespace FftSharp
                 evens[i] = input[2 * i];
                 odds[i] = input[2 * i + 1];
             }
-            odds = FFT(odds, false);
-            evens = FFT(evens, false);
+            odds = FFTstandard(odds);
+            evens = FFTstandard(evens);
 
             double mult1 = -2 * Math.PI / input.Length;
             for (int i = 0; i < H; i++)
@@ -119,68 +115,73 @@ namespace FftSharp
         }
 
         /// <summary>
-        /// Speed-optimized FFT that transforms complex input in-place
+        /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm
         /// </summary>
-        public static void FFTfast(Complex[] input)
+        public static void FFT(Complex[] buffer)
         {
-            for (int i = 1; i < input.Length; i++)
+            if (!IsPowerOfTwo(buffer.Length))
+                throw new ArgumentException("Length must be a power of 2. ZeroPad() may help.");
+
+            for (int i = 1; i < buffer.Length; i++)
             {
-                int j = BitReverse(i, input.Length);
+                int j = BitReverse(i, buffer.Length);
                 if (j > i)
-                    (input[j], input[i]) = (input[i], input[j]);
+                    (buffer[j], buffer[i]) = (buffer[i], buffer[j]);
             }
 
-            for (int i = 1; i <= input.Length / 2; i *= 2)
+            for (int i = 1; i <= buffer.Length / 2; i *= 2)
             {
                 double mult1 = -Math.PI / i;
-                for (int j = 0; j < input.Length; j += (i * 2))
+                for (int j = 0; j < buffer.Length; j += (i * 2))
                 {
                     for (int k = 0; k < i; k++)
                     {
                         int evenI = j + k;
                         int oddI = j + k + i;
-                        Complex temp = new Complex(Math.Cos(mult1 * k), Math.Sin(mult1 * k)) * input[oddI];
-                        input[oddI] = input[evenI] - temp;
-                        input[evenI] += temp;
+                        Complex temp = new Complex(Math.Cos(mult1 * k), Math.Sin(mult1 * k));
+                        temp *= buffer[oddI];
+                        buffer[oddI] = buffer[evenI] - temp;
+                        buffer[evenI] += temp;
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Compute the 1D discrete Fourier Transform (not using the fast FFT algorithm)
+        /// Compute the inverse discrete Fourier Transform (in-place) using the FFT algorithm
+        /// </summary>
+        public static void IFFT(Complex[] buffer)
+        {
+            // invert the imaginary component
+            for (int i = 0; i < buffer.Length; i++)
+                buffer[i] = new Complex(buffer[i].Real, -buffer[i].Imaginary);
+
+            // perform a forward Fourier transform
+            FFT(buffer);
+
+            // invert the imaginary component again and scale the output
+            for (int i = 0; i < buffer.Length; i++)
+                buffer[i] = new Complex(buffer[i].Real / buffer.Length,
+                                       -buffer[i].Imaginary / buffer.Length);
+        }
+
+        /// <summary>
+        /// Compute the discrete Fourier Transform (not using the FFT algorithm)
         /// </summary>
         /// <param name="input">real input</param>
         /// <returns>transformed input</returns>
+        [Obsolete("This method is documentation purposes only.")]
         public static Complex[] DFT(double[] input)
         {
             return DFT(Complex(input));
         }
 
         /// <summary>
-        /// Compute the inverse 1D discrete Fourier Transform (using the fast FFT algorithm)
-        /// </summary>
-        /// <param name="input">complex input</param>
-        /// <returns>transformed input</returns>
-        public static Complex[] IFFT(Complex[] input)
-        {
-            Complex[] output = new Complex[input.Length];
-            for (int i = 0; i < output.Length; i++)
-                output[i] = new Complex(input[i].Real, -input[i].Imaginary);
-
-            output = FFT(output);
-
-            for (int i = 0; i < output.Length; i++)
-                output[i] = new Complex(output[i].Real / output.Length, -output[i].Imaginary / output.Length);
-
-            return output;
-        }
-
-        /// <summary>
-        /// Compute the 1D discrete Fourier Transform (not using the fast FFT algorithm)
+        /// Compute the forward or inverse discrete Fourier Transform (not using the FFT algorithm)
         /// </summary>
         /// <param name="real">complex input</param>
         /// <returns>transformed input</returns>
+        [Obsolete("This method is documentation purposes only.")]
         public static Complex[] DFT(Complex[] input, bool inverse = false)
         {
             int N = input.Length;
@@ -205,34 +206,35 @@ namespace FftSharp
         }
 
         /// <summary>
-        /// Calculte FFT and return the power
+        /// Calculte FFT of the input and return the power spectrum density (PSD)
         /// </summary>
         /// <param name="input">real input</param>
         /// <param name="singleSided">combine positive and negative power (useful when symmetrical)</param>
-        /// <returns>Power (dB)</returns>
+        /// <param name="decibels">return 20*Log10(magnitude) so has dB units</param>
         public static double[] FFTpower(double[] input, bool singleSided = true, bool decibels = true)
         {
             // first calculate the FFT
-            Complex[] fft = FFT(Complex(input));
+            Complex[] buffer = Complex(input);
+            FFT(buffer);
 
             // create an array of the complex magnitudes
             double[] output;
             if (singleSided)
             {
-                output = new double[fft.Length / 2];
+                output = new double[buffer.Length / 2];
 
                 // double to account for negative power
                 for (int i = 0; i < output.Length; i++)
-                    output[i] = fft[i].Magnitude * 2;
+                    output[i] = buffer[i].Magnitude * 2;
 
                 // first point (DC component) is not doubled
-                output[0] = fft[0].Magnitude;
+                output[0] = buffer[0].Magnitude;
             }
             else
             {
-                output = new double[fft.Length];
+                output = new double[buffer.Length];
                 for (int i = 0; i < output.Length; i++)
-                    output[i] = fft[i].Magnitude;
+                    output[i] = buffer[i].Magnitude;
             }
 
             // convert to dB (the 2 comes from the conversion from RMS)
@@ -244,7 +246,7 @@ namespace FftSharp
         }
 
         /// <summary>
-        /// Return frequencies for each point in an FFT
+        /// Calculate sample frequency for each point in a FFT
         /// </summary>
         public static double[] FFTfreq(int sampleRate, int pointCount, bool oneSided = true)
         {

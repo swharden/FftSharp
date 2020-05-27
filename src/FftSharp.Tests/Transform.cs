@@ -5,6 +5,8 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 namespace FftSharp.Tests
 {
     public class Transform

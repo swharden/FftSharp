@@ -6,6 +6,8 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 
+#pragma warning disable CS0618 // Type or member is obsolete
+
 namespace FftSharp.Tests
 {
     class Benchmark
@@ -122,7 +124,7 @@ namespace FftSharp.Tests
             {
                 Array.Copy(input, 0, input2, 0, input.Length);
                 sw.Start();
-                FftSharp.Transform.FFTfast(input);
+                FftSharp.Transform.FFT(input);
                 sw.Stop();
             }
             double dftMsec = 1000.0 * sw.ElapsedTicks / Stopwatch.Frequency;
