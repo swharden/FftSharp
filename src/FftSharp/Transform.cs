@@ -60,7 +60,7 @@ namespace FftSharp
         /// </summary>
         /// <param name="input">complex input</param>
         /// <returns>transformed input</returns>
-        public static Complex[] FFT(Complex[] input, bool checkLength = true, bool inverse = false)
+        public static Complex[] FFT(Complex[] input, bool checkLength = true)
         {
             if (input.Length == 1)
                 return input;
@@ -68,10 +68,6 @@ namespace FftSharp
             if (checkLength)
                 if (IsPowerOfTwo(input.Length) == false)
                     throw new ArgumentException($"FFT input length ({input.Length}) must be an even power of two. Use the ZeroPad method to achieve this.");
-
-            // TODO: is there a way to harness symmetry for a faster IFFT?
-            if (inverse)
-                return DFT(input, inverse: true);
 
             Complex[] output = new Complex[input.Length];
 
@@ -110,6 +106,25 @@ namespace FftSharp
         public static Complex[] DFT(double[] input)
         {
             return DFT(Complex(input));
+        }
+
+        /// <summary>
+        /// Compute the inverse 1D discrete Fourier Transform (using the fast FFT algorithm)
+        /// </summary>
+        /// <param name="input">complex input</param>
+        /// <returns>transformed input</returns>
+        public static Complex[] IFFT(Complex[] input)
+        {
+            Complex[] output = new Complex[input.Length];
+            for (int i = 0; i < output.Length; i++)
+                output[i] = new Complex(input[i].Real, -input[i].Imaginary);
+
+            output = FFT(output);
+
+            for (int i = 0; i < output.Length; i++)
+                output[i] = new Complex(output[i].Real / output.Length, -output[i].Imaginary / output.Length);
+
+            return output;
         }
 
         /// <summary>

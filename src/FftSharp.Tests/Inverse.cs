@@ -36,7 +36,7 @@ namespace FftSharp.Tests
                 original[i] = new Complex(rand.NextDouble() - .5, rand.NextDouble() - .5);
 
             Complex[] fft = FftSharp.Transform.FFT(original);
-            Complex[] ifft = FftSharp.Transform.FFT(fft, inverse: true);
+            Complex[] ifft = FftSharp.Transform.IFFT(fft);
 
             for (int i = 0; i < ifft.Length; i++)
             {
