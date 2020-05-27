@@ -11,7 +11,7 @@ namespace FftSharp.Tests
     {
 
         [Test]
-        public void Test_Values_MatchNumpy()
+        public void Test_FFT_ValuesMatchNumpy()
         {
             // Some sample audio data was analyzed with Numpy in Python.
             // This module contains the output of numpy.fft.fft()
@@ -19,6 +19,26 @@ namespace FftSharp.Tests
             // This test assserts our FFT results match Numpy's
 
             Complex[] fft = FftSharp.Transform.FFT(audio);
+            for (int i = 0; i < fft.Length; i++)
+            {
+                Assert.AreEqual(numpyFFT[i].Real, fft[i].Real, 1e-12);
+                Assert.AreEqual(numpyFFT[i].Imaginary, fft[i].Imaginary, 1e-12);
+            }
+        }
+
+        [Test]
+        public void Test_FFTfast_ValuesMatchNumpy()
+        {
+            // Some sample audio data was analyzed with Numpy in Python.
+            // This module contains the output of numpy.fft.fft()
+            // https://numpy.org/doc/1.18/reference/generated/numpy.fft.fft.html
+            // This test assserts our FFT results match Numpy's
+
+            Complex[] fft = new Complex[audio.Length];
+            for (int i = 0; i < audio.Length; i++)
+                fft[i] = new Complex(audio[i], 0);
+            FftSharp.Transform.FFTfast(fft);
+
             for (int i = 0; i < fft.Length; i++)
             {
                 Assert.AreEqual(numpyFFT[i].Real, fft[i].Real, 1e-12);

@@ -89,5 +89,47 @@ namespace FftSharp.Tests
             // the FFT should be easily 10x faster than the DFT
             Assert.Less(fftMsec * 10, dftMsec);
         }
+
+        [Test]
+        public void Test_FFT_FFTfast()
+        {
+            Random rand = new Random(0);
+            Stopwatch sw = new Stopwatch();
+
+            int fftSize = 1024;
+            int reps = 100;
+
+            // create random input
+            Complex[] input = new Complex[fftSize];
+            for (int j = 0; j < input.Length; j++)
+                input[j] = new Complex(rand.NextDouble(), rand.NextDouble());
+
+            // benchmark FFT
+            sw.Reset();
+            for (int j = 0; j < reps; j++)
+            {
+                sw.Start();
+                FftSharp.Transform.FFT(input);
+                sw.Stop();
+            }
+            double fftMsec = 1000.0 * sw.ElapsedTicks / Stopwatch.Frequency;
+            Console.WriteLine($"FFT of {fftSize} points: {fftMsec:N2} msec");
+
+            // benchmark FFTfast
+            sw.Reset();
+            Complex[] input2 = new Complex[input.Length];
+            for (int j = 0; j < reps; j++)
+            {
+                Array.Copy(input, 0, input2, 0, input.Length);
+                sw.Start();
+                FftSharp.Transform.FFTfast(input);
+                sw.Stop();
+            }
+            double dftMsec = 1000.0 * sw.ElapsedTicks / Stopwatch.Frequency;
+            Console.WriteLine($"FFTfast of {fftSize} points: {dftMsec:N2} msec");
+
+            // the FFT should be easily 10x faster than the DFT
+            //Assert.Less(fftMsec * 10, dftMsec);
+        }
     }
 }

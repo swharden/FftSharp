@@ -99,6 +99,55 @@ namespace FftSharp
         }
 
         /// <summary>
+        /// Reverse the sequence of bits in an integer (01101 -> 10110)
+        /// </summary>
+        private static int BitReverse(int value, int maxValue)
+        {
+            int maxBitCount = (int)Math.Log(maxValue, 2);
+            int output = value;
+            int bitCount = maxBitCount - 1;
+
+            value >>= 1;
+            while (value > 0)
+            {
+                output = (output << 1) | (value & 1);
+                bitCount -= 1;
+                value >>= 1;
+            }
+
+            return (output << bitCount) & ((1 << maxBitCount) - 1);
+        }
+
+        /// <summary>
+        /// Speed-optimized FFT that transforms complex input in-place
+        /// </summary>
+        public static void FFTfast(Complex[] input)
+        {
+            for (int i = 1; i < input.Length; i++)
+            {
+                int j = BitReverse(i, input.Length);
+                if (j > i)
+                    (input[j], input[i]) = (input[i], input[j]);
+            }
+
+            for (int i = 1; i <= input.Length / 2; i *= 2)
+            {
+                double mult1 = -Math.PI / i;
+                for (int j = 0; j < input.Length; j += (i * 2))
+                {
+                    for (int k = 0; k < i; k++)
+                    {
+                        int evenI = j + k;
+                        int oddI = j + k + i;
+                        Complex temp = new Complex(Math.Cos(mult1 * k), Math.Sin(mult1 * k)) * input[oddI];
+                        input[oddI] = input[evenI] - temp;
+                        input[evenI] += temp;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Compute the 1D discrete Fourier Transform (not using the fast FFT algorithm)
         /// </summary>
         /// <param name="input">real input</param>
