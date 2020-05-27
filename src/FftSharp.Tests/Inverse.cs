@@ -26,5 +26,23 @@ namespace FftSharp.Tests
                 Assert.AreEqual(original[i].Imaginary, ifft[i].Imaginary, 1e-6);
             }
         }
+
+        [Test]
+        public void Test_IFFT_MatchesOriginal()
+        {
+            Random rand = new Random(0);
+            Complex[] original = new Complex[1024];
+            for (int i = 0; i < original.Length; i++)
+                original[i] = new Complex(rand.NextDouble() - .5, rand.NextDouble() - .5);
+
+            Complex[] fft = FftSharp.Transform.FFT(original);
+            Complex[] ifft = FftSharp.Transform.FFT(fft, inverse: true);
+
+            for (int i = 0; i < ifft.Length; i++)
+            {
+                Assert.AreEqual(original[i].Real, ifft[i].Real, 1e-6);
+                Assert.AreEqual(original[i].Imaginary, ifft[i].Imaginary, 1e-6);
+            }
+        }
     }
 }

@@ -60,45 +60,43 @@ namespace FftSharp
         /// </summary>
         /// <param name="input">complex input</param>
         /// <returns>transformed input</returns>
-        public static Complex[] FFT(Complex[] input, bool checkLength = true)
+        public static Complex[] FFT(Complex[] input, bool checkLength = true, bool inverse = false)
         {
+            if (input.Length == 1)
+                return input;
+
             if (checkLength)
                 if (IsPowerOfTwo(input.Length) == false)
                     throw new ArgumentException($"FFT input length ({input.Length}) must be an even power of two. Use the ZeroPad method to achieve this.");
 
-            int N = input.Length;
-            Complex[] output = new Complex[N];
-            Complex[] d, D, e, E;
+            // TODO: is there a way to harness symmetry for a faster IFFT?
+            if (inverse)
+                return DFT(input, inverse: true);
 
-            if (N == 1)
+            Complex[] output = new Complex[input.Length];
+
+            int H = input.Length / 2;
+            Complex[] evens = new Complex[H];
+            Complex[] odds = new Complex[H];
+            for (int i = 0; i < H; i++)
             {
-                output[0] = input[0];
-                return output;
+                evens[i] = input[2 * i];
+                odds[i] = input[2 * i + 1];
+            }
+            odds = FFT(odds, false);
+            evens = FFT(evens, false);
+
+            double mult1 = -2 * Math.PI / input.Length;
+            for (int i = 0; i < H; i++)
+            {
+                double radians = mult1 * i;
+                odds[i] *= new Complex(Math.Cos(radians), Math.Sin(radians));
             }
 
-            int k;
-            e = new Complex[N / 2];
-            d = new Complex[N / 2];
-
-            for (k = 0; k < N / 2; k++)
+            for (int i = 0; i < H; i++)
             {
-                e[k] = input[2 * k];
-                d[k] = input[2 * k + 1];
-            }
-
-            D = FFT(d, false);
-            E = FFT(e, false);
-
-            for (k = 0; k < N / 2; k++)
-            {
-                double radians = -2 * Math.PI * k / N;
-                D[k] *= new Complex(Math.Cos(radians), Math.Sin(radians));
-            }
-
-            for (k = 0; k < N / 2; k++)
-            {
-                output[k] = E[k] + D[k];
-                output[k + N / 2] = E[k] - D[k];
+                output[i] = evens[i] + odds[i];
+                output[i + H] = evens[i] - odds[i];
             }
 
             return output;
