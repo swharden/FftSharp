@@ -96,7 +96,7 @@ Signals are often are _windowed_ prior to FFT analysis. Windowing is essentially
 
 </div>
 
-The Hanning window is the most common window for general-purpose FFT analysis. Other window functions may have different _scallop loss_ or _spectral leakage_. For more information review [window functions](https://en.wikipedia.org/wiki/Window_function) on Wikipedia.
+The Hanning window is the most common window for general-purpose FFT analysis. Other window functions may have different _scallop loss_ or _spectral leakage_ properties. For more information review [window functions](https://en.wikipedia.org/wiki/Window_function) on Wikipedia.
 
 ```cs
 // Apply a Hanning window to the audio prior to FFT analysis
