@@ -27,8 +27,6 @@ A quickstart application ([Program.cs](src/FftSharp.Quickstart/Program.cs)) demo
 
 ## Usage
 
-> **⚠️ WARNING:** FftSharp is early in development and its public API may change as it continues to mature. Source code and examples in this repository may deviate from the API in the latest NuGet package.
-
 ### Installation
 
 FftSharp is available on NuGet:
