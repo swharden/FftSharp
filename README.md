@@ -12,11 +12,11 @@
 double[] audio = FftSharp.SampleData.SampleAudio1();
 
 // Window your signal
-double[] windowed = FftSharp.Window.Hanning(audio.Length);
+double[] window = FftSharp.Window.Hanning(audio.Length);
 FftSharp.Window.ApplyInPlace(window, audio);
 
 // Calculate power spectral density (dB)
-double[] fftPower = FftSharp.Transform.FFTpower(windowed);
+double[] fftPower = FftSharp.Transform.FFTpower(audio);
 ```
 
 Audio | Windowed | FFT
