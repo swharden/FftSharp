@@ -119,20 +119,23 @@ namespace FftSharp
         /// </summary>
         /// <param name="real">complex input</param>
         /// <returns>transformed input</returns>
-        public static Complex[] DFT(Complex[] input)
+        public static Complex[] DFT(Complex[] input, bool inverse = false)
         {
             int N = input.Length;
-            Complex[] output = new Complex[N];
+            double mult1 = (inverse) ? 2 * Math.PI / N : -2 * Math.PI / N;
+            double mult2 = (inverse) ? 1.0 / N : 1.0;
+            Console.WriteLine($"REAL {mult1} {mult2}");
 
+            Complex[] output = new Complex[N];
             for (int k = 0; k < N; k++)
             {
                 output[k] = new Complex(0, 0);
                 for (int n = 0; n < N; n++)
                 {
-                    double radians = -2 * Math.PI * n * k / N;
+                    double radians = n * k * mult1;
                     Complex temp = new Complex(Math.Cos(radians), Math.Sin(radians));
                     temp *= input[n];
-                    output[k] += temp;
+                    output[k] += temp * mult2;
                 }
             }
 
