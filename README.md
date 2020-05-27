@@ -73,20 +73,26 @@ Power vs. frequency can then be plotted to yield a [periodogram](https://en.wiki
 
 ### Calculate the FFT using Complex Numbers
 
-If you enjoy working with complex numbers with real and imaginary components, you can call `FFT()` directly. Unlike many other FFT libraries which use their own complex number modules, FftSharp simply uses the [Complex struct](https://docs.microsoft.com/en-us/dotnet/api/system.numerics.complex) provided by the [standard Numerics .NET library](https://docs.microsoft.com/en-us/dotnet/standard/numerics).
+If you enjoy working with real and imaginary components of complex numbers, you can build your own complex array and call `FFT()` directly. Unlike some FFT libraries which use their own complex number modules, FftSharp simply uses the [Complex struct](https://docs.microsoft.com/en-us/dotnet/api/system.numerics.complex) provided by the [standard Numerics .NET library](https://docs.microsoft.com/en-us/dotnet/standard/numerics).
 
 ```cs
-System.Numerics.Complex[] fft = FftSharp.Transform.FFT(audio);
-```
+// Start with some data
+double[] audio = FftSharp.SampleData.SampleAudio1();
 
-The FFT is typically calculated using a complex number array as input. However, an overload is available which allows the user to define real values and assume the imaginary values are zero.
+// convert the data to an array of complex numbers
+Complex[] buffer = new Complex[audio.Length];
+for (int i=0; i<buffer.Length; i++)
+    buffer[i] = new Complex(audio[i], 0);
+
+// compute the FFT in-place
+FftSharp.Transform.FFT(buffer);
+```
 
 ### Windowing
 
 Often audio samples are _windowed_ prior to FFT analysis. Windowing is essentially multiplying the waveform by a bell-shaped curve prior to analysis. The `FftSharp.Window` module provides easy access to many common window functions.
 
 ```cs
-// The Hanning window is commonly used before FFT analyses
 double[] window = FftSharp.Window.Hanning(audio.Length);
 FftSharp.Window.ApplyInPlace(window, audio);
 ```
@@ -96,9 +102,17 @@ Without Windowing | With a Hanning Window
 ![](src/FftSharp.Quickstart/output/audio.png)|![](src/FftSharp.Quickstart/output/audio-windowed.png)
 ![](src/FftSharp.Quickstart/output/fft.png)|![](src/FftSharp.Quickstart/output/fft-windowed.png)
 
-FftSharp has many windowing functions to choose from:
+FftSharp provides several windowing functions available to the experimenter.
+
+<div align="center">
 
 ![](dev/fft-window.png)
+
+</div>
+
+The Hanning window (generated from the [Hann function](https://en.wikipedia.org/wiki/Hann_function)) is the most commonly used windowing function for general-purpose FFT analysis. While it is similar in shape to the _Hamming_ function, tails of the _Hanning_ window approach zero at the edges. Other window functions offer different advantages, such as superior resolution in the time domain or differences in _scallop loss_ or _spectral leakage_.
+
+For more information review [window functions](https://en.wikipedia.org/wiki/Window_function) on Wikipedia.
 
 ## Demo Application
 
@@ -107,7 +121,6 @@ A graphical demo application is included in this project which uses [ScottPlot](
 <div align="center">
 
 ![](src/FftSharp.Demo/screenshot2.png)
-
 
 ![](dev/screenshot.png)
 
