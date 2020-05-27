@@ -16,6 +16,13 @@ namespace FftSharp.Demo
         public FormAudio()
         {
             InitializeComponent();
+            formsPlot1.Configure(middleClickMarginX: 0);
+            formsPlot2.Configure(middleClickMarginX: 0);
+            comboBox1.SelectedIndex = 0;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
             UpdateFFT();
         }
 
@@ -27,18 +34,32 @@ namespace FftSharp.Demo
             double fftPeriod = (double)fftSize / sampleRate;
 
             // create noisy signal containing sine waves
-            double[] data = new double[fftSize];
-            SampleData.AddWhiteNoise(data, 1);
-            SampleData.AddSin(data, sampleRate, 2_000, 1);
-            SampleData.AddSin(data, sampleRate, 10_000, 2);
-            SampleData.AddSin(data, sampleRate, 20_000, .5);
+            double[] audio = new double[fftSize];
+            SampleData.AddWhiteNoise(audio, 1);
+            SampleData.AddSin(audio, sampleRate, 2_000, 1);
+            SampleData.AddSin(audio, sampleRate, 10_000, 2);
+            SampleData.AddSin(audio, sampleRate, 20_000, .5);
+
+            double[] window = null;
+            if (comboBox1.Text == "Hanning")
+                window = Window.Hanning(audio.Length);
+            else if (comboBox1.Text == "Hamming")
+                window = Window.Hamming(audio.Length);
+            else if (comboBox1.Text == "Bartlett")
+                window = Window.Bartlett(audio.Length);
+            else if (comboBox1.Text == "Blackman")
+                window = Window.Blackman(audio.Length);
+            else if (comboBox1.Text == "FlatTop")
+                window = Window.FlatTop(audio.Length);
+            if (window != null)
+                Window.ApplyInPlace(window, audio);
 
             // perform the FFT
-            double[] fftPower = FftSharp.Transform.FFTpower(data);
+            double[] fftPower = FftSharp.Transform.FFTpower(audio);
 
             // plot the signal
             formsPlot1.plt.Clear();
-            formsPlot1.plt.PlotSignal(data, sampleRate / 1e3);
+            formsPlot1.plt.PlotSignal(audio, sampleRate / 1e3);
             formsPlot1.plt.Title("Input Signal");
             formsPlot1.plt.YLabel("Amplitude");
             formsPlot1.plt.XLabel("Time (milliseconds)");
