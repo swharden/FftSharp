@@ -88,19 +88,7 @@ FftSharp.Transform.FFT(buffer);
 
 ### Windowing
 
-Often audio samples are _windowed_ prior to FFT analysis. Windowing is essentially multiplying the waveform by a bell-shaped curve prior to analysis. The `FftSharp.Window` module provides easy access to many common window functions.
-
-```cs
-double[] window = FftSharp.Window.Hanning(audio.Length);
-FftSharp.Window.ApplyInPlace(window, audio);
-```
-
-Without Windowing | With a Hanning Window
----|---
-![](src/FftSharp.Quickstart/output/audio.png)|![](src/FftSharp.Quickstart/output/audio-windowed.png)
-![](src/FftSharp.Quickstart/output/fft.png)|![](src/FftSharp.Quickstart/output/fft-windowed.png)
-
-FftSharp provides several windowing functions available to the experimenter.
+Signals are often are _windowed_ prior to FFT analysis. Windowing is essentially multiplying the waveform by a bell-shaped curve prior to analysis. The `FftSharp.Window` module provides easy access to many common window functions.
 
 <div align="center">
 
@@ -108,9 +96,23 @@ FftSharp provides several windowing functions available to the experimenter.
 
 </div>
 
-The Hanning window (generated from the [Hann function](https://en.wikipedia.org/wiki/Hann_function)) is the most commonly used windowing function for general-purpose FFT analysis. While it is similar in shape to the _Hamming_ function, tails of the _Hanning_ window approach zero at the edges. Other window functions offer different advantages, such as superior resolution in the time domain or differences in _scallop loss_ or _spectral leakage_.
+The Hanning window is the most common window for general-purpose FFT analysis. Other window functions may have different _scallop loss_ or _spectral leakage_. For more information review [window functions](https://en.wikipedia.org/wiki/Window_function) on Wikipedia.
 
-For more information review [window functions](https://en.wikipedia.org/wiki/Window_function) on Wikipedia.
+```cs
+// Apply a Hanning window to the audio prior to FFT analysis
+double[] window = FftSharp.Window.Hanning(audio.Length);
+FftSharp.Window.ApplyInPlace(window, audio);
+```
+
+Hanning Window | Power Spectral Density
+---|---
+![](src/FftSharp.Quickstart/output/audio-windowed.png)|![](src/FftSharp.Quickstart/output/fft-windowed.png)
+
+Windowing signals prior to calculating the FFT improves signal-to-noise ratio at lower frequencies, making power spectrum peaks easier to resolve.
+
+No Window | Power Spectral Density
+---|---
+![](src/FftSharp.Quickstart/output/audio.png)|![](src/FftSharp.Quickstart/output/fft.png)
 
 ## Demo Application
 
