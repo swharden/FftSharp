@@ -122,6 +122,18 @@ A graphical demo application is included in this project which uses [ScottPlot](
 
 ![](src/FftSharp.Demo/screenshot2.png)
 
-![](dev/screenshot.png)
+</div>
+
+## Spectrogram
+
+A spectrogram is a visual representation of the spectrum of frequencies of a signal as it varies with time. Spectrograms are created by computing power spectral density of a small window of an audio signal, moving the window forward in time, and repeating until the end of the signal is reached. In a spectrogram the horizontal axis represents time, the vertical axis represents frequency, and the pixel intensity represents spectral magnitude or power.
+
+[Spectrogram](https://github.com/swharden/Spectrogram) is a .NET library for creating spectrograms.
+
+<div align="center">
+
+![](dev/spectrogram.png)
+
+_I'm sorry Dave... I'm afraid I can't do that_
 
 </div>
