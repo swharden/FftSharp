@@ -92,7 +92,7 @@ Signals are often are _windowed_ prior to FFT analysis. Windowing is essentially
 
 <div align="center">
 
-![](src/FftSharp.Quickstart/output/windows.png)
+![](dev/windows.png)
 
 </div>
 
