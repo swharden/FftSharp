@@ -41,20 +41,26 @@ namespace FftSharp
                 data[i] += offset;
         }
 
-        public static void AddWhiteNoise(double[] data, double magnitude = 1, int? seed = 0, double offset = 0)
+        public static void AddWhiteNoise(double[] data, double magnitude = 1, double offset = 0, int? seed = 0)
         {
             Random rand = (seed.HasValue) ? new Random(seed.Value) : new Random();
             for (int i = 0; i < data.Length; i++)
                 data[i] += (rand.NextDouble() - .5) * magnitude + offset;
         }
 
-        public static double[] WhiteNoise(int pointCount, double magnitude = 1, int? seed = 0)
+        public static double[] RandomNormal(int pointCount, double mean = .5, double stdDev = .5, int? seed = 0)
         {
             Random rand = (seed.HasValue) ? new Random(seed.Value) : new Random();
-            double[] data = new double[pointCount];
-            for (int i = 0; i < data.Length; i++)
-                data[i] += (rand.NextDouble() - .5) * magnitude;
-            return data;
+            double[] values = new double[pointCount];
+            for (int i = 0; i < values.Length; i++)
+            {
+                double u1 = 1.0 - rand.NextDouble();
+                double u2 = 1.0 - rand.NextDouble();
+                double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) * Math.Sin(2.0 * Math.PI * u2);
+                values[i] = mean + stdDev * randStdNormal;
+            }
+
+            return values;
         }
 
         public static double[] SampleAudio1()
