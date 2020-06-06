@@ -9,7 +9,6 @@ namespace FftSharp.Quickstart
         {
             SimpleFftWithGraphs(useWindow: false);
             SimpleFftWithGraphs(useWindow: true);
-            ShowAllWindows();
         }
 
         static void SimpleFftWithGraphs(bool useWindow = false)
