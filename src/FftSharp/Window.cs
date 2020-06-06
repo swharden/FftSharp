@@ -149,5 +149,18 @@ namespace FftSharp
 
             return window;
         }
+
+        public static double[] Cosine(int pointCount, bool normalize = false)
+        {
+            double[] window = new double[pointCount];
+
+            for (int i = 0; i < pointCount; i++)
+                window[i] = Math.Sin(i * Math.PI / (pointCount - 1));
+
+            if (normalize)
+                NormalizeInPlace(window);
+
+            return window;
+        }
     }
 }
