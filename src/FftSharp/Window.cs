@@ -42,6 +42,19 @@ namespace FftSharp
                 window[i] /= sum;
         }
 
+        public static double[] Rectangular(int pointCount, bool normalize = false)
+        {
+            double[] window = new double[pointCount];
+
+            for (int i = 0; i < pointCount; i++)
+                window[i] = 1;
+
+            if (normalize)
+                NormalizeInPlace(window);
+
+            return window;
+        }
+
         public static double[] Hanning(int pointCount, bool normalize = false)
         {
             double[] window = new double[pointCount];
