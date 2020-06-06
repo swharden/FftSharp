@@ -42,46 +42,37 @@ namespace FftSharp
                 window[i] /= sum;
         }
 
-        public static double[] Rectangular(int pointCount, bool normalize = false)
+        public static double[] Rectangular(int pointCount)
         {
             double[] window = new double[pointCount];
 
             for (int i = 0; i < pointCount; i++)
                 window[i] = 1;
 
-            if (normalize)
-                NormalizeInPlace(window);
-
             return window;
         }
 
-        public static double[] Hanning(int pointCount, bool normalize = false)
+        public static double[] Hanning(int pointCount)
         {
             double[] window = new double[pointCount];
 
             for (int i = 0; i < pointCount; i++)
                 window[i] = 0.5 - 0.5 * Math.Cos(2 * Math.PI * i / pointCount);
 
-            if (normalize)
-                NormalizeInPlace(window);
-
             return window;
         }
 
-        public static double[] Hamming(int pointCount, bool normalize = false)
+        public static double[] Hamming(int pointCount)
         {
             double[] window = new double[pointCount];
 
             for (int i = 0; i < pointCount; i++)
                 window[i] = 0.54 - 0.46 * Math.Cos(2 * Math.PI * i / pointCount);
 
-            if (normalize)
-                NormalizeInPlace(window);
-
             return window;
         }
 
-        public static double[] Blackman(int pointCount, bool normalize = false)
+        public static double[] Blackman(int pointCount)
         {
             double[] window = new double[pointCount];
 
@@ -89,13 +80,10 @@ namespace FftSharp
                 window[i] = 0.42 - 0.50 * Math.Cos(2 * Math.PI * i / pointCount) +
                                    0.08 * Math.Cos(4 * Math.PI * i / pointCount);
 
-            if (normalize)
-                NormalizeInPlace(window);
-
             return window;
         }
 
-        public static double[] BlackmanExact(int pointCount, bool normalize = false)
+        public static double[] BlackmanExact(int pointCount)
         {
             double[] window = new double[pointCount];
 
@@ -103,13 +91,10 @@ namespace FftSharp
                 window[i] = 0.42659071 - 0.49656062 * Math.Cos(2 * Math.PI * i / pointCount) +
                                          0.07684867 * Math.Cos(4 * Math.PI * i / pointCount);
 
-            if (normalize)
-                NormalizeInPlace(window);
-
             return window;
         }
 
-        public static double[] BlackmanHarris(int pointCount, bool normalize = false)
+        public static double[] BlackmanHarris(int pointCount)
         {
             double[] window = new double[pointCount];
 
@@ -117,13 +102,10 @@ namespace FftSharp
                 window[i] = (0.42323 - 0.49755 * Math.Cos(2 * Math.PI * i / pointCount) +
                                        0.07922 * Math.Cos(4 * Math.PI * i / pointCount));
 
-            if (normalize)
-                NormalizeInPlace(window);
-
             return window;
         }
 
-        public static double[] FlatTop(int pointCount, bool normalize = false)
+        public static double[] FlatTop(int pointCount)
         {
             double[] window = new double[pointCount];
 
@@ -131,34 +113,25 @@ namespace FftSharp
                 window[i] = (0.2810639 - 0.5208972 * Math.Cos(2 * Math.PI * i / pointCount) +
                                          0.1980399 * Math.Cos(4 * Math.PI * i / pointCount));
 
-            if (normalize)
-                NormalizeInPlace(window);
-
             return window;
         }
 
-        public static double[] Bartlett(int pointCount, bool normalize = false)
+        public static double[] Bartlett(int pointCount)
         {
             double[] window = new double[pointCount];
 
             for (int i = 0; i < pointCount; i++)
                 window[i] = 1 - Math.Abs((double)(i - (pointCount / 2)) / (pointCount / 2));
 
-            if (normalize)
-                NormalizeInPlace(window);
-
             return window;
         }
 
-        public static double[] Cosine(int pointCount, bool normalize = false)
+        public static double[] Cosine(int pointCount)
         {
             double[] window = new double[pointCount];
 
             for (int i = 0; i < pointCount; i++)
                 window[i] = Math.Sin(i * Math.PI / (pointCount - 1));
-
-            if (normalize)
-                NormalizeInPlace(window);
 
             return window;
         }
