@@ -56,6 +56,32 @@ namespace FftSharp
         }
 
         /// <summary>
+        /// Return the input array zero-padded to reach a final length
+        /// </summary>
+        /// <param name="input">array of any length</param>
+        /// <returns>a zero-padded copy of the input array</returns>
+        public static Complex[] ZeroPad(Complex[] input, int finalLength)
+        {
+            int difference = finalLength - input.Length;
+            Complex[] padded = new Complex[finalLength];
+            Array.Copy(input, 0, padded, difference / 2, input.Length);
+            return padded;
+        }
+
+        /// <summary>
+        /// Return the input array zero-padded to reach a final length
+        /// </summary>
+        /// <param name="input">array of any length</param>
+        /// <returns>a zero-padded copy of the input array</returns>
+        public static double[] ZeroPad(double[] input, int finalLength)
+        {
+            int difference = finalLength - input.Length;
+            double[] padded = new double[finalLength];
+            Array.Copy(input, 0, padded, difference / 2, input.Length);
+            return padded;
+        }
+
+        /// <summary>
         /// Create an array of Complex data given the real component
         /// </summary>
         private static Complex[] Complex(double[] real)
