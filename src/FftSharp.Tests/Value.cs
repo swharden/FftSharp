@@ -46,6 +46,28 @@ namespace FftSharp.Tests
             }
         }
 
+        [Test]
+        public void Test_FftFromDoubleArray_MatchesFftResult()
+        {
+            // Some sample audio data was analyzed with Numpy in Python.
+            // This module contains the output of numpy.fft.fft()
+            // https://numpy.org/doc/1.18/reference/generated/numpy.fft.fft.html
+            // This test assserts our FFT results match Numpy's
+
+            Complex[] fft = new Complex[audio.Length];
+            for (int i = 0; i < audio.Length; i++)
+                fft[i] = new Complex(audio[i], 0);
+            FftSharp.Transform.FFT(fft);
+
+            Complex[] fft2 = FftSharp.Transform.FFT(audio);
+
+            for (int i = 0; i < fft.Length; i++)
+            {
+                Assert.AreEqual(fft[i].Real, fft2[i].Real, 1e-12);
+                Assert.AreEqual(fft[i].Imaginary, fft2[i].Imaginary, 1e-12);
+            }
+        }
+
         private readonly double[] audio =
         {
             0.330, 2.150, 1.440, 1.370, 0.240, 2.600, 3.510, 1.980, 1.880, 0.080,

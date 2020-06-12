@@ -116,6 +116,7 @@
             this.Controls.Add(this.trackBar1);
             this.Name = "FormQuickstart";
             this.Text = "FftSharp Demo";
+            this.Load += new System.EventHandler(this.FormQuickstart_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.ResumeLayout(false);

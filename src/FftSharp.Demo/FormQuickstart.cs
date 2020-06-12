@@ -13,6 +13,11 @@ namespace FftSharp.Demo
             trackBar1_Scroll(null, null);
         }
 
+        private void FormQuickstart_Load(object sender, EventArgs e)
+        {
+
+        }
+
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             label1.Text = $"Sine waves: {trackBar1.Value}";
@@ -23,7 +28,7 @@ namespace FftSharp.Demo
         private void UpdateFFT(double[] input)
         {
             // calculate FFT
-            double[] fft = FftSharp.Transform.FFTpower(input);
+            double[] fft = FftSharp.Transform.FFTmagnitude(input);
 
             // plot the input signal
             formsPlot1.plt.Clear();

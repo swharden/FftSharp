@@ -150,22 +150,17 @@ namespace FftSharp
                 throw new ArgumentException("Input length must be an even power of 2");
 
             // first calculate the FFT
-            Complex[] buffer = FFT(input);
-            FFT(buffer);
+            Complex[] fft = FFT(input);
 
             // create an array of the complex magnitudes
-            double[] output = new double[buffer.Length / 2];
+            double[] output = new double[fft.Length / 2];
 
             // first point (DC component) is not doubled
-            output[0] = buffer[0].Magnitude;
+            output[0] = fft[0].Magnitude / input.Length;
 
             // subsequent points are doubled to account for negative power
-            for (int i = 0; i < buffer.Length / 2; i++)
-                output[i] = buffer[i].Magnitude * 2;
-
-            // output is normalized by the length of the data sample
-            for (int i = 0; i < buffer.Length / 2; i++)
-                output[i] /= buffer.Length;
+            for (int i = 1; i < fft.Length / 2; i++)
+                output[i] = 2 * fft[i].Magnitude / input.Length;
 
             return output;
         }
