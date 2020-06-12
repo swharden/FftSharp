@@ -25,7 +25,7 @@ namespace FftSharp.Quickstart
             }
 
             // You could get the FFT as a complex result
-            System.Numerics.Complex[] fft = FftSharp.Transform.FFT(audio);
+            Complex[] fft = FftSharp.Transform.FFT(audio);
 
             // For audio we typically want the FFT amplitude (in dB)
             double[] fftPower = FftSharp.Transform.FFTpower(audio);
