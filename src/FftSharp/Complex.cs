@@ -17,6 +17,28 @@ namespace FftSharp
             Imaginary = imaginary;
         }
 
+        public static Complex operator +(Complex a, Complex b)
+        {
+            return new Complex(a.Real + b.Real, a.Imaginary + b.Imaginary);
+        }
+
+        public static Complex operator -(Complex a, Complex b)
+        {
+            return new Complex(a.Real - b.Real, a.Imaginary - b.Imaginary);
+        }
+
+        public static Complex operator *(Complex a, Complex b)
+        {
+            return new Complex(
+                real: (a.Real * b.Real) - (a.Imaginary * b.Imaginary),
+                imaginary: (a.Real * b.Imaginary) + (a.Imaginary * b.Real));
+        }
+
+        public static Complex operator *(Complex a, double b)
+        {
+            return new Complex(a.Real * b, a.Imaginary * b);
+        }
+
         public static Complex[] FromReal(double[] real)
         {
             Complex[] complex = new Complex[real.Length];
