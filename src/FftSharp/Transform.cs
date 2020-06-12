@@ -154,15 +154,18 @@ namespace FftSharp
             FFT(buffer);
 
             // create an array of the complex magnitudes
-            double[] output;
-            output = new double[buffer.Length / 2];
-
-            // double to account for negative power
-            for (int i = 0; i < output.Length; i++)
-                output[i] = buffer[i].Magnitude * 2;
+            double[] output = new double[buffer.Length / 2];
 
             // first point (DC component) is not doubled
-            output[0] = buffer[0].Magnitude; // TODO: divide by FFT length???
+            output[0] = buffer[0].Magnitude;
+
+            // subsequent points are doubled to account for negative power
+            for (int i = 0; i < buffer.Length / 2; i++)
+                output[i] = buffer[i].Magnitude * 2;
+
+            // output is normalized by the length of the data sample
+            for (int i = 0; i < buffer.Length / 2; i++)
+                output[i] /= buffer.Length;
 
             return output;
         }
