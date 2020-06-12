@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 
 namespace FftSharp
 {
@@ -134,6 +136,35 @@ namespace FftSharp
                 window[i] = Math.Sin(i * Math.PI / (pointCount - 1));
 
             return window;
+        }
+
+        public static string[] GetWindowNames()
+        {
+            return typeof(Window)
+                    .GetMethods(BindingFlags.Public | BindingFlags.Static)
+                    .Where(x => x.ReturnType.Equals(typeof(double[])))
+                    .Where(x => x.GetParameters().Length == 1)
+                    .Where(x => x.GetParameters()[0].ParameterType == typeof(int))
+                    .Select(x => x.Name)
+                    .ToArray();
+        }
+
+        public static double[] WindowByName(string windowName, int pointCount)
+        {
+            MethodInfo[] windowInfos = typeof(Window)
+                                .GetMethods(BindingFlags.Public | BindingFlags.Static)
+                                .Where(x => x.ReturnType.Equals(typeof(double[])))
+                                .Where(x => x.GetParameters().Length == 1)
+                                .Where(x => x.GetParameters()[0].ParameterType == typeof(int))
+                                .Where(x => x.Name == windowName)
+                                .ToArray();
+
+            if (windowInfos.Length == 0)
+                throw new ArgumentException($"invalid window name: {windowName}");
+
+            object[] parameters = new object[] { pointCount };
+            double[] result = (double[])windowInfos[0].Invoke(null, parameters);
+            return result;
         }
     }
 }

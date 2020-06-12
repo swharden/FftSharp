@@ -2,6 +2,7 @@
 using ScottPlot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FftSharp.Tests
@@ -36,6 +37,19 @@ namespace FftSharp.Tests
 
             plt.Legend(location: ScottPlot.legendLocation.upperRight);
             plt.SaveFig("../../../../../dev/windows.png");
+        }
+
+        [Test]
+        public void Test_Window_Reflection()
+        {
+            foreach (var windowName in FftSharp.Window.GetWindowNames())
+            {
+                Console.WriteLine(windowName);
+                double[] windowed = FftSharp.Window.WindowByName(windowName, 5);
+                Console.WriteLine(String.Join(", ", windowed.Select(x => $"{x:N3}").ToArray()));
+                Console.WriteLine();
+                Assert.AreEqual(5, windowed.Length);
+            }
         }
     }
 }
