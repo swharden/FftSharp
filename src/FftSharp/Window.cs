@@ -149,7 +149,7 @@ namespace FftSharp
                     .ToArray();
         }
 
-        public static double[] WindowByName(string windowName, int pointCount)
+        public static double[] GetWindowByName(string windowName, int pointCount)
         {
             MethodInfo[] windowInfos = typeof(Window)
                                 .GetMethods(BindingFlags.Public | BindingFlags.Static)

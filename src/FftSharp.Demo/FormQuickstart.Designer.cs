@@ -34,7 +34,6 @@
             this.formsPlot2 = new ScottPlot.FormsPlot();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
@@ -53,7 +52,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(724, 426);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(724, 461);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // formsPlot1
@@ -61,15 +60,15 @@
             this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.formsPlot1.Location = new System.Drawing.Point(3, 3);
             this.formsPlot1.Name = "formsPlot1";
-            this.formsPlot1.Size = new System.Drawing.Size(718, 207);
+            this.formsPlot1.Size = new System.Drawing.Size(718, 224);
             this.formsPlot1.TabIndex = 0;
             // 
             // formsPlot2
             // 
             this.formsPlot2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.formsPlot2.Location = new System.Drawing.Point(3, 216);
+            this.formsPlot2.Location = new System.Drawing.Point(3, 233);
             this.formsPlot2.Name = "formsPlot2";
-            this.formsPlot2.Size = new System.Drawing.Size(718, 207);
+            this.formsPlot2.Size = new System.Drawing.Size(718, 225);
             this.formsPlot2.TabIndex = 1;
             // 
             // trackBar1
@@ -92,25 +91,11 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Sine waves: 5";
             // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 476);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(724, 35);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "This example shows raw power (not dB) of the full FFT magnitude (positive and neg" +
-    "ative)";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // FormQuickstart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(748, 520);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.trackBar1);
@@ -130,7 +115,6 @@
         private ScottPlot.FormsPlot formsPlot2;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
     }
 }
 

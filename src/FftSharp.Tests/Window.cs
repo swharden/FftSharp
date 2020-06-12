@@ -45,7 +45,7 @@ namespace FftSharp.Tests
             foreach (var windowName in FftSharp.Window.GetWindowNames())
             {
                 Console.WriteLine(windowName);
-                double[] windowed = FftSharp.Window.WindowByName(windowName, 5);
+                double[] windowed = FftSharp.Window.GetWindowByName(windowName, 5);
                 Console.WriteLine(String.Join(", ", windowed.Select(x => $"{x:N3}").ToArray()));
                 Console.WriteLine();
                 Assert.AreEqual(5, windowed.Length);

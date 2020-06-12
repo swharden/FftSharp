@@ -18,7 +18,14 @@ namespace FftSharp.Demo
             InitializeComponent();
             formsPlot1.Configure(middleClickMarginX: 0);
             formsPlot2.Configure(middleClickMarginX: 0);
+
+            comboBox1.Items.AddRange(Window.GetWindowNames());
             comboBox1.SelectedIndex = 0;
+        }
+
+        private void FormAudio_Load(object sender, EventArgs e)
+        {
+
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -40,19 +47,8 @@ namespace FftSharp.Demo
             SampleData.AddSin(audio, sampleRate, 10_000, 2);
             SampleData.AddSin(audio, sampleRate, 20_000, .5);
 
-            double[] window = null;
-            if (comboBox1.Text == "Hanning")
-                window = Window.Hanning(audio.Length);
-            else if (comboBox1.Text == "Hamming")
-                window = Window.Hamming(audio.Length);
-            else if (comboBox1.Text == "Bartlett")
-                window = Window.Bartlett(audio.Length);
-            else if (comboBox1.Text == "Blackman")
-                window = Window.Blackman(audio.Length);
-            else if (comboBox1.Text == "FlatTop")
-                window = Window.FlatTop(audio.Length);
-            if (window != null)
-                Window.ApplyInPlace(window, audio);
+            double[] window = Window.GetWindowByName(comboBox1.Text, audio.Length);
+            Window.ApplyInPlace(window, audio);
 
             // perform the FFT
             double[] fftPower = FftSharp.Transform.FFTpower(audio);
