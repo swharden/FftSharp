@@ -36,7 +36,7 @@ namespace FftSharp.Tests
 
             // FFT and DST output should be identical (aside from floating-point errors)
             Complex[] fft = FftSharp.Transform.FFT(audio);
-            Complex[] dft = FftSharp.Transform.DFT(audio);
+            Complex[] dft = FftSharp.Experimental.DFT(audio);
 
             for (int i = 0; i < fft.Length; i++)
             {
@@ -106,27 +106,41 @@ namespace FftSharp.Tests
         }
 
         [Test]
-        public void Test_FftInput_ThrowsIfNotPowerOfTwo()
+        public void Test_FftCoreMethods_ThrowIfNotPowerOfTwo()
         {
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(new Complex[0]); });
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(new Complex[123]); });
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(new Complex[1234]); });
+            Assert.DoesNotThrow(() => { FftSharp.Transform.FFT(new Complex[0]); });
+            Assert.Throws<IndexOutOfRangeException>(() => { FftSharp.Transform.FFT(new Complex[123]); });
+            Assert.Throws<IndexOutOfRangeException>(() => { FftSharp.Transform.FFT(new Complex[1234]); });
+        }
+
+        [Test]
+        public void Test_FftHelperMethods_ThrowIfNotPowerOfTwo()
+        {
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(new double[0]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(new double[123]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(new double[1234]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFTmagnitude(new double[0]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFTmagnitude(new double[123]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFTmagnitude(new double[1234]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFTpower(new double[0]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFTpower(new double[123]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFTpower(new double[1234]); });
         }
 
         [Test]
         public void Test_FftInput_ContainsAllZeros()
         {
             Complex[] complex = new Complex[128];
-            for (int i=0; i<complex.Length; i++)
+            for (int i = 0; i < complex.Length; i++)
                 complex[i] = new Complex(0, 0);
-            FftSharp.Transform.DFT(complex);
+            FftSharp.Experimental.DFT(complex);
         }
 
         [Test]
         public void Test_FftInput_Uninitialized()
         {
             Complex[] complex = new Complex[128];
-            FftSharp.Transform.DFT(complex);
+            FftSharp.Experimental.DFT(complex);
         }
     }
 }

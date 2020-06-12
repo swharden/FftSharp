@@ -6,169 +6,10 @@ namespace FftSharp
     public static class Transform
     {
         /// <summary>
-        /// Test if a number is an even power of 2
-        /// </summary>
-        public static bool IsPowerOfTwo(int x)
-        {
-            return ((x & (x - 1)) == 0) && (x > 0);
-        }
-
-        /// <summary>
-        /// Return the input array (or a new zero-padded new one) ensuring length is a power of 2
-        /// </summary>
-        /// <param name="input">array of any length</param>
-        /// <returns>the input array or a zero-padded copy</returns>
-        public static Complex[] ZeroPad(Complex[] input)
-        {
-            if (IsPowerOfTwo(input.Length))
-                return input;
-
-            int targetLength = 1;
-            while (targetLength < input.Length)
-                targetLength *= 2;
-
-            int difference = targetLength - input.Length;
-            Complex[] padded = new Complex[targetLength];
-            Array.Copy(input, 0, padded, difference / 2, input.Length);
-
-            return padded;
-        }
-
-        /// <summary>
-        /// Return the input array (or a new zero-padded new one) ensuring length is a power of 2
-        /// </summary>
-        /// <param name="input">array of any length</param>
-        /// <returns>the input array or a zero-padded copy</returns>
-        public static double[] ZeroPad(double[] input)
-        {
-            if (IsPowerOfTwo(input.Length))
-                return input;
-
-            int targetLength = 1;
-            while (targetLength < input.Length)
-                targetLength *= 2;
-
-            int difference = targetLength - input.Length;
-            double[] padded = new double[targetLength];
-            Array.Copy(input, 0, padded, difference / 2, input.Length);
-
-            return padded;
-        }
-
-        /// <summary>
-        /// Return the input array zero-padded to reach a final length
-        /// </summary>
-        /// <param name="input">array of any length</param>
-        /// <returns>a zero-padded copy of the input array</returns>
-        public static Complex[] ZeroPad(Complex[] input, int finalLength)
-        {
-            int difference = finalLength - input.Length;
-            Complex[] padded = new Complex[finalLength];
-            Array.Copy(input, 0, padded, difference / 2, input.Length);
-            return padded;
-        }
-
-        /// <summary>
-        /// Return the input array zero-padded to reach a final length
-        /// </summary>
-        /// <param name="input">array of any length</param>
-        /// <returns>a zero-padded copy of the input array</returns>
-        public static double[] ZeroPad(double[] input, int finalLength)
-        {
-            int difference = finalLength - input.Length;
-            double[] padded = new double[finalLength];
-            Array.Copy(input, 0, padded, difference / 2, input.Length);
-            return padded;
-        }
-
-        /// <summary>
-        /// Create an array of Complex data given the real component
-        /// </summary>
-        private static Complex[] Complex(double[] real)
-        {
-            Complex[] com = new Complex[real.Length];
-            for (int i = 0; i < real.Length; i++)
-                com[i] = new Complex(real[i], 0);
-            return com;
-        }
-
-        /// <summary>
-        /// Compute the 1D discrete Fourier Transform using the Fast Fourier Transform (FFT) algorithm
-        /// </summary>
-        /// <param name="input">real input</param>
-        /// <returns>transformed input</returns>
-        public static Complex[] FFT(double[] input)
-        {
-            Complex[] buffer = Complex(input);
-            FFT(buffer);
-            return buffer;
-        }
-
-        /// <summary>
-        /// An easy-to-read (but non-optimized) implementation of the FFT algorithm
-        /// </summary>
-        /// <param name="input">complex input</param>
-        /// <returns>transformed input</returns>
-        [Obsolete("This method is documentation purposes only.", true)]
-        private static Complex[] FFTstandard(Complex[] input)
-        {
-            Complex[] output = new Complex[input.Length];
-
-            int H = input.Length / 2;
-            Complex[] evens = new Complex[H];
-            Complex[] odds = new Complex[H];
-            for (int i = 0; i < H; i++)
-            {
-                evens[i] = input[2 * i];
-                odds[i] = input[2 * i + 1];
-            }
-            odds = FFTstandard(odds);
-            evens = FFTstandard(evens);
-
-            double mult1 = -2 * Math.PI / input.Length;
-            for (int i = 0; i < H; i++)
-            {
-                double radians = mult1 * i;
-                odds[i] *= new Complex(Math.Cos(radians), Math.Sin(radians));
-            }
-
-            for (int i = 0; i < H; i++)
-            {
-                output[i] = evens[i] + odds[i];
-                output[i + H] = evens[i] - odds[i];
-            }
-
-            return output;
-        }
-
-        /// <summary>
-        /// Reverse the sequence of bits in an integer (01101 -> 10110)
-        /// </summary>
-        private static int BitReverse(int value, int maxValue)
-        {
-            int maxBitCount = (int)Math.Log(maxValue, 2);
-            int output = value;
-            int bitCount = maxBitCount - 1;
-
-            value >>= 1;
-            while (value > 0)
-            {
-                output = (output << 1) | (value & 1);
-                bitCount -= 1;
-                value >>= 1;
-            }
-
-            return (output << bitCount) & ((1 << maxBitCount) - 1);
-        }
-
-        /// <summary>
         /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm
         /// </summary>
         public static void FFT(Complex[] buffer)
         {
-            if (!IsPowerOfTwo(buffer.Length))
-                throw new ArgumentException("Length must be a power of 2. ZeroPad() may help.");
-
             for (int i = 1; i < buffer.Length; i++)
             {
                 int j = BitReverse(i, buffer.Length);
@@ -208,88 +49,29 @@ namespace FftSharp
 
             // invert the imaginary component again and scale the output
             for (int i = 0; i < buffer.Length; i++)
-                buffer[i] = new Complex(buffer[i].Real / buffer.Length,
-                                       -buffer[i].Imaginary / buffer.Length);
+                buffer[i] = new Complex(
+                    real: buffer[i].Real / buffer.Length,
+                    imaginary: -buffer[i].Imaginary / buffer.Length);
         }
 
         /// <summary>
-        /// Compute the discrete Fourier Transform (not using the FFT algorithm)
+        /// Reverse the sequence of bits in an integer (01101 -> 10110)
         /// </summary>
-        /// <param name="input">real input</param>
-        /// <returns>transformed input</returns>
-        [Obsolete("This method is documentation purposes only.")]
-        public static Complex[] DFT(double[] input)
+        private static int BitReverse(int value, int maxValue)
         {
-            return DFT(Complex(input));
-        }
+            int maxBitCount = (int)Math.Log(maxValue, 2);
+            int output = value;
+            int bitCount = maxBitCount - 1;
 
-        /// <summary>
-        /// Compute the forward or inverse discrete Fourier Transform (not using the FFT algorithm)
-        /// </summary>
-        /// <param name="real">complex input</param>
-        /// <returns>transformed input</returns>
-        [Obsolete("This method is documentation purposes only.")]
-        public static Complex[] DFT(Complex[] input, bool inverse = false)
-        {
-            int N = input.Length;
-            double mult1 = (inverse) ? 2 * Math.PI / N : -2 * Math.PI / N;
-            double mult2 = (inverse) ? 1.0 / N : 1.0;
-            Console.WriteLine($"REAL {mult1} {mult2}");
-
-            Complex[] output = new Complex[N];
-            for (int k = 0; k < N; k++)
+            value >>= 1;
+            while (value > 0)
             {
-                output[k] = new Complex(0, 0);
-                for (int n = 0; n < N; n++)
-                {
-                    double radians = n * k * mult1;
-                    Complex temp = new Complex(Math.Cos(radians), Math.Sin(radians));
-                    temp *= input[n];
-                    output[k] += temp * mult2;
-                }
+                output = (output << 1) | (value & 1);
+                bitCount -= 1;
+                value >>= 1;
             }
 
-            return output;
-        }
-
-        /// <summary>
-        /// Calculte FFT of the input and return the power spectrum density (PSD)
-        /// </summary>
-        /// <param name="input">real input</param>
-        /// <param name="singleSided">combine positive and negative power (useful when symmetrical)</param>
-        /// <param name="decibels">return 20*Log10(magnitude) so has dB units</param>
-        public static double[] FFTpower(double[] input, bool singleSided = true, bool decibels = true)
-        {
-            // first calculate the FFT
-            Complex[] buffer = Complex(input);
-            FFT(buffer);
-
-            // create an array of the complex magnitudes
-            double[] output;
-            if (singleSided)
-            {
-                output = new double[buffer.Length / 2];
-
-                // double to account for negative power
-                for (int i = 0; i < output.Length; i++)
-                    output[i] = buffer[i].Magnitude * 2;
-
-                // first point (DC component) is not doubled
-                output[0] = buffer[0].Magnitude;
-            }
-            else
-            {
-                output = new double[buffer.Length];
-                for (int i = 0; i < output.Length; i++)
-                    output[i] = buffer[i].Magnitude;
-            }
-
-            // convert to dB (the 2 comes from the conversion from RMS)
-            if (decibels)
-                for (int i = 0; i < output.Length; i++)
-                    output[i] = 2 * 10 * Math.Log10(output[i]);
-
-            return output;
+            return (output << bitCount) & ((1 << maxBitCount) - 1);
         }
 
         /// <summary>
@@ -322,6 +104,82 @@ namespace FftSharp
                     freqs[i] = -(pointCount - i) * fftPeriodHz;
                 return freqs;
             }
+        }
+
+        /// <summary>
+        /// Test if a number is an even power of 2
+        /// </summary>
+        public static bool IsPowerOfTwo(int x)
+        {
+            return ((x & (x - 1)) == 0) && (x > 0);
+        }
+
+        /// <summary>
+        /// Create an array of Complex data given the real component
+        /// </summary>
+        public static Complex[] MakeComplex(double[] real)
+        {
+            Complex[] com = new Complex[real.Length];
+            for (int i = 0; i < real.Length; i++)
+                com[i] = new Complex(real[i], 0);
+            return com;
+        }
+
+        /// <summary>
+        /// Compute the 1D discrete Fourier Transform using the Fast Fourier Transform (FFT) algorithm
+        /// </summary>
+        /// <param name="input">real input</param>
+        /// <returns>transformed input</returns>
+        public static Complex[] FFT(double[] input)
+        {
+            if (!IsPowerOfTwo(input.Length))
+                throw new ArgumentException("Input length must be an even power of 2");
+
+            Complex[] buffer = MakeComplex(input);
+            FFT(buffer);
+            return buffer;
+        }
+
+        /// <summary>
+        /// Calculte power spectrum density (PSD) original (RMS) units
+        /// </summary>
+        /// <param name="input">real input</param>
+        public static double[] FFTmagnitude(double[] input)
+        {
+            if (!IsPowerOfTwo(input.Length))
+                throw new ArgumentException("Input length must be an even power of 2");
+
+            // first calculate the FFT
+            Complex[] buffer = FFT(input);
+            FFT(buffer);
+
+            // create an array of the complex magnitudes
+            double[] output;
+            output = new double[buffer.Length / 2];
+
+            // double to account for negative power
+            for (int i = 0; i < output.Length; i++)
+                output[i] = buffer[i].Magnitude * 2;
+
+            // first point (DC component) is not doubled
+            output[0] = buffer[0].Magnitude; // TODO: divide by FFT length???
+
+            return output;
+        }
+
+        /// <summary>
+        /// Calculte power spectrum density (PSD) in dB units
+        /// </summary>
+        /// <param name="input">real input</param>
+        public static double[] FFTpower(double[] input)
+        {
+            if (!IsPowerOfTwo(input.Length))
+                throw new ArgumentException("Input length must be an even power of 2");
+
+            double[] output = FFTmagnitude(input);
+            for (int i = 0; i < output.Length; i++)
+                output[i] = 2 * 10 * Math.Log10(output[i]);
+            return output;
         }
     }
 }

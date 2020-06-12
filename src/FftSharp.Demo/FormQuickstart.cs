@@ -23,7 +23,7 @@ namespace FftSharp.Demo
         private void UpdateFFT(double[] input)
         {
             // calculate FFT
-            double[] fft = FftSharp.Transform.FFTpower(input, singleSided: false, decibels: false);
+            double[] fft = FftSharp.Transform.FFTpower(input);
 
             // plot the input signal
             formsPlot1.plt.Clear();

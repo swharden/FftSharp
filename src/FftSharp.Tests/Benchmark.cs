@@ -82,7 +82,7 @@ namespace FftSharp.Tests
             sw.Restart();
             for (int j = 0; j < reps; j++)
             {
-                FftSharp.Transform.DFT(input);
+                FftSharp.Experimental.DFT(input);
             }
             sw.Stop();
             double dftMsec = 1000.0 * sw.ElapsedTicks / Stopwatch.Frequency;

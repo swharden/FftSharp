@@ -19,8 +19,8 @@ namespace FftSharp.Tests
             for (int i = 0; i < original.Length; i++)
                 original[i] = new Complex(rand.NextDouble() - .5, rand.NextDouble() - .5);
 
-            Complex[] fft = FftSharp.Transform.DFT(original);
-            Complex[] ifft = FftSharp.Transform.DFT(fft, inverse: true);
+            Complex[] fft = FftSharp.Experimental.DFT(original);
+            Complex[] ifft = FftSharp.Experimental.DFT(fft, inverse: true);
 
             for (int i = 0; i < ifft.Length; i++)
             {

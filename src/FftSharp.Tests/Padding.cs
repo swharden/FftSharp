@@ -14,7 +14,7 @@ namespace FftSharp.Tests
             for (int i = 1; i < 200; i++)
             {
                 Complex[] input = new Complex[i];
-                Complex[] padded = FftSharp.Transform.ZeroPad(input);
+                Complex[] padded = FftSharp.Pad.ZeroPad(input);
                 Console.WriteLine($"Length {input.Length} -> {padded.Length}");
                 FftSharp.Transform.FFT(padded);
             }
