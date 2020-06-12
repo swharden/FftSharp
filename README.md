@@ -71,7 +71,7 @@ Power vs. frequency can then be plotted to yield a [periodogram](https://en.wiki
 
 ### Calculate the FFT using Complex Numbers
 
-If you enjoy working with real and imaginary components of complex numbers, you can build your own complex array and call `FFT()` directly. Unlike some FFT libraries which use their own complex number modules, FftSharp simply uses the [Complex struct](https://docs.microsoft.com/en-us/dotnet/api/system.numerics.complex) provided by the [standard Numerics .NET library](https://docs.microsoft.com/en-us/dotnet/standard/numerics).
+If you enjoy working with real and imaginary components of complex numbers, you can build your own complex array and call `FFT()` directly which performs the transformation _in-place_ on a `Complex[]` array:
 
 ```cs
 // Start with some data
