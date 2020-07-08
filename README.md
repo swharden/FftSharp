@@ -132,7 +132,7 @@ This project also contains a realtime FFT microphone demo which continuously mon
 
 You can download this program as a click-to-run EXE to try-out this library without having to compile this project from source:
 
-* Download for Windows: [FftSharp-demo.zip](dev/FftSharp-demo.zip)
+* Download for Windows: [FftSharp-demo.zip](https://github.com/swharden/FftSharp/raw/master/dev/FftSharp-demo.zip)
 
 ## Spectrogram
 
