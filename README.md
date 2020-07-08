@@ -124,6 +124,16 @@ A graphical demo application is included in this project which uses [ScottPlot](
 
 </div>
 
+## Microphone Demo
+
+This project also contains a realtime FFT microphone demo which continuously monitors a sound card input device and calculates the FFT and displays it in real time. This demo uses [NAudio](https://github.com/naudio/NAudio) to interface the sound card, [FftSharp](https://github.com/swharden/FftSharp) to calculate the FFT, and [ScottPlot](https://github.com/swharden/ScottPlot) to display to result.
+
+![](dev/microphone-fft.gif)
+
+You can download this program as a click-to-run EXE to try-out this library without having to compile this project from source:
+
+* Download for Windows: [FftSharp-demo.zip](dev/FftSharp-demo.zip)
+
 ## Spectrogram
 
 A spectrogram is a visual representation of the spectrum of frequencies of a signal as it varies with time. Spectrograms are created by computing power spectral density of a small window of an audio signal, moving the window forward in time, and repeating until the end of the signal is reached. In a spectrogram the horizontal axis represents time, the vertical axis represents frequency, and the pixel intensity represents spectral magnitude or power.

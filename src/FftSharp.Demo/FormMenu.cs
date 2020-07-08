@@ -26,5 +26,10 @@ namespace FftSharp.Demo
         {
             new FormAudio().ShowDialog();
         }
+
+        private void btnMicrophone_Click(object sender, EventArgs e)
+        {
+            new FormMicrophone().ShowDialog();
+        }
     }
 }

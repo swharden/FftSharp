@@ -36,14 +36,17 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAudio, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.10.0\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing, Version=5.8.64.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\runtime.osx.10.10-x64.CoreCompat.System.Drawing.5.8.64\lib\netstandard2.0\runtime.osx.10.10-x64.CoreCompat.System.Drawing.dll</HintPath>
     </Reference>
-    <Reference Include="ScottPlot, Version=4.0.34.0, Culture=neutral, PublicKeyToken=86698dc10387c39e, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScottPlot.4.0.34\lib\netstandard2.0\ScottPlot.dll</HintPath>
+    <Reference Include="ScottPlot, Version=4.0.38.0, Culture=neutral, PublicKeyToken=86698dc10387c39e, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScottPlot.4.0.38\lib\netstandard2.0\ScottPlot.dll</HintPath>
     </Reference>
-    <Reference Include="ScottPlot.WinForms, Version=4.0.34.0, Culture=neutral, PublicKeyToken=5df1dfa5321e734b, processorArchitecture=MSIL">
-      <HintPath>..\packages\ScottPlot.WinForms.4.0.34\lib\net461\ScottPlot.WinForms.dll</HintPath>
+    <Reference Include="ScottPlot.WinForms, Version=4.0.38.0, Culture=neutral, PublicKeyToken=5df1dfa5321e734b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ScottPlot.WinForms.4.0.38\lib\net472\ScottPlot.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -68,6 +71,12 @@
     <Compile Include="FormMenu.Designer.cs">
       <DependentUpon>FormMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormMicrophone.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMicrophone.Designer.cs">
+      <DependentUpon>FormMicrophone.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormQuickstart.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +96,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormMenu.resx">
       <DependentUpon>FormMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMicrophone.resx">
+      <DependentUpon>FormMicrophone.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormQuickstart.resx">
       <DependentUpon>FormQuickstart.cs</DependentUpon>
