@@ -38,7 +38,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblPeak = new System.Windows.Forms.Label();
+            this.cbPeak = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cbDevices
@@ -100,9 +101,10 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label3.Location = new System.Drawing.Point(520, 22);
+            this.label3.Location = new System.Drawing.Point(676, 22);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(95, 13);
             this.label3.TabIndex = 6;
@@ -110,9 +112,10 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label4.Location = new System.Drawing.Point(520, 35);
+            this.label4.Location = new System.Drawing.Point(676, 35);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(109, 13);
             this.label4.TabIndex = 7;
@@ -120,33 +123,44 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label5.Location = new System.Drawing.Point(520, 9);
+            this.label5.Location = new System.Drawing.Point(676, 9);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(108, 13);
             this.label5.TabIndex = 8;
             this.label5.Text = "Middle-click auto-axis";
             // 
-            // label2
+            // lblPeak
             // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label2.Location = new System.Drawing.Point(338, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(176, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Disable Auto-Axis to use the mouse:";
+            this.lblPeak.AutoSize = true;
+            this.lblPeak.Location = new System.Drawing.Point(260, 9);
+            this.lblPeak.Name = "lblPeak";
+            this.lblPeak.Size = new System.Drawing.Size(131, 13);
+            this.lblPeak.TabIndex = 9;
+            this.lblPeak.Text = "Peak Frequency: 1234 Hz";
+            // 
+            // cbPeak
+            // 
+            this.cbPeak.AutoSize = true;
+            this.cbPeak.Location = new System.Drawing.Point(263, 27);
+            this.cbPeak.Name = "cbPeak";
+            this.cbPeak.Size = new System.Drawing.Size(78, 17);
+            this.cbPeak.TabIndex = 10;
+            this.cbPeak.Text = "show peak";
+            this.cbPeak.UseVisualStyleBackColor = true;
             // 
             // FormMicrophone
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblPeak);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.cbPeak);
             this.Controls.Add(this.cbDecibel);
             this.Controls.Add(this.cbAutoAxis);
             this.Controls.Add(this.formsPlot1);
@@ -171,6 +185,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblPeak;
+        private System.Windows.Forms.CheckBox cbPeak;
     }
 }

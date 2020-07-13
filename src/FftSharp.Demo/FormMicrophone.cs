@@ -52,6 +52,7 @@ namespace FftSharp.Demo
         }
 
         ScottPlot.PlottableSignal signalPlot;
+        ScottPlot.PlottableVLine peakLine;
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (lastBuffer is null)
@@ -63,14 +64,35 @@ namespace FftSharp.Demo
             double[] fftPower = cbDecibel.Checked ?
                 FftSharp.Transform.FFTpower(zeroPadded) :
                 FftSharp.Transform.FFTmagnitude(zeroPadded);
+            double[] fftFreq = FftSharp.Transform.FFTfreq(SAMPLE_RATE, fftPower.Length);
+
+            // determine peak frequency
+            double peakFreq = 0;
+            double peakPower = 0;
+            for (int i = 0; i < fftPower.Length; i++)
+            {
+                if (fftPower[i] > peakPower)
+                {
+                    peakPower = fftPower[i];
+                    peakFreq = fftFreq[i];
+                }
+            }
+            lblPeak.Text = $"Peak Frequency: {peakFreq:N0} Hz";
 
             formsPlot1.plt.XLabel("Frequency Hz");
 
             // make the plot for the first time, otherwise update the existing plot
             if (formsPlot1.plt.GetPlottables().Count == 0)
+            {
                 signalPlot = formsPlot1.plt.PlotSignal(fftPower, 2.0 * fftPower.Length / SAMPLE_RATE);
+                peakLine = formsPlot1.plt.PlotVLine(peakFreq, ColorTranslator.FromHtml("#66FF0000"), 2);
+            }
             else
+            {
                 signalPlot.ys = fftPower;
+                peakLine.position = peakFreq;
+                peakLine.visible = cbPeak.Checked;
+            }
 
             if (cbAutoAxis.Checked)
                 formsPlot1.plt.AxisAuto(horizontalMargin: 0);
