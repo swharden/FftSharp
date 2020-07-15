@@ -106,6 +106,14 @@ namespace FftSharp
         }
 
         /// <summary>
+        /// Return the distance between each FFT point in frequency units (Hz)
+        /// </summary>
+        public static double FFTfreqPeriod(int sampleRate, int pointCount)
+        {
+            return 2 * pointCount / (double)sampleRate;
+        }
+
+        /// <summary>
         /// Test if a number is an even power of 2
         /// </summary>
         public static bool IsPowerOfTwo(int x)
@@ -177,6 +185,50 @@ namespace FftSharp
             for (int i = 0; i < output.Length; i++)
                 output[i] = 2 * 10 * Math.Log10(output[i]);
             return output;
+        }
+
+        public static double MelToFreq(double mel)
+        {
+            return 700 * (Math.Pow(10, mel / 2595d) - 1);
+        }
+
+        public static double MelFromFreq(double frequencyHz)
+        {
+            return 2595 * Math.Log10(1 + frequencyHz / 700);
+        }
+
+        public static double[] MelScale(double[] ffts, int sampleRate, int melBinCount)
+        {
+            double freqMax = sampleRate / 2;
+            double maxMel = MelFromFreq(freqMax);
+            double[] binStartFreqs = new double[melBinCount + 1];
+            for (int i = 0; i < melBinCount + 1; i++)
+            {
+                double thisMel = maxMel * i / melBinCount;
+                binStartFreqs[i] = MelToFreq(thisMel);
+            }
+
+            double[] thisFftMel = new double[melBinCount];
+            for (int binIndex = 0; binIndex < binStartFreqs.Length - 2; binIndex++)
+            {
+                double freqLow = binStartFreqs[binIndex];
+                double freqHigh = binStartFreqs[binIndex + 2];
+                int indexLow = (int)(ffts.Length * freqLow / freqMax);
+                int indexHigh = (int)(ffts.Length * freqHigh / freqMax);
+                int indexSpan = indexHigh - indexLow;
+
+                double binScaleSum = 0;
+                for (int i = 0; i < indexSpan; i++)
+                {
+                    double frac = (double)i / indexSpan;
+                    frac = (frac < .5) ? frac * 2 : 1 - frac;
+                    binScaleSum += frac;
+                    thisFftMel[binIndex] += ffts[indexLow + i] * frac;
+                }
+                thisFftMel[binIndex] /= binScaleSum;
+            }
+
+            return thisFftMel;
         }
     }
 }
