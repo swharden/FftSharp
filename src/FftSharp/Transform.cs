@@ -197,38 +197,39 @@ namespace FftSharp
             return 2595 * Math.Log10(1 + frequencyHz / 700);
         }
 
-        public static double[] MelScale(double[] ffts, int sampleRate, int melBinCount)
+        public static double[] MelScale(double[] fft, int sampleRate, int melBinCount, bool normalize = true)
         {
             double freqMax = sampleRate / 2;
             double maxMel = MelFromFreq(freqMax);
-            double[] binStartFreqs = new double[melBinCount + 1];
-            for (int i = 0; i < melBinCount + 1; i++)
-            {
-                double thisMel = maxMel * i / melBinCount;
-                binStartFreqs[i] = MelToFreq(thisMel);
-            }
 
-            double[] thisFftMel = new double[melBinCount];
-            for (int binIndex = 0; binIndex < binStartFreqs.Length - 2; binIndex++)
+            double[] fftMel = new double[melBinCount];
+            double melPerPen = maxMel / (melBinCount + 1);
+            for (int binIndex = 0; binIndex < melBinCount; binIndex++)
             {
-                double freqLow = binStartFreqs[binIndex];
-                double freqHigh = binStartFreqs[binIndex + 2];
-                int indexLow = (int)(ffts.Length * freqLow / freqMax);
-                int indexHigh = (int)(ffts.Length * freqHigh / freqMax);
+                double melLow = melPerPen * binIndex;
+                double melHigh = melPerPen * (binIndex + 2);
+
+                double freqLow = MelToFreq(melLow);
+                double freqHigh = MelToFreq(melHigh);
+                double freqSpan = freqHigh - freqLow;
+
+                int indexLow = (int)(fft.Length * freqLow / freqMax);
+                int indexHigh = (int)(fft.Length * freqHigh / freqMax);
                 int indexSpan = indexHigh - indexLow;
 
-                double binScaleSum = 0;
+                double binSum = 0;
                 for (int i = 0; i < indexSpan; i++)
                 {
-                    double frac = (double)i / indexSpan;
-                    frac = (frac < .5) ? frac * 2 : 1 - frac;
-                    binScaleSum += frac;
-                    thisFftMel[binIndex] += ffts[indexLow + i] * frac;
+                    double binFrac = (double)i / indexSpan;
+                    binFrac = (binFrac < .5) ? binFrac * 2 : 1 - binFrac;
+                    binSum += binFrac;
+                    fftMel[binIndex] += fft[indexLow + i] * binFrac;
                 }
-                thisFftMel[binIndex] /= binScaleSum;
+                fftMel[binIndex] /= binSum;
+                fftMel[binIndex] *= normalize ? freqSpan : 1;
             }
 
-            return thisFftMel;
+            return fftMel;
         }
     }
 }

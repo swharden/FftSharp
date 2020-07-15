@@ -18,30 +18,31 @@ namespace FftSharp.Tests
             double[] fftMag = FftSharp.Transform.FFTmagnitude(audio);
             double[] fftMagMel = FftSharp.Transform.MelScale(fftMag, sampleRate, melBinCount);
             double fftFreqPeriod = FftSharp.Transform.FFTfreqPeriod(sampleRate, fftMag.Length);
-
-            var plt1 = new ScottPlot.Plot(800, 400);
-            plt1.PlotSignal(fftMag, fftFreqPeriod);
             double maxMel = FftSharp.Transform.MelFromFreq(sampleRate / 2);
+
+            var plt = new ScottPlot.MultiPlot(1000, 600, 2, 1);
+
+            // TRADITIONAL SPECTROGRAM
+            plt.subplots[0].PlotSignal(fftMag, fftFreqPeriod);
             for (int i = 0; i < melBinCount; i++)
             {
                 double thisMel = (double)i / melBinCount * maxMel;
                 double thisFreq = FftSharp.Transform.MelToFreq(thisMel);
-                plt1.PlotVLine(thisFreq, lineWidth: 2);
+                plt.subplots[0].PlotVLine(thisFreq, lineWidth: 2);
             }
-            plt1.YLabel("Magnitude");
-            plt1.XLabel("Frequency (Hz)");
-            plt1.SaveFig("audio-fft.png");
+            plt.subplots[0].YLabel("Magnitude");
+            plt.subplots[0].XLabel("Frequency (Hz)");
 
-
-            var plt2 = new ScottPlot.Plot(800, 400);
-            plt2.PlotSignal(fftMagMel);
+            // MEL SPECTROGRAM
+            plt.subplots[1].PlotSignal(fftMagMel);
             for (int i = 0; i < melBinCount; i++)
             {
-                plt2.PlotVLine(i, lineWidth: 2);
+                plt.subplots[1].PlotVLine(i, lineWidth: 2);
             }
-            plt2.YLabel("Magnitude");
-            plt2.XLabel("Frequency (Mel)");
-            plt2.SaveFig("audio-fftMel.png");
+            plt.subplots[1].YLabel("Magnitude");
+            plt.subplots[1].XLabel("Frequency (Mel)");
+            
+            plt.SaveFig("audio-mel.png");
         }
     }
 }
