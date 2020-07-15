@@ -120,7 +120,7 @@ Analyses aimed at achieving maximum frequency resolution present power spectral 
 
 ![](dev/mel-scale.png)
 
-To visualize frequency in a way that mimics human perception we scale data so lower frequencies have more resolution than higher frequencies. The [Mel Scale](https://en.wikipedia.org/wiki/Mel_scale) is commonly used to represent power spectral density this way, and the resulting _Mel Periodogram_ has greatly reduced total vertical resolution but is a better representation of human frequency perception. 
+To visualize frequency in a way that mimics human perception we scale data so lower frequencies have more resolution than higher frequencies. The [Mel Scale](https://en.wikipedia.org/wiki/Mel_scale) is commonly used to represent power spectral density this way, and the resulting _Mel Periodogram_ has greatly reduced total frequency resolution but is a better representation of human frequency perception. 
 
 Several methods starting with `FftSharp.Transform.Mel` facilitate conversion between a linear frequency scale and the Mel scale. The image above was produced using the following code:
 
