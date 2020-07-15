@@ -17,6 +17,14 @@ namespace FftSharp
             Imaginary = imaginary;
         }
 
+        public override string ToString()
+        {
+            if (Imaginary < 0)
+                return $"{Real}-{-Imaginary}j";
+            else
+                return $"{Real}+{Imaginary}j";
+        }
+
         public static Complex operator +(Complex a, Complex b)
         {
             return new Complex(a.Real + b.Real, a.Imaginary + b.Imaginary);
