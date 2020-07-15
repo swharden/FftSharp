@@ -114,6 +114,25 @@ No Window | Power Spectral Density
 ---|---
 ![](src/FftSharp.Quickstart/output/audio.png)|![](src/FftSharp.Quickstart/output/fft.png)
 
+## Mel Scaling
+
+Analyses aimed at achieving maximum frequency resolution present power spectral density using linear scaling, where every point is evenly spaced in the frequency domain. However, biological sensory systems tend to be logarithmic, and the human ear can differentiate frequency shifts better at lower frequencies than at higher ones.
+
+![](dev/mel-scale.png)
+
+To visualize frequency in a way that mimics human perception we scale data so lower frequencies have more resolution than higher frequencies. The [Mel Scale](https://en.wikipedia.org/wiki/Mel_scale) is commonly used to represent power spectral density this way, and the resulting _Mel Periodogram_ has greatly reduced total vertical resolution but is a better representation of human frequency perception. 
+
+Several methods starting with `FftSharp.Transform.Mel` facilitate conversion between a linear frequency scale and the Mel scale. The image above was produced using the following code:
+
+```cs
+double[] audio = SampleData.SampleAudio1();
+int sampleRate = 48000;
+int melBinCount = 20;
+
+double[] fftMag = FftSharp.Transform.FFTmagnitude(audio);
+double[] fftMagMel = FftSharp.Transform.MelScale(fftMag, sampleRate, melBinCount);
+```
+
 ## Demo Application
 
 A graphical demo application is included in this project which uses [ScottPlot](https://swharden.com/scottplot/) to interactively display an audio signal next to its FFT.
