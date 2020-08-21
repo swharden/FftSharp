@@ -148,6 +148,23 @@ namespace FftSharp
         }
 
         /// <summary>
+        /// Compute the 1D discrete Fourier Transform using the Fast Fourier Transform (FFT) algorithm
+        /// </summary>
+        /// <param name="input">real input</param>
+        /// <returns>real component of transformed input</returns>
+        public static Complex[] RFFT(double[] input)
+        {
+            if (!IsPowerOfTwo(input.Length))
+                throw new ArgumentException("Input length must be an even power of 2");
+
+            Complex[] buffer = MakeComplex(input);
+            FFT(buffer);
+            Complex[] realBuffer = new Complex[input.Length / 2 + 1];
+            Array.Copy(buffer, 0, realBuffer, 0, realBuffer.Length);
+            return realBuffer;
+        }
+
+        /// <summary>
         /// Calculte power spectrum density (PSD) original (RMS) units
         /// </summary>
         /// <param name="input">real input</param>
@@ -157,17 +174,17 @@ namespace FftSharp
                 throw new ArgumentException("Input length must be an even power of 2");
 
             // first calculate the FFT
-            Complex[] fft = FFT(input);
+            Complex[] rfft = RFFT(input);
 
-            // create an array for the absolute magnitudes + DC offset
-            double[] output = new double[fft.Length / 2 + 1];
+            // create an array for the absolute magnitudes
+            double[] output = new double[rfft.Length];
 
             // first point (DC component) is not doubled
-            output[0] = fft[0].Magnitude / input.Length;
+            output[0] = rfft[0].Magnitude / input.Length;
 
-            // subsequent points are doubled to account for negative frequencies
-            for (int i = 0; i < fft.Length / 2; i++)
-                output[i + 1] = 2 * fft[i + 1].Magnitude / input.Length;
+            // subsequent points are doubled to account for combined positive and negative frequencies
+            for (int i = 1; i < rfft.Length; i++)
+                output[i] = 2 * rfft[i].Magnitude / input.Length;
 
             return output;
         }
