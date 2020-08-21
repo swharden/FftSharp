@@ -165,6 +165,19 @@ namespace FftSharp
         }
 
         /// <summary>
+        /// Return a Complex array as an array of its absolute values
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static double[] Absolute(Complex[] input)
+        {
+            double[] output = new double[input.Length];
+            for (int i = 0; i < output.Length; i++)
+                output[i] = input[i].Magnitude;
+            return output;
+        }
+
+        /// <summary>
         /// Calculte power spectrum density (PSD) original (RMS) units
         /// </summary>
         /// <param name="input">real input</param>
