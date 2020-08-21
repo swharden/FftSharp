@@ -159,15 +159,15 @@ namespace FftSharp
             // first calculate the FFT
             Complex[] fft = FFT(input);
 
-            // create an array of the complex magnitudes
-            double[] output = new double[fft.Length / 2];
+            // create an array for the absolute magnitudes + DC offset
+            double[] output = new double[fft.Length / 2 + 1];
 
             // first point (DC component) is not doubled
             output[0] = fft[0].Magnitude / input.Length;
 
-            // subsequent points are doubled to account for negative power
-            for (int i = 1; i < fft.Length / 2; i++)
-                output[i] = 2 * fft[i].Magnitude / input.Length;
+            // subsequent points are doubled to account for negative frequencies
+            for (int i = 0; i < fft.Length / 2; i++)
+                output[i + 1] = 2 * fft[i + 1].Magnitude / input.Length;
 
             return output;
         }
