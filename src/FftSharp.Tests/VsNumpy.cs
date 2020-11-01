@@ -88,5 +88,17 @@ namespace FftSharp.Tests
             for (int i = 0; i < fftDB.Length; i++)
                 Assert.AreEqual(numpyFftDB[i], fftDB[i], 1e-10);
         }
+
+        [Test]
+        public void Test_VsNumpy_FftFreq()
+        {
+            double[] fftFreq = FftSharp.Transform.FFTfreq(sampleRate: 48_000, pointCount: values.Length, oneSided: false);
+            double[] numpyFftFreq = LoadDoubleData("fftFreq.txt");
+
+            Assert.AreEqual(numpyFftFreq.Length, fftFreq.Length);
+
+            for (int i = 0; i < fftFreq.Length; i++)
+                Assert.AreEqual(numpyFftFreq[i], fftFreq[i], 1e-10);
+        }
     }
 }
