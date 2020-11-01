@@ -10,13 +10,13 @@
     <Company>Harden Technologies, LLC</Company>
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/swharden/FftSharp</RepositoryUrl>
-    <PackageTags>fft ifft fourier transform audio signal sound</PackageTags>
+    <PackageTags>fft ifft fourier transform audio signal sound filter</PackageTags>
     <PackageReleaseNotes>https://github.com/swharden/FftSharp</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>1.0.7</Version>
-    <AssemblyVersion>1.0.7.0</AssemblyVersion>
-    <FileVersion>1.0.7.0</FileVersion>
+    <Version>1.0.8</Version>
+    <AssemblyVersion>1.0.8.0</AssemblyVersion>
+    <FileVersion>1.0.8.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
