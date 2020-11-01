@@ -76,13 +76,13 @@ namespace FftSharp
         /// <summary>
         /// Calculate sample frequency for each point in a FFT
         /// </summary>
-        public static double[] FFTfreq(int sampleRate, int pointCount, bool oneSided = true)
+        public static double[] FFTfreq(double sampleRate, int pointCount, bool oneSided = true)
         {
             double[] freqs = new double[pointCount];
 
             if (oneSided)
             {
-                double fftPeriodHz = (double)sampleRate / pointCount / 2;
+                double fftPeriodHz = sampleRate / pointCount / 2;
 
                 // freqs start at 0 and approach maxFreq
                 for (int i = 0; i < pointCount; i++)
@@ -91,7 +91,7 @@ namespace FftSharp
             }
             else
             {
-                double fftPeriodHz = (double)sampleRate / pointCount;
+                double fftPeriodHz = sampleRate / pointCount;
 
                 // first half: freqs start a 0 and approach maxFreq
                 int halfIndex = pointCount / 2;
