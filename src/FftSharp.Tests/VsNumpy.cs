@@ -15,31 +15,18 @@ namespace FftSharp.Tests
         [OneTimeSetUp]
         public void LoadAndVerifyData()
         {
-            values = LoadDoubleData("sample.txt");
+            values = LoadData.Double("sample.txt");
             Assert.AreEqual(512, values.Length);
             Assert.AreEqual(1.44, values[2]);
             Assert.AreEqual(71.52, values.Sum(), 1e-10);
             Assert.AreEqual(10.417026634786811, values.Select(x => Math.Sin(x)).Sum(), 1e-10);
         }
 
-        private double[] LoadDoubleData(string fileName) =>
-             File.ReadLines($"../../../../../dev/data/{fileName}")
-                 .Where(x => !x.StartsWith('#') && x.Length > 1)
-                 .Select(x => double.Parse(x))
-                 .ToArray();
-
-        private Complex[] LoadComplexData(string fileName) =>
-             File.ReadLines($"../../../../../dev/data/{fileName}")
-                 .Select(x => x.Trim('(').Trim(')').Trim('j'))
-                 .Select(x => x.Replace("-", " -").Replace("+", " +").Trim())
-                 .Select(x => new Complex(double.Parse(x.Split(' ')[0]), double.Parse(x.Split(' ')[1])))
-                 .ToArray();
-
         [Test]
         public void Test_VsNumpy_Fft()
         {
             Complex[] fft = FftSharp.Transform.FFT(values);
-            Complex[] numpyFft = LoadComplexData("fft.txt");
+            Complex[] numpyFft = LoadData.Complex("fft.txt");
 
             Assert.AreEqual(numpyFft.Length, fft.Length);
 
@@ -54,7 +41,7 @@ namespace FftSharp.Tests
         public void Test_VsNumpy_Rfft()
         {
             Complex[] rfft = FftSharp.Transform.RFFT(values);
-            Complex[] numpyRfft = LoadComplexData("fftReal.txt");
+            Complex[] numpyRfft = LoadData.Complex("fftReal.txt");
 
             Assert.AreEqual(numpyRfft.Length, rfft.Length);
 
@@ -69,7 +56,7 @@ namespace FftSharp.Tests
         public void Test_VsNumpy_FftMag()
         {
             double[] fftMag = FftSharp.Transform.FFTmagnitude(values);
-            double[] numpyFftMag = LoadDoubleData("fftMag.txt");
+            double[] numpyFftMag = LoadData.Double("fftMag.txt");
 
             Assert.AreEqual(numpyFftMag.Length, fftMag.Length);
 
@@ -81,7 +68,7 @@ namespace FftSharp.Tests
         public void Test_VsNumpy_FftDB()
         {
             double[] fftDB = FftSharp.Transform.FFTpower(values);
-            double[] numpyFftDB = LoadDoubleData("fftDB.txt");
+            double[] numpyFftDB = LoadData.Double("fftDB.txt");
 
             Assert.AreEqual(numpyFftDB.Length, fftDB.Length);
 
@@ -93,7 +80,7 @@ namespace FftSharp.Tests
         public void Test_VsNumpy_FftFreq()
         {
             double[] fftFreq = FftSharp.Transform.FFTfreq(sampleRate: 48_000, pointCount: values.Length, oneSided: false);
-            double[] numpyFftFreq = LoadDoubleData("fftFreq.txt");
+            double[] numpyFftFreq = LoadData.Double("fftFreq.txt");
 
             Assert.AreEqual(numpyFftFreq.Length, fftFreq.Length);
 
