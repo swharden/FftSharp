@@ -86,7 +86,18 @@ for (int i=0; i<buffer.Length; i++)
 FftSharp.Transform.FFT(buffer);
 ```
 
-### Windowing
+## Filtering
+
+The `FftSharp.Filter` module has methods to apply low-pass, high-pass, band-pass, and band-stop filtering.
+
+```cs
+double[] audio = FftSharp.SampleData.SampleAudio1();
+double[] filtered = FftSharp.Filter.LowPass(audio, sampleRate, maxFrequency: 2000);
+```
+
+![](dev/lowpass.png)
+
+## Windowing
 
 Signals are often are _windowed_ prior to FFT analysis. Windowing is essentially multiplying the waveform by a bell-shaped curve prior to analysis. The `FftSharp.Window` module provides easy access to many common window functions.
 
