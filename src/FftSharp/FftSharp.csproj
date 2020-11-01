@@ -11,7 +11,7 @@
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/swharden/FftSharp</RepositoryUrl>
     <PackageTags>fft ifft fourier transform audio signal sound filter</PackageTags>
-    <PackageReleaseNotes>https://github.com/swharden/FftSharp</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/swharden/FftSharp/releases</PackageReleaseNotes>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Version>1.0.8</Version>
