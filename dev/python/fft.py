@@ -46,6 +46,7 @@ if __name__ == "__main__":
     fftFreq = np.fft.fftfreq(N, samplePeriod)
     fftReal = np.fft.rfft(values)
     fftMag = np.abs(fftReal) * 2 / N
+    fftMag[0] = np.abs(fftReal[0]) / N  # special case for DC
     fftDB = 20 * np.log10(fftMag)
 
     saveData("fft.txt", fft)
