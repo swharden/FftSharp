@@ -57,6 +57,7 @@ namespace FftSharp
         /// Return the input array zero-padded to reach a final length
         /// </summary>
         /// <param name="input">array of any length</param>
+        /// <param name="finalLength">pad the array with zeros a the end to achieve this final length</param>
         /// <returns>a zero-padded copy of the input array</returns>
         public static Complex[] ZeroPad(Complex[] input, int finalLength)
         {
@@ -70,6 +71,7 @@ namespace FftSharp
         /// Return the input array zero-padded to reach a final length
         /// </summary>
         /// <param name="input">array of any length</param>
+        /// <param name="finalLength">pad the array with zeros a the end to achieve this final length</param>
         /// <returns>a zero-padded copy of the input array</returns>
         public static double[] ZeroPad(double[] input, int finalLength)
         {
