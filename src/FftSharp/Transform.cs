@@ -5,9 +5,24 @@ namespace FftSharp
     public static class Transform
     {
         /// <summary>
-        /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm
+        /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm.
         /// </summary>
+        /// <param name="buffer">Data to transform in-place. Length must be a power of 2.</param>
         public static void FFT(Complex[] buffer)
+        {
+            if (buffer is null)
+                throw new ArgumentNullException(nameof(buffer));
+
+            if (buffer.Length == 0)
+                throw new ArgumentException("Buffer must not be empty");
+
+            if (!IsPowerOfTwo(buffer.Length))
+                throw new ArgumentException("Buffer length must be a power of 2");
+
+            FFT_WithoutChecks(buffer);
+        }
+
+        private static void FFT_WithoutChecks(Complex[] buffer)
         {
             for (int i = 1; i < buffer.Length; i++)
             {
@@ -35,9 +50,24 @@ namespace FftSharp
         }
 
         /// <summary>
-        /// Compute the inverse discrete Fourier Transform (in-place) using the FFT algorithm
+        /// Compute the inverse discrete Fourier Transform (in-place) using the FFT algorithm.
         /// </summary>
+        /// <param name="buffer">Data to transform in-place. Length must be a power of 2.</param>
         public static void IFFT(Complex[] buffer)
+        {
+            if (buffer is null)
+                throw new ArgumentNullException(nameof(buffer));
+
+            if (buffer.Length == 0)
+                throw new ArgumentException("Buffer must not be empty");
+
+            if (!IsPowerOfTwo(buffer.Length))
+                throw new ArgumentException("Buffer length must be a power of 2");
+
+            IFFT_WithoutChecks(buffer);
+        }
+
+        private static void IFFT_WithoutChecks(Complex[] buffer)
         {
             // invert the imaginary component
             for (int i = 0; i < buffer.Length; i++)
@@ -135,10 +165,16 @@ namespace FftSharp
         /// <summary>
         /// Compute the 1D discrete Fourier Transform using the Fast Fourier Transform (FFT) algorithm
         /// </summary>
-        /// <param name="input">real input</param>
+        /// <param name="input">real input (must be an array with length that is a power of 2)</param>
         /// <returns>transformed input</returns>
         public static Complex[] FFT(double[] input)
         {
+            if (input is null)
+                throw new ArgumentNullException(nameof(input));
+
+            if (input.Length == 0)
+                throw new ArgumentException("Input must not be empty");
+
             if (!IsPowerOfTwo(input.Length))
                 throw new ArgumentException("Input length must be an even power of 2");
 
@@ -150,10 +186,16 @@ namespace FftSharp
         /// <summary>
         /// Compute the 1D discrete Fourier Transform using the Fast Fourier Transform (FFT) algorithm
         /// </summary>
-        /// <param name="input">real input</param>
+        /// <param name="input">real input (must be an array with length that is a power of 2)</param>
         /// <returns>real component of transformed input</returns>
         public static Complex[] RFFT(double[] input)
         {
+            if (input is null)
+                throw new ArgumentNullException(nameof(input));
+
+            if (input.Length == 0)
+                throw new ArgumentException("Input must not be empty");
+
             if (!IsPowerOfTwo(input.Length))
                 throw new ArgumentException("Input length must be an even power of 2");
 
