@@ -85,9 +85,9 @@
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
-     inkscape:cy="2.8357723"
-     inkscape:cx="51.68733"
-     inkscape:zoom="2.8"
+     inkscape:cy="-67.479489"
+     inkscape:cx="42.251296"
+     inkscape:zoom="1.4"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -127,29 +127,31 @@
        mask="url(#mask1115)"
        sodipodi:nodetypes="cccccccccccccc"
        id="path833"
-       d="M -4.2097319,10.770182 -0.26458331,9.7895787 C 1.8736444,9.6934107 1.7879521,2.1166626 1.7879521,2.1166626 c 0,0 0.038337,8.8119064 2.7099646,8.7312494 v 0 c 1.8520833,4e-6 1.8256428,-1.7552667 1.8380651,-2.6458328 0,0 0.014018,3.1750038 1.8661015,3.1749998 v 0 c 1.8520827,4e-6 1.8520827,-1.6867184 1.8520827,-1.6867184 0,0 0,1.8036524 1.852084,1.8036484 l 2.645833,-0.529167 2.34327,3.839914 -20.6224053,-0.543969 z"
+       d="M -4.2097319,10.770182 -0.26458331,9.7895787 C 1.8736444,9.6934107 1.7879521,6.3499959 1.7879521,6.3499959 c 0,0 0.038337,4.5785731 2.7099646,4.4979161 v 0 c 1.8520833,4e-6 1.8256428,-1.2261 1.8380651,-2.1166661 0,0 0.014018,2.6458371 1.8661015,2.6458331 v 0 c 1.8520827,4e-6 1.8520827,-1.157552 1.8520827,-1.157552 0,0 0,1.274486 1.852084,1.274482 l 2.645833,-0.529167 2.34327,3.839914 -20.6224053,-0.543969 z"
        style="fill:#68217a;fill-opacity:1;stroke:#ffffff;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:5.39006px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.134752"
-       x="2.7635632"
-       y="5.261353"
-       id="text858"><tspan
+       style="font-style:normal;font-weight:normal;font-size:6.32494px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.158125"
+       x="0.97566819"
+       y="5.7667217"
+       id="text858"
+       transform="scale(1.0081906,0.99187596)"><tspan
          sodipodi:role="line"
          id="tspan856"
-         x="2.7635632"
-         y="5.261353"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Bold';fill:#ffffff;stroke-width:0.134752">FFT</tspan></text>
+         x="0.97566819"
+         y="5.7667217"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Bold';fill:#ffffff;stroke-width:0.158125">FFT</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:3.56541px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.0891356"
-       x="2.9887066"
-       y="7.5824094"
-       id="text858-7"><tspan
+       style="font-style:normal;font-weight:normal;font-size:3.19695px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.0799246"
+       x="3.2113786"
+       y="8.4019394"
+       id="text858-1"
+       transform="scale(1.0285475,0.97224484)"><tspan
          sodipodi:role="line"
-         id="tspan856-3"
-         x="2.9887066"
-         y="7.5824094"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';fill:#ffffff;stroke-width:0.0891356">sharp</tspan></text>
+         id="tspan856-5"
+         x="3.2113786"
+         y="8.4019394"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Bold';fill:#ffffff;stroke-width:0.0799246">sharp</tspan></text>
   </g>
 </svg>
