@@ -1,4 +1,4 @@
-# FftSharp
+# <img src="dev/icon/icon.png" height="24" width="24"> FftSharp
 
 [![](https://img.shields.io/azure-devops/build/swharden/swharden/8?label=Build&logo=azure%20pipelines)](https://dev.azure.com/swharden/swharden/_build/latest?definitionId=8&branchName=master)
 [![](https://img.shields.io/nuget/v/FftSharp?label=NuGet&logo=nuget)](https://www.nuget.org/packages/FftSharp/)

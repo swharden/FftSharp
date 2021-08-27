@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:export-ydpi="256"
+   inkscape:export-xdpi="256"
+   inkscape:export-filename="C:\Users\scott\Documents\GitHub\FftSharp\dev\icon\icon.png"
+   sodipodi:docname="icon-v2.svg"
+   inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 12.7 12.7"
+   height="48"
+   width="48">
+  <defs
+     id="defs2">
+    <filter
+       height="1.0000384"
+       y="-1.9218182e-05"
+       width="1.0000384"
+       x="-1.9181854e-05"
+       id="filter952"
+       style="color-interpolation-filters:sRGB"
+       inkscape:collect="always">
+      <feGaussianBlur
+         id="feGaussianBlur954"
+         stdDeviation="9.9880217e-05"
+         inkscape:collect="always" />
+    </filter>
+    <mask
+       id="mask1091"
+       maskUnits="userSpaceOnUse">
+      <rect
+         transform="matrix(0.98421698,0,0,0.98421698,0.10022223,0.10022222)"
+         ry="3.3369358"
+         y="0"
+         x="0"
+         height="12.7"
+         width="12.7"
+         id="rect1093"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.926999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter952)" />
+    </mask>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter952-6"
+       x="-1.9181854e-05"
+       width="1.0000384"
+       y="-1.9218181e-05"
+       height="1.0000384">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="9.9880217e-05"
+         id="feGaussianBlur954-6" />
+    </filter>
+    <mask
+       id="mask1115"
+       maskUnits="userSpaceOnUse">
+      <rect
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.926999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter952-6)"
+         id="rect1117"
+         width="12.7"
+         height="12.7"
+         x="0"
+         y="0"
+         ry="3.3369358"
+         transform="matrix(0.98421698,0,0,0.98421698,0.10022223,0.10022209)" />
+    </mask>
+  </defs>
+  <sodipodi:namedview
+     inkscape:pagecheckerboard="true"
+     inkscape:window-maximized="1"
+     inkscape:window-y="-8"
+     inkscape:window-x="1912"
+     inkscape:window-height="1018"
+     inkscape:window-width="1920"
+     borderlayer="true"
+     units="px"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="2.8357723"
+     inkscape:cx="51.68733"
+     inkscape:zoom="2.8"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base">
+    <inkscape:grid
+       id="grid956"
+       type="xygrid" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <path
+       mask="url(#mask1091)"
+       sodipodi:type="rect"
+       y="-0.28348213"
+       x="-0.63783485"
+       height="13.18192"
+       width="14.410342"
+       id="rect835"
+       style="opacity:1;fill:#9b4f96;fill-opacity:1;stroke:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round" />
+    <path
+       mask="url(#mask1115)"
+       sodipodi:nodetypes="cccccccccccccc"
+       id="path833"
+       d="M -4.2097319,10.770182 -0.26458331,9.7895787 C 1.8736444,9.6934107 1.7879521,2.1166626 1.7879521,2.1166626 c 0,0 0.038337,8.8119064 2.7099646,8.7312494 v 0 c 1.8520833,4e-6 1.8256428,-1.7552667 1.8380651,-2.6458328 0,0 0.014018,3.1750038 1.8661015,3.1749998 v 0 c 1.8520827,4e-6 1.8520827,-1.6867184 1.8520827,-1.6867184 0,0 0,1.8036524 1.852084,1.8036484 l 2.645833,-0.529167 2.34327,3.839914 -20.6224053,-0.543969 z"
+       style="fill:#68217a;fill-opacity:1;stroke:#ffffff;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.39006px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.134752"
+       x="2.7635632"
+       y="5.261353"
+       id="text858"><tspan
+         sodipodi:role="line"
+         id="tspan856"
+         x="2.7635632"
+         y="5.261353"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Bold';fill:#ffffff;stroke-width:0.134752">FFT</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:3.56541px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.0891356"
+       x="2.9887066"
+       y="7.5824094"
+       id="text858-7"><tspan
+         sodipodi:role="line"
+         id="tspan856-3"
+         x="2.9887066"
+         y="7.5824094"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI';fill:#ffffff;stroke-width:0.0891356">sharp</tspan></text>
+  </g>
+</svg>
