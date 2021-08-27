@@ -26,6 +26,7 @@ namespace FftSharp.Tests
                 string s = (value < 0) ? $"{value:N2}, " : $"+{value:N2}, ";
                 sb.Append(s);
             }
+
             Console.WriteLine(sb);
         }
 
@@ -141,6 +142,36 @@ namespace FftSharp.Tests
         {
             Complex[] complex = new Complex[128];
             FftSharp.Experimental.DFT(complex);
+        }
+
+        [TestCase(123, true)]
+        [TestCase(13, true)]
+        [TestCase(128, false)]
+        [TestCase(16, false)]
+        public void Test_FftInput_ThrowsIfLengthIsNotPowerOfTwo(int length, bool shouldThrow)
+        {
+            Complex[] complexValues = new Complex[length];
+            double[] realValues = new double[length];
+
+            var complexFFT = new TestDelegate(() => FftSharp.Transform.FFT(complexValues));
+            var complexIFFT = new TestDelegate(() => FftSharp.Transform.IFFT(complexValues));
+            var realFFT = new TestDelegate(() => FftSharp.Transform.FFT(realValues));
+            var realRFFT = new TestDelegate(() => FftSharp.Transform.RFFT(realValues));
+
+            if (shouldThrow)
+            {
+                Assert.Throws<ArgumentException>(complexFFT);
+                Assert.Throws<ArgumentException>(complexIFFT);
+                Assert.Throws<ArgumentException>(realFFT);
+                Assert.Throws<ArgumentException>(realRFFT);
+            }
+            else
+            {
+                Assert.DoesNotThrow(complexFFT);
+                Assert.DoesNotThrow(complexIFFT);
+                Assert.DoesNotThrow(realFFT);
+                Assert.DoesNotThrow(realRFFT);
+            }
         }
     }
 }
