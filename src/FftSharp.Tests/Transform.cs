@@ -107,14 +107,6 @@ namespace FftSharp.Tests
         }
 
         [Test]
-        public void Test_FftCoreMethods_ThrowIfNotPowerOfTwo()
-        {
-            Assert.DoesNotThrow(() => { FftSharp.Transform.FFT(new Complex[0]); });
-            Assert.Throws<IndexOutOfRangeException>(() => { FftSharp.Transform.FFT(new Complex[123]); });
-            Assert.Throws<IndexOutOfRangeException>(() => { FftSharp.Transform.FFT(new Complex[1234]); });
-        }
-
-        [Test]
         public void Test_FftHelperMethods_ThrowIfNotPowerOfTwo()
         {
             Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(new double[0]); });
@@ -142,6 +134,28 @@ namespace FftSharp.Tests
         {
             Complex[] complex = new Complex[128];
             FftSharp.Experimental.DFT(complex);
+        }
+
+        [Test]
+        public void Test_FftInput_ThrowsIfNull()
+        {
+            Complex[] complexValues = null;
+            double[] realValues = null;
+            Assert.Throws<ArgumentNullException>(() => { FftSharp.Transform.FFT(complexValues); });
+            Assert.Throws<ArgumentNullException>(() => { FftSharp.Transform.IFFT(complexValues); });
+            Assert.Throws<ArgumentNullException>(() => { FftSharp.Transform.FFT(realValues); });
+            Assert.Throws<ArgumentNullException>(() => { FftSharp.Transform.RFFT(realValues); });
+        }
+
+        [Test]
+        public void Test_FftInput_ThrowsIfEmpty()
+        {
+            Complex[] complexValues = new Complex[0];
+            double[] realValues = new double[0];
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(complexValues); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.IFFT(complexValues); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(realValues); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.RFFT(realValues); });
         }
 
         [TestCase(123, true)]
