@@ -9,6 +9,7 @@
     <Authors>Scott Harden</Authors>
     <Company>Harden Technologies, LLC</Company>
     <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/swharden/FftSharp</RepositoryUrl>
     <PackageTags>fft ifft fourier transform audio signal sound filter window hanning hamming</PackageTags>
     <PackageReleaseNotes>https://github.com/swharden/FftSharp/releases</PackageReleaseNotes>
