@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  build:
+  build-core:
     runs-on: ubuntu-latest
     steps:
       - name: 🛒 Checkout
@@ -24,10 +24,38 @@ jobs:
         working-directory: src
         run: dotnet restore
 
-      - name: 🛠️ Build Tests (.NET Core 3.1)
+      - name: 🛠️ Build FftSharp
+        working-directory: src/FftSharp
+        run: dotnet build --configuration Release --no-restore
+
+      - name: 🛠️ Build Quickstart
+        working-directory: src/FftSharp.Quickstart
+        run: dotnet build --configuration Release --no-restore
+
+      - name: 🛠️ Build Tests
         working-directory: src/FftSharp.Tests
         run: dotnet build --configuration Release --no-restore
 
-      - name: 🧪 Run Tests (.NET Core 3.1)
+      - name: 🧪 Run Tests
         working-directory: src/FftSharp.Tests
         run: dotnet test --no-restore
+
+  build-framework:
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v1
+
+      - name: ✨ Setup NuGet
+        uses: nuget/setup-nuget@v1
+
+      - name: 🚚 Restore NuGet Packages
+        working-directory: src
+        run: nuget restore
+
+      - name: ✨ MSBuild
+        uses: microsoft/setup-msbuild@v1.0.3
+
+      - name: 🛠️ Build Release
+        working-directory: src
+        run: msbuild /p:Configuration=Release
