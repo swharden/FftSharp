@@ -4,28 +4,30 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - master
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    env:
-      working-directory: ./src
+    runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
+
       - name: 🦄 Use .NET Core 3.1
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "3.1.x"
+
+      - name: 📂 Navigate to Workspace
+        run: cd src
+
       - name: ✨ NuGet Restore
         run: dotnet restore
-        working-directory: ${{env.working-directory}}
+
       - name: 🛠️ Build Solution
         run: dotnet build --configuration Release --no-restore
-        working-directory: ${{env.working-directory}}
+
       - name: 🧪 Run Tests
         run: dotnet test --no-restore
-        working-directory: ${{env.working-directory}}
