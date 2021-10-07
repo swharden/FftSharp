@@ -1,6 +1,6 @@
 # <img src="dev/icon/v3/fftsharp-icon-24.png" height="24" width="24"> FftSharp
 
-[![](https://img.shields.io/azure-devops/build/swharden/swharden/8?label=Build&logo=azure%20pipelines)](https://dev.azure.com/swharden/swharden/_build/latest?definitionId=8&branchName=master)
+[![CI](https://github.com/swharden/FftSharp/actions/workflows/ci.yaml/badge.svg)](https://github.com/swharden/FftSharp/actions/workflows/ci.yaml)
 [![](https://img.shields.io/nuget/dt/FftSharp?color=004880&label=downloads&logo=NuGet)](https://www.nuget.org/packages/FftSharp/)
 [![](https://img.shields.io/nuget/vpre/FftSharp?color=%23004880&label=NuGet&logo=nuget)](https://www.nuget.org/packages/FftSharp/)
 [![GitHub](https://img.shields.io/github/license/swharden/FftSharp?color=%231281c0)](LICENSE)
