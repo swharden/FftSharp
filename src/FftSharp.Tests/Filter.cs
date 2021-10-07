@@ -30,12 +30,12 @@ namespace FftSharp.Tests
             double[] Filtered = FftSharp.Filter.LowPass(Values, SampleRate, 2000);
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotScatter(TimesMsec, Values, label: "Original");
-            plt.PlotScatter(TimesMsec, Filtered, label: "Low-Pass", lineWidth: 2);
+            plt.AddScatter(TimesMsec, Values, label: "Original");
+            plt.AddScatter(TimesMsec, Filtered, label: "Low-Pass", lineWidth: 2);
             plt.YLabel("Signal Value");
             plt.XLabel("Time (milliseconds)");
             plt.Legend();
-            plt.Axis(x1: 4, x2: 6);
+            plt.SetAxisLimitsX(4, 6);
 
             TestTools.SaveFig(plt);
         }
@@ -46,12 +46,12 @@ namespace FftSharp.Tests
             double[] Filtered = FftSharp.Filter.HighPass(Values, SampleRate, 3000);
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotScatter(TimesMsec, Values, label: "Original");
-            plt.PlotScatter(TimesMsec, Filtered, label: "High-Pass", lineWidth: 2);
+            plt.AddScatter(TimesMsec, Values, label: "Original");
+            plt.AddScatter(TimesMsec, Filtered, label: "High-Pass", lineWidth: 2);
             plt.YLabel("Signal Value");
             plt.XLabel("Time (milliseconds)");
             plt.Legend();
-            plt.Axis(x1: 4, x2: 6);
+            plt.SetAxisLimitsX(4, 6);
 
             TestTools.SaveFig(plt);
         }
@@ -62,12 +62,12 @@ namespace FftSharp.Tests
             double[] Filtered = FftSharp.Filter.BandPass(Values, SampleRate, 1900, 2100);
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotScatter(TimesMsec, Values, label: "Original");
-            plt.PlotScatter(TimesMsec, Filtered, label: "Band-Pass", lineWidth: 2);
+            plt.AddScatter(TimesMsec, Values, label: "Original");
+            plt.AddScatter(TimesMsec, Filtered, label: "Band-Pass", lineWidth: 2);
             plt.YLabel("Signal Value");
             plt.XLabel("Time (milliseconds)");
             plt.Legend();
-            plt.Axis(x1: 4, x2: 6);
+            plt.SetAxisLimitsX(4, 6);
 
             TestTools.SaveFig(plt);
         }
@@ -78,12 +78,12 @@ namespace FftSharp.Tests
             double[] Filtered = FftSharp.Filter.BandStop(Values, SampleRate, 1900, 2100);
 
             var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotScatter(TimesMsec, Values, label: "Original");
-            plt.PlotScatter(TimesMsec, Filtered, label: "Band-Pass", lineWidth: 2);
+            plt.AddScatter(TimesMsec, Values, label: "Original");
+            plt.AddScatter(TimesMsec, Filtered, label: "Band-Pass", lineWidth: 2);
             plt.YLabel("Signal Value");
             plt.XLabel("Time (milliseconds)");
             plt.Legend();
-            plt.Axis(x1: 4, x2: 6);
+            plt.SetAxisLimitsX(4, 6);
 
             TestTools.SaveFig(plt);
         }

@@ -99,7 +99,7 @@ namespace FftSharp.Tests
             plt.PlotScatter(fftFreq, fftAmpPos, Color.Blue, 0, label: "negative");
             plt.PlotScatter(fftFreq, fftAmpNeg, Color.Red, 0, 10,
                 markerShape: ScottPlot.MarkerShape.openCircle, label: "positive");
-            plt.Legend(location: ScottPlot.legendLocation.upperRight);
+            plt.Legend(location: ScottPlot.Alignment.UpperRight);
             plt.PlotHLine(0, color: Color.Black, lineWidth: 2);
             plt.YLabel("Magnitude (rms^2?)");
             plt.XLabel("Frequency (Hz)");

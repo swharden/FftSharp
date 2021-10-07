@@ -6,6 +6,7 @@ using System.Text;
 
 namespace FftSharp.Tests
 {
+    #pragma warning disable 618
     class Mel
     {
         [Test]
