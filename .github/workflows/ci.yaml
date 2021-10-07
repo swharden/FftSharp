@@ -33,7 +33,6 @@ jobs:
           dotnet build ${{ env.CSPROJ_CORE }} --configuration Release
           dotnet build ${{ env.CSPROJ_TESTS }}
       - name: 🧪 Test
-        working-directory: src/FftSharp.Tests
         run: dotnet test ${{ env.CSPROJ_TESTS }}
       - name: 📦 Pack
         run: dotnet pack ${{ env.CSPROJ_CORE }} --configuration Release
@@ -54,7 +53,7 @@ jobs:
 
   solution:
     # build the whole solution (.NET Framework demos require Windows/MSBuild)
-    name: Solution
+    name: Build Solution
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
