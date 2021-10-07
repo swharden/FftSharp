@@ -39,7 +39,7 @@ jobs:
       - name: 💾 Store
         uses: actions/upload-artifact@v2
         with:
-          name: ScottPlot-Packages
+          name: Packages
           retention-days: 1
           path: src/FftSharp/bin/Release/*.nupkg
       - name: 🛠️ Setup NuGet
