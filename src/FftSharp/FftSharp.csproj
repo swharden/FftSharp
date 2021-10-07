@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <OutputType>Library</OutputType>
     <PackageProjectUrl>https://github.com/swharden/FftSharp</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>A .NET Standard library for computing the Fast Fourier Transform (FFT) of real or complex data</Description>
@@ -19,11 +20,24 @@
     <AssemblyVersion>1.0.10.0</AssemblyVersion>
     <FileVersion>1.0.10.0</FileVersion>
     <NoWarn>1591</NoWarn>
+    <DebugType>portable</DebugType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <!--<SymbolPackageFormat>snupkg</SymbolPackageFormat> -->    <!-- https://github.com/NuGet/Home/issues/10791 -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="icon.png" Pack="true" PackagePath="\" />
     <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
