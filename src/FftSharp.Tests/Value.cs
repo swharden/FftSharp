@@ -45,6 +45,25 @@ namespace FftSharp.Tests
         }
 
         [Test]
+        public void SpanTest_RFFT_ValuesMatchNumpy()
+        {
+            // Some sample audio data was analyzed with Numpy in Python.
+            // This module contains the output of numpy.fft.rfft()
+            // https://numpy.org/doc/1.18/reference/generated/numpy.fft.rfft.html
+            // This test assserts our FFT results match Numpy's
+
+            Span<Complex> rfft = new Complex[audio.Length / 2 + 1];
+            FftSharp.Transform.RFFT(rfft, audio);
+            Assert.AreEqual(NumpyRFFT.Length, rfft.Length);
+
+            for (int i = 0; i < rfft.Length; i++)
+            {
+                Assert.AreEqual(NumpyRFFT[i].Real, rfft[i].Real, 1e-12);
+                Assert.AreEqual(NumpyRFFT[i].Imaginary, rfft[i].Imaginary, 1e-12);
+            }
+        }
+
+        [Test]
         public void Test_Absolute_ValuesMatchNumpy()
         {
             // Some sample audio data was analyzed with Numpy in Python.
