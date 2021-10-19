@@ -228,7 +228,7 @@ namespace FftSharp.Tests
         {
             Complex[] complexValues = new Complex[length];
             double[] realValues = new double[length];
-            Complex[] destination = new Complex[length];
+            Complex[] destination = new Complex[length / 2 + 1];
 
             var complexFFT = new TestDelegate(() => FftSharp.Transform.FFT(complexValues));
             var complexSpanFFT = new TestDelegate(() => FftSharp.Transform.FFT(complexValues.AsSpan()));
