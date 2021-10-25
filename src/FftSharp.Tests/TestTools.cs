@@ -26,14 +26,14 @@ namespace FftSharp.Tests
         }
 
         /// <summary>
-        /// assert amplitudes have mirror symmetry (except the first and last N points)
+        /// assert values have mirror symmetry (except the first and last N points)
         /// </summary>
-        public static void AssertMirror(double[] fftAmp, int ignoreFirst = 1)
+        public static void AssertMirror(double[] values, int ignoreFirst = 1)
         {
-            for (int i = ignoreFirst; i < fftAmp.Length / 2; i++)
+            for (int i = ignoreFirst; i < values.Length / 2; i++)
             {
-                int i2 = fftAmp.Length - i;
-                Assert.AreEqual(fftAmp[i], fftAmp[i2], delta: 1e-10, $"Not mirror at index {i} and {i2}");
+                int i2 = values.Length - i;
+                Assert.AreEqual(values[i], values[i2], delta: 1e-10, $"Not mirror at index {i} and {i2}");
             }
         }
     }
