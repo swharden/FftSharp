@@ -237,18 +237,12 @@ namespace FftSharp
             if (destination.Length != input.Length / 2 + 1)
                 throw new ArgumentException("Destination length must be an equal to input length / 2 + 1");
 
-            var temp = ArrayPool<Complex>.Shared.Rent(input.Length);
-            try
-            {
-                var buffer = temp.AsSpan(0, input.Length);
-                MakeComplex(buffer, input);
-                FFT(buffer);
-                buffer.Slice(0, destination.Length).CopyTo(destination);
-            }
-            finally
-            {
-                ArrayPool<Complex>.Shared.Return(temp);
-            }
+            Complex[] temp = ArrayPool<Complex>.Shared.Rent(input.Length);
+            Span<Complex> buffer = temp.AsSpan(0, input.Length);
+            MakeComplex(buffer, input);
+            FFT(buffer);
+            buffer.Slice(0, destination.Length).CopyTo(destination);
+            ArrayPool<Complex>.Shared.Return(temp);
         }
 
         /// <summary>
@@ -286,24 +280,20 @@ namespace FftSharp
                 throw new ArgumentException("Input length must be an even power of 2");
 
             var temp = ArrayPool<Complex>.Shared.Rent(destination.Length);
-            try
-            {
-                var buffer = temp.AsSpan(0, destination.Length);
 
-                // first calculate the FFT
-                RFFT(buffer, input);
+            var buffer = temp.AsSpan(0, destination.Length);
 
-                // first point (DC component) is not doubled
-                destination[0] = buffer[0].Magnitude / input.Length;
+            // first calculate the FFT
+            RFFT(buffer, input);
 
-                // subsequent points are doubled to account for combined positive and negative frequencies
-                for (int i = 1; i < buffer.Length; i++)
-                    destination[i] = 2 * buffer[i].Magnitude / input.Length;
-            }
-            finally
-            {
-                ArrayPool<Complex>.Shared.Return(temp);
-            }
+            // first point (DC component) is not doubled
+            destination[0] = buffer[0].Magnitude / input.Length;
+
+            // subsequent points are doubled to account for combined positive and negative frequencies
+            for (int i = 1; i < buffer.Length; i++)
+                destination[i] = 2 * buffer[i].Magnitude / input.Length;
+
+            ArrayPool<Complex>.Shared.Return(temp);
         }
 
         /// <summary>
