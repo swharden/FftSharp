@@ -119,16 +119,6 @@ namespace FftSharp
         public static double[] FFTfreq(double sampleRate, int pointCount, bool oneSided = true)
         {
             double[] freqs = new double[pointCount];
-            FFTfreq(freqs.AsSpan(), sampleRate, oneSided);
-            return freqs;
-        }
-
-        /// <summary>
-        /// Calculate sample frequency for each point in a FFT
-        /// </summary>
-        public static void FFTfreq(Span<double> destination, double sampleRate, bool oneSided = true)
-        {
-            var pointCount = destination.Length;
 
             if (oneSided)
             {
@@ -136,8 +126,8 @@ namespace FftSharp
 
                 // freqs start at 0 and approach maxFreq
                 for (int i = 0; i < pointCount; i++)
-                    destination[i] = i * fftPeriodHz;
-                return;
+                    freqs[i] = i * fftPeriodHz;
+                return freqs;
             }
             else
             {
@@ -146,12 +136,12 @@ namespace FftSharp
                 // first half: freqs start a 0 and approach maxFreq
                 int halfIndex = pointCount / 2;
                 for (int i = 0; i < halfIndex; i++)
-                    destination[i] = i * fftPeriodHz;
+                    freqs[i] = i * fftPeriodHz;
 
                 // second half: then start at -maxFreq and approach 0
                 for (int i = halfIndex; i < pointCount; i++)
-                    destination[i] = -(pointCount - i) * fftPeriodHz;
-                return;
+                    freqs[i] = -(pointCount - i) * fftPeriodHz;
+                return freqs;
             }
         }
 

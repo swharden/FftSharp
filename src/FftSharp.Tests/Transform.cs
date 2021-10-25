@@ -55,8 +55,7 @@ namespace FftSharp.Tests
 
             Complex[] fft = FftSharp.Transform.FFT(audio);
             double[] fftAmp = fft.Select(x => x.Magnitude).ToArray();
-            double[] fftFreq = new double[fftAmp.Length];
-            FftSharp.Transform.FFTfreq(fftFreq, sampleRate, oneSided: false);
+            double[] fftFreq = FftSharp.Transform.FFTfreq(sampleRate, fftAmp.Length, oneSided: false);
 
             TestTools.AssertMirror(fftAmp);
 
