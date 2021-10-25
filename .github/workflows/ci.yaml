@@ -61,11 +61,10 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v1
-      - name: ✨ Setup .NET 6
+      - name: ✨ Setup .NET 5
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: "6.0.x"
-          include-prerelease: true
+          dotnet-version: "5.0.x"
       - name: ✨ Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.3
       - name: 🚚 Restore
