@@ -48,124 +48,24 @@ namespace FftSharp.Tests
         }
 
         [Test]
-        public void Test_Inspect_PosNeg()
+        public void Test_PosNeg_AreMirrored()
         {
             double[] audio = SampleData.SampleAudio1();
             int sampleRate = 48_000;
 
             Complex[] fft = FftSharp.Transform.FFT(audio);
-
             double[] fftAmp = fft.Select(x => x.Magnitude).ToArray();
-            double[] fftFreq = FftSharp.Transform.FFTfreq(sampleRate, fftAmp.Length, oneSided: true);
-
-            var plt = new ScottPlot.Plot(600, 400);
-
-            for (int i = 0; i < fftAmp.Length; i++)
-                plt.PlotLine(fftFreq[i], 0, fftFreq[i], fftAmp[i], Color.Gray);
-            plt.PlotScatter(fftFreq, fftAmp, Color.Blue, 0);
-
-            plt.PlotHLine(0, color: Color.Black, lineWidth: 2);
-            plt.YLabel("Magnitude (rms^2?)");
-            plt.XLabel("Frequency (Hz)");
-            plt.SaveFig("test-symmetry.png");
-        }
-
-        [Test]
-        public void Test_PosNeg_AreSymmetical()
-        {
-            double[] audio = SampleData.SampleAudio1();
-            int sampleRate = 48_000;
-
-            // FFT produce positive/negative values that are exactly symmetrical
-            Complex[] fft = FftSharp.Transform.FFT(audio);
-            double[] fftAmp = fft.Select(x => x.Magnitude).ToArray();
-            int halfLength = fftAmp.Length / 2;
-
-            // create arrays which isolate positive and negative components
-            double[] fftFreq = FftSharp.Transform.FFTfreq(sampleRate, halfLength);
-            double[] fftAmpNeg = new double[halfLength];
-            double[] fftAmpPos = new double[halfLength];
-            for (int i = 0; i < halfLength; i++)
-            {
-                fftAmpNeg[halfLength - i - 1] = fftAmp[halfLength - i - 1];
-                fftAmpPos[i] = fftAmp[i];
-            }
-
-            // negative and positive magnitudes will always be equal
-            Assert.AreEqual(fftAmpNeg, fftAmpPos);
-
-            // plot these findings
-            var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotScatter(fftFreq, fftAmpPos, Color.Blue, 0, label: "negative");
-            plt.PlotScatter(fftFreq, fftAmpNeg, Color.Red, 0, 10,
-                markerShape: ScottPlot.MarkerShape.openCircle, label: "positive");
-            plt.Legend(location: ScottPlot.Alignment.UpperRight);
-            plt.PlotHLine(0, color: Color.Black, lineWidth: 2);
-            plt.YLabel("Magnitude (rms^2?)");
-            plt.XLabel("Frequency (Hz)");
-            plt.SaveFig("test-negpos.png");
-        }
-
-        [Test]
-        public void SpanTest_Inspect_PosNeg()
-        {
-            double[] audio = SampleData.SampleAudio1();
-            int sampleRate = 48_000;
-
-            Complex[] fft = FftSharp.Transform.FFT(audio);
-
-            double[] fftAmp = fft.Select(x => x.Magnitude).ToArray();
-
             double[] fftFreq = new double[fftAmp.Length];
-            FftSharp.Transform.FFTfreq(fftFreq, sampleRate, oneSided: true);
+            FftSharp.Transform.FFTfreq(fftFreq, sampleRate, oneSided: false);
+
+            TestTools.AssertMirror(fftAmp);
 
             var plt = new ScottPlot.Plot(600, 400);
-
-            for (int i = 0; i < fftAmp.Length; i++)
-                plt.PlotLine(fftFreq[i], 0, fftFreq[i], fftAmp[i], Color.Gray);
-            plt.PlotScatter(fftFreq, fftAmp, Color.Blue, 0);
-
+            plt.AddLollipop(fftAmp, fftFreq);
             plt.PlotHLine(0, color: Color.Black, lineWidth: 2);
             plt.YLabel("Magnitude (rms^2?)");
             plt.XLabel("Frequency (Hz)");
-            plt.SaveFig("test-symmetry.png");
-        }
-
-        [Test]
-        public void SpanTest_PosNeg_AreSymmetical()
-        {
-            double[] audio = SampleData.SampleAudio1();
-            int sampleRate = 48_000;
-
-            // FFT produce positive/negative values that are exactly symmetrical
-            Complex[] fft = FftSharp.Transform.FFT(audio);
-            double[] fftAmp = fft.Select(x => x.Magnitude).ToArray();
-            int halfLength = fftAmp.Length / 2;
-
-            // create arrays which isolate positive and negative components
-            double[] fftFreq = new double[halfLength];
-            FftSharp.Transform.FFTfreq(fftFreq, sampleRate);
-            double[] fftAmpNeg = new double[halfLength];
-            double[] fftAmpPos = new double[halfLength];
-            for (int i = 0; i < halfLength; i++)
-            {
-                fftAmpNeg[halfLength - i - 1] = fftAmp[halfLength - i - 1];
-                fftAmpPos[i] = fftAmp[i];
-            }
-
-            // negative and positive magnitudes will always be equal
-            Assert.AreEqual(fftAmpNeg, fftAmpPos);
-
-            // plot these findings
-            var plt = new ScottPlot.Plot(600, 400);
-            plt.PlotScatter(fftFreq, fftAmpPos, Color.Blue, 0, label: "negative");
-            plt.PlotScatter(fftFreq, fftAmpNeg, Color.Red, 0, 10,
-                markerShape: ScottPlot.MarkerShape.openCircle, label: "positive");
-            plt.Legend(location: ScottPlot.Alignment.UpperRight);
-            plt.PlotHLine(0, color: Color.Black, lineWidth: 2);
-            plt.YLabel("Magnitude (rms^2?)");
-            plt.XLabel("Frequency (Hz)");
-            plt.SaveFig("test-negpos.png");
+            TestTools.SaveFig(plt);
         }
 
         [Test]
