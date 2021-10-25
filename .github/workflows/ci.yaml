@@ -61,8 +61,11 @@ jobs:
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v1
-      - name: ✨ Setup NuGet
-        uses: nuget/setup-nuget@v1
+      - name: ✨ Setup .NET 6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+          include-prerelease: true
       - name: ✨ Setup MSBuild
         uses: microsoft/setup-msbuild@v1.0.3
       - name: 🚚 Restore
