@@ -53,16 +53,6 @@ namespace FftSharp.Tests
             }
         }
 
-        [TestCase(0, 1)]
-        [TestCase(1, 1)]
-        [TestCase(2, 2)]
-        [TestCase(3, 6)]
-        [TestCase(9, 362880)]
-        public void Test_Factorial_MatchesKnown(int k, int factorial)
-        {
-            Assert.AreEqual(factorial, FftSharp.Window.Factorial(k));
-        }
-
         [Test]
         public void Test_Kaiser_MatchesPython()
         {
