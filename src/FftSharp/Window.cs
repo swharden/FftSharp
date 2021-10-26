@@ -18,7 +18,9 @@ namespace FftSharp
                 .Where(x => x.IsClass)
                 .Where(x => !x.IsAbstract)
                 .Where(x => x.GetInterfaces().Contains(typeof(IWindow)))
-                .Select(x => (IWindow)FormatterServices.GetUninitializedObject(x))
+                //.Select(x => (IWindow)FormatterServices.GetUninitializedObject(x))
+                //.Select(x=> typeof(Person).Assembly)
+                .Select(x => (IWindow)Activator.CreateInstance(x))
                 .ToArray();
         }
 

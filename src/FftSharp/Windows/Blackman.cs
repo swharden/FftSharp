@@ -4,14 +4,18 @@ namespace FftSharp.Windows
 {
     public class Blackman : WindowBase, IWindow
     {
-        private readonly double A;
-        private readonly double B;
-        private readonly double C;
+        private readonly double A = 0.42659071;
+        private readonly double B = 0.49656062;
+        private readonly double C = 0.07684867;
 
         public override string Name => "Blackman";
         public override string Description => "???";
 
-        public Blackman(double a = 0.42659071, double b = 0.49656062, double c = 0.07684867)
+        public Blackman()
+        {
+        }
+
+        public Blackman(double a, double b, double c)
         {
             (A, B, C) = (a, b, c);
         }

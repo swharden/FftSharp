@@ -8,6 +8,11 @@ namespace FftSharp.Windows
         public override string Name => "Kaiser";
         public override string Description => "???";
 
+        public Kaiser()
+        {
+            Beta = 15;
+        }
+
         public Kaiser(double beta)
         {
             Beta = beta;
