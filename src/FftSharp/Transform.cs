@@ -32,6 +32,12 @@ namespace FftSharp
             FFT_WithoutChecks(buffer);
         }
 
+        /// <summary>
+        /// High performance FFT function.
+        /// Complex input will be transformed in place.
+        /// Input array length must be a power of two. This length is NOT validated.
+        /// Running on an array with an invalid length may throw an invalid index exception.
+        /// </summary>
         private static void FFT_WithoutChecks(Span<Complex> buffer)
         {
             for (int i = 1; i < buffer.Length; i++)
@@ -234,16 +240,22 @@ namespace FftSharp
         {
             if (!IsPowerOfTwo(input.Length))
                 throw new ArgumentException("Input length must be an even power of 2");
+
             if (destination.Length != input.Length / 2 + 1)
                 throw new ArgumentException("Destination length must be an equal to input length / 2 + 1");
 
-            var temp = ArrayPool<Complex>.Shared.Rent(input.Length);
+            Complex[] temp = ArrayPool<Complex>.Shared.Rent(input.Length);
+
             try
             {
-                var buffer = temp.AsSpan(0, input.Length);
+                Span<Complex> buffer = temp;
                 MakeComplex(buffer, input);
                 FFT(buffer);
                 buffer.Slice(0, destination.Length).CopyTo(destination);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not calculate RFFT", ex);
             }
             finally
             {
@@ -299,6 +311,10 @@ namespace FftSharp
                 // subsequent points are doubled to account for combined positive and negative frequencies
                 for (int i = 1; i < buffer.Length; i++)
                     destination[i] = 2 * buffer[i].Magnitude / input.Length;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not calculate FFT magnitude", ex);
             }
             finally
             {
