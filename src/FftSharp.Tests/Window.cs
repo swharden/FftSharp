@@ -64,31 +64,6 @@ namespace FftSharp.Tests
         }
 
         [Test]
-        public void Test_Bessel_MatchesPython()
-        {
-            /* expected values calculated with python:
-                >>> import numpy as np
-                >>> np.i0(np.arange(20))
-            */
-
-            double[] expected = {
-                1.00000000e+00, 1.26606588e+00, 2.27958530e+00, 4.88079259e+00,
-                1.13019220e+01, 2.72398718e+01, 6.72344070e+01, 1.68593909e+02,
-                4.27564116e+02, 1.09358835e+03, 2.81571663e+03, 7.28848934e+03,
-                1.89489253e+04, 4.94444896e+04, 1.29418563e+05, 3.39649373e+05,
-                8.93446228e+05, 2.35497022e+06, 6.21841242e+06, 1.64461904e+07,
-             };
-
-            double[] actual = FftSharp.Window.BesselZero(expected.Length);
-
-            for (int i = 0; i < expected.Length; i++)
-            {
-                double allowableError = .00001 * expected[i];
-                Assert.AreEqual(expected[i], actual[i], allowableError);
-            }
-        }
-
-        [Test]
         public void Test_Kaiser_MatchesPython()
         {
             /* expected values calculated with python:

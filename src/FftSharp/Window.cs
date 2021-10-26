@@ -148,16 +148,6 @@ namespace FftSharp
             return result;
         }
 
-        public static double[] BesselZero(int pointCount)
-        {
-            double[] window = new double[pointCount];
-
-            for (int i = 0; i < pointCount; i++)
-                window[i] = I0(i);
-
-            return window;
-        }
-
         public static double I0(double x)
         {
             // Derived from code workby oygx210/navguide:
