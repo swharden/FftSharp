@@ -1,14 +1,14 @@
 ﻿using NUnit.Framework;
 using ScottPlot;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace FftSharp.Tests
 {
     class Window
     {
+        public static string OUTPUT_FOLDER = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "../../../../../dev/quickstart/"));
         [Test]
         public void Test_Window_Functions()
         {
@@ -37,7 +37,7 @@ namespace FftSharp.Tests
             }
 
             plt.Legend(enable: true, location: Alignment.UpperRight);
-            plt.SaveFig("../../../../../dev/windows.png");
+            plt.SaveFig(Path.Combine(OUTPUT_FOLDER, "windows.png"));
         }
 
         [Test]
