@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using ScottPlot;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -9,6 +10,58 @@ namespace FftSharp.Tests
     class Window
     {
         public static string OUTPUT_FOLDER = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "../../../../../dev/quickstart/"));
+
+        [Test]
+        public void Test_GetWindow_Works()
+        {
+            IWindow[] windows = FftSharp.Window.GetWindows();
+
+            foreach (IWindow window in windows)
+            {
+                Console.WriteLine(window);
+            }
+
+            Assert.IsNotNull(windows);
+            Assert.IsNotEmpty(windows);
+        }
+
+        [Test]
+        public void Test_WindowNames_AreNotEmpty()
+        {
+            foreach (var window in FftSharp.Window.GetWindows())
+            {
+                Assert.That(string.IsNullOrWhiteSpace(window.Name) == false);
+            }
+        }
+
+        [Test]
+        public void Test_WindowDescriptions_AreNotEmpty()
+        {
+            foreach (var window in FftSharp.Window.GetWindows())
+            {
+                Assert.That(string.IsNullOrWhiteSpace(window.Description) == false);
+            }
+        }
+
+        [Test]
+        public void Test_WindowNames_AreUnique()
+        {
+            var names = FftSharp.Window.GetWindows().Select(x => x.Name);
+
+            Assert.IsNotEmpty(names);
+            Assert.AreEqual(names.Count(), names.Distinct().Count());
+        }
+
+        [Ignore("TODO")]
+        [Test]
+        public void Test_WindowDescriptions_AreUnique()
+        {
+            var descriptions = FftSharp.Window.GetWindows().Select(x => x.Description);
+
+            Assert.IsNotEmpty(descriptions);
+            Assert.AreEqual(descriptions.Count(), descriptions.Distinct().Count());
+        }
+
         [Test]
         public void Test_Window_Functions()
         {

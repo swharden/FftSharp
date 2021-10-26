@@ -8,6 +8,9 @@ namespace FftSharp.Windows
         private readonly double B;
         private readonly double C;
 
+        public override string Name => "Blackman";
+        public override string Description => "???";
+
         public Blackman(double a = 0.42659071, double b = 0.49656062, double c = 0.07684867)
         {
             (A, B, C) = (a, b, c);

@@ -19,7 +19,7 @@ namespace FftSharp.Demo
             formsPlot1.Configure(middleClickMarginX: 0);
             formsPlot2.Configure(middleClickMarginX: 0);
 
-            comboBox1.Items.AddRange(Window.GetWindowNames());
+            comboBox1.Items.AddRange(Window.GetWindows());
             comboBox1.SelectedIndex = 0;
         }
 
@@ -35,6 +35,10 @@ namespace FftSharp.Demo
 
         private void UpdateFFT()
         {
+            IWindow window = (IWindow)comboBox1.SelectedItem;
+            if (window is null)
+                return;
+
             // define audio parameters
             int sampleRate = 48000;
             int fftSize = 4096; // 2^12
@@ -46,9 +50,7 @@ namespace FftSharp.Demo
             SampleData.AddSin(audio, sampleRate, 2_000, 1);
             SampleData.AddSin(audio, sampleRate, 10_000, 2);
             SampleData.AddSin(audio, sampleRate, 20_000, .5);
-
-            double[] window = Window.GetWindowByName(comboBox1.Text, audio.Length);
-            Window.ApplyInPlace(window, audio);
+            window.ApplyInPlace(audio);
 
             // perform the FFT
             double[] fftPower = FftSharp.Transform.FFTpower(audio);

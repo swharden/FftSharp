@@ -4,6 +4,9 @@ namespace FftSharp.Windows
 {
     public class Bartlett : WindowBase, IWindow
     {
+        public override string Name => "Bartlett";
+        public override string Description => "???";
+
         public override double[] Create(int size, bool normalize = false)
         {
             double[] window = new double[size];

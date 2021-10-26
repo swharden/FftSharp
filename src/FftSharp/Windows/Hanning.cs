@@ -4,6 +4,8 @@ namespace FftSharp.Windows
 {
     public class Hanning : WindowBase, IWindow
     {
+        public override string Name => "Hanning";
+        public override string Description => "???";
         public override double[] Create(int size, bool normalize = false)
         {
             double[] window = new double[size];

@@ -5,6 +5,8 @@ namespace FftSharp.Windows
     public class Kaiser : WindowBase, IWindow
     {
         public readonly double Beta;
+        public override string Name => "Kaiser";
+        public override string Description => "???";
 
         public Kaiser(double beta)
         {

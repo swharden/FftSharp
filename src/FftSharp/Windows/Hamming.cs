@@ -4,6 +4,8 @@ namespace FftSharp.Windows
 {
     internal class Hamming : WindowBase, IWindow
     {
+        public override string Name => "Hamming";
+        public override string Description => "???";
         public override double[] Create(int size, bool normalize = false)
         {
             double[] window = new double[size];

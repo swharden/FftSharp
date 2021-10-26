@@ -2,17 +2,24 @@
 {
     public abstract class WindowBase : IWindow
     {
+        public abstract string Name { get; }
+
+        public abstract string Description { get; }
+
+        public override string ToString() => Name;
+
         public abstract double[] Create(int size, bool normalize = false);
 
         /// <summary>
         /// Multiply the array by this window and return the result as a new array
         /// </summary>
-        public void Apply(double[] input, bool normalize = false)
+        public double[] Apply(double[] input, bool normalize = false)
         {
             double[] window = Create(input.Length, normalize);
             double[] output = new double[input.Length];
             for (int i = 0; i < input.Length; i++)
                 output[i] = input[i] * window[i];
+            return output;
         }
 
         /// <summary>
