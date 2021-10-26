@@ -24,7 +24,7 @@ double[] fftPower = FftSharp.Transform.FFTpower(audio);
 
 Audio | Windowed | FFT
 ---|---|---
-![](src/FftSharp.Quickstart/output/audio.png)|![](src/FftSharp.Quickstart/output/audio-windowed.png)|![](src/FftSharp.Quickstart/output/fft-windowed.png)
+![](dev/quickstart/audio.png)|![](dev/quickstart/audio-windowed.png)|![](dev/quickstart/fft-windowed.png)
 
 A quickstart application ([Program.cs](src/FftSharp.Quickstart/Program.cs)) demonstrates common FftSharp features. The quickstart program generates the graphs shown here, but plotting-related code has been omitted from these code samples.
 
@@ -46,7 +46,7 @@ int sampleRate = 48000;
 
 <div align="center">
 
-![](src/FftSharp.Quickstart/output/audio.png)
+![](dev/quickstart/audio.png)
 
 </div>
 
@@ -68,7 +68,7 @@ Power vs. frequency can then be plotted to yield a [periodogram](https://en.wiki
 
 <div align="center">
 
-![](src/FftSharp.Quickstart/output/fft.png)
+![](dev/quickstart/fft.png)
 
 </div>
 
@@ -120,13 +120,13 @@ FftSharp.Window.ApplyInPlace(window, audio);
 
 Hanning Window | Power Spectral Density
 ---|---
-![](src/FftSharp.Quickstart/output/audio-windowed.png)|![](src/FftSharp.Quickstart/output/fft-windowed.png)
+![](dev/quickstart/audio-windowed.png)|![](dev/quickstart/fft-windowed.png)
 
 Windowing signals prior to calculating the FFT improves signal-to-noise ratio at lower frequencies, making power spectrum peaks easier to resolve.
 
 No Window | Power Spectral Density
 ---|---
-![](src/FftSharp.Quickstart/output/audio.png)|![](src/FftSharp.Quickstart/output/fft.png)
+![](dev/quickstart/audio.png)|![](dev/quickstart/fft.png)
 
 ## Mel Scaling
 
