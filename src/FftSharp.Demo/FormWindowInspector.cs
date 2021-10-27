@@ -32,7 +32,7 @@ namespace FftSharp.Demo
 
         private void UpdateTimePlot(IWindow window)
         {
-            double[] xs = ScottPlot.DataGen.Consecutive(100);
+            double[] xs = ScottPlot.DataGen.Consecutive(101);
             double[] ys = window.Create(xs.Length);
 
             plotWindow.Plot.Clear();
@@ -49,6 +49,9 @@ namespace FftSharp.Demo
             double[] ys = xs.Select(x => Math.Sin(x / fftSize * Math.PI * fftSize / 2)).ToArray();
             double[] windowed = window.Apply(ys);
             double[] power = Transform.FFTpower(windowed);
+
+            // hide DC component
+            power[0] = power[1];
 
             plotFreq.Plot.Clear();
             var sig = plotFreq.Plot.AddSignal(power, fftSize / 2);
