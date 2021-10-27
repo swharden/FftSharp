@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+#pragma warning disable CA1416 // Validate platform compatibility
+
 namespace FftSharp.Demo
 {
     public partial class FormMicrophone : Form
@@ -19,7 +21,9 @@ namespace FftSharp.Demo
         public FormMicrophone()
         {
             InitializeComponent();
-            formsPlot1.Configure(middleClickMarginX: 0);
+
+            formsPlot1.Plot.Margins(0);
+
             cbDevices.Items.Clear();
             for (int i = 0; i < NAudio.Wave.WaveIn.DeviceCount; i++)
                 cbDevices.Items.Add(NAudio.Wave.WaveIn.GetCapabilities(i).ProductName);
@@ -51,15 +55,15 @@ namespace FftSharp.Demo
                 lastBuffer[i] = BitConverter.ToInt16(args.Buffer, i * bytesPerSample);
         }
 
-        ScottPlot.PlottableSignal signalPlot;
-        ScottPlot.PlottableVLine peakLine;
+        ScottPlot.Plottable.SignalPlot signalPlot;
+        ScottPlot.Plottable.VLine peakLine;
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (lastBuffer is null)
                 return;
 
-            double[] window = FftSharp.Window.Hanning(lastBuffer.Length);
-            double[] windowed = FftSharp.Window.Apply(window, lastBuffer);
+            var window = new Windows.Hanning();
+            double[] windowed = window.Apply(lastBuffer);
             double[] zeroPadded = FftSharp.Pad.ZeroPad(windowed);
             double[] fftPower = cbDecibel.Checked ?
                 FftSharp.Transform.FFTpower(zeroPadded) :
@@ -79,25 +83,41 @@ namespace FftSharp.Demo
             }
             lblPeak.Text = $"Peak Frequency: {peakFreq:N0} Hz";
 
-            formsPlot1.plt.XLabel("Frequency Hz");
+            formsPlot1.Plot.XLabel("Frequency Hz");
 
             // make the plot for the first time, otherwise update the existing plot
-            if (formsPlot1.plt.GetPlottables().Count == 0)
+            if (formsPlot1.Plot.GetPlottables().Count() == 0)
             {
-                signalPlot = formsPlot1.plt.PlotSignal(fftPower, 2.0 * fftPower.Length / SAMPLE_RATE);
-                peakLine = formsPlot1.plt.PlotVLine(peakFreq, ColorTranslator.FromHtml("#66FF0000"), 2);
+                signalPlot = formsPlot1.Plot.AddSignal(fftPower, 2.0 * fftPower.Length / SAMPLE_RATE);
+                peakLine = formsPlot1.Plot.AddVerticalLine(peakFreq, ColorTranslator.FromHtml("#66FF0000"), 2);
             }
             else
             {
-                signalPlot.ys = fftPower;
-                peakLine.position = peakFreq;
-                peakLine.visible = cbPeak.Checked;
+                signalPlot.Ys = fftPower;
+                peakLine.X = peakFreq;
+                peakLine.IsVisible = cbPeak.Checked;
             }
 
             if (cbAutoAxis.Checked)
-                formsPlot1.plt.AxisAuto(horizontalMargin: 0);
+            {
+                try
+                {
+                    formsPlot1.Plot.AxisAuto(horizontalMargin: 0);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                }
+            }
 
-            formsPlot1.Render();
+            try
+            {
+                formsPlot1.Render();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
         }
     }
 }
