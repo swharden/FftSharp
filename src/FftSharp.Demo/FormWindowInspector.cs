@@ -25,6 +25,7 @@ namespace FftSharp.Demo
             if (window is null)
                 return;
 
+            rtbDescription.Text = window.Description;
             UpdateTimePlot(window);
             UpdateFrequencyPlot(window);
         }

@@ -36,6 +36,7 @@
             this.plotWindow = new ScottPlot.FormsPlot();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.plotFreq = new ScottPlot.FormsPlot();
+            this.rtbDescription = new System.Windows.Forms.RichTextBox();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -49,7 +50,7 @@
             this.groupBox2.Controls.Add(this.lbWindows);
             this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(184, 331);
+            this.groupBox2.Size = new System.Drawing.Size(184, 236);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Windows";
@@ -61,7 +62,7 @@
             this.lbWindows.ItemHeight = 15;
             this.lbWindows.Location = new System.Drawing.Point(3, 19);
             this.lbWindows.Name = "lbWindows";
-            this.lbWindows.Size = new System.Drawing.Size(178, 309);
+            this.lbWindows.Size = new System.Drawing.Size(178, 214);
             this.lbWindows.TabIndex = 0;
             this.lbWindows.SelectedIndexChanged += new System.EventHandler(this.lbWindows_SelectedIndexChanged);
             // 
@@ -92,7 +93,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(867, 331);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(971, 451);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // groupBox1
@@ -101,7 +102,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(427, 325);
+            this.groupBox1.Size = new System.Drawing.Size(479, 445);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Time Domain";
@@ -113,16 +114,16 @@
             this.plotWindow.Location = new System.Drawing.Point(3, 19);
             this.plotWindow.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.plotWindow.Name = "plotWindow";
-            this.plotWindow.Size = new System.Drawing.Size(421, 303);
+            this.plotWindow.Size = new System.Drawing.Size(473, 423);
             this.plotWindow.TabIndex = 1;
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.plotFreq);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(436, 3);
+            this.groupBox3.Location = new System.Drawing.Point(488, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(428, 325);
+            this.groupBox3.Size = new System.Drawing.Size(480, 445);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Frequency Domain";
@@ -134,14 +135,26 @@
             this.plotFreq.Location = new System.Drawing.Point(3, 19);
             this.plotFreq.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.plotFreq.Name = "plotFreq";
-            this.plotFreq.Size = new System.Drawing.Size(422, 303);
+            this.plotFreq.Size = new System.Drawing.Size(474, 423);
             this.plotFreq.TabIndex = 2;
+            // 
+            // rtbDescription
+            // 
+            this.rtbDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.rtbDescription.BackColor = System.Drawing.SystemColors.Control;
+            this.rtbDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbDescription.Location = new System.Drawing.Point(12, 254);
+            this.rtbDescription.Name = "rtbDescription";
+            this.rtbDescription.Size = new System.Drawing.Size(181, 209);
+            this.rtbDescription.TabIndex = 4;
+            this.rtbDescription.Text = "";
             // 
             // FormWindowInspector
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1081, 355);
+            this.ClientSize = new System.Drawing.Size(1185, 475);
+            this.Controls.Add(this.rtbDescription);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.groupBox2);
             this.Name = "FormWindowInspector";
@@ -163,5 +176,6 @@
         private ScottPlot.FormsPlot plotWindow;
         private System.Windows.Forms.GroupBox groupBox3;
         private ScottPlot.FormsPlot plotFreq;
+        private System.Windows.Forms.RichTextBox rtbDescription;
     }
 }
