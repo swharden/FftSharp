@@ -4,8 +4,10 @@ namespace FftSharp.Windows
 {
     public class Bartlett : WindowBase, IWindow
     {
-        public override string Name => "Bartlett";
-        public override string Description => "???";
+        public override string Name => "Bartlett–Hann";
+        public override string Description =>
+            "The Bartlett–Hann window is triangular in shape (a 2nd order B-spline) which is effectively the " +
+            "convolution of two half-sized rectangular windows.";
 
         public override double[] Create(int size, bool normalize = false)
         {

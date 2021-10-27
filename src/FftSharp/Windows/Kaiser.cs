@@ -5,8 +5,12 @@ namespace FftSharp.Windows
     public class Kaiser : WindowBase, IWindow
     {
         public readonly double Beta;
-        public override string Name => "Kaiser";
-        public override string Description => "???";
+        public override string Name => $"Kaiser-Bessel";
+        public override string Description =>
+            "A Kaiser-Bessel window strikes a balance among the various conflicting goals of amplitude " +
+            "accuracy, side lobe distance, and side lobe height. It compares roughly to the BlackmanHarris window functions, " +
+            "but for the same main lobe width, the near side lobes tend to be higher, but the further out side lobes are lower. " +
+            "Choosing this window often reveals signals close to the noise floor";
 
         public Kaiser()
         {

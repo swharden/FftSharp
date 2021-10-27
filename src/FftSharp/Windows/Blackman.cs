@@ -8,8 +8,10 @@ namespace FftSharp.Windows
         private readonly double B = 0.49656062;
         private readonly double C = 0.07684867;
 
-        public override string Name => "Blackman";
-        public override string Description => "???";
+        public override string Name => "Blackman-Harris";
+        public override string Description =>
+            "The Blackman-Harris window is similar to Hamming and Hanning windows. " +
+            "The resulting spectrum has a wide peak, but good side lobe compression.";
 
         public Blackman()
         {
