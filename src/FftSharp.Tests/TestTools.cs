@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -22,6 +23,18 @@ namespace FftSharp.Tests
             Console.WriteLine();
 
             return filePath;
+        }
+
+        /// <summary>
+        /// assert values have mirror symmetry (except the first and last N points)
+        /// </summary>
+        public static void AssertMirror(double[] values, int ignoreFirst = 1)
+        {
+            for (int i = ignoreFirst; i < values.Length / 2; i++)
+            {
+                int i2 = values.Length - i;
+                Assert.AreEqual(values[i], values[i2], delta: 1e-10, $"Not mirror at index {i} and {i2}");
+            }
         }
     }
 }

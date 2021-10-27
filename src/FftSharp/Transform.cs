@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 
 namespace FftSharp
 {
@@ -13,6 +14,15 @@ namespace FftSharp
             if (buffer is null)
                 throw new ArgumentNullException(nameof(buffer));
 
+            FFT(buffer.AsSpan());
+        }
+
+        /// <summary>
+        /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm.
+        /// </summary>
+        /// <param name="buffer">Data to transform in-place. Length must be a power of 2.</param>
+        public static void FFT(Span<Complex> buffer)
+        {
             if (buffer.Length == 0)
                 throw new ArgumentException("Buffer must not be empty");
 
@@ -22,7 +32,13 @@ namespace FftSharp
             FFT_WithoutChecks(buffer);
         }
 
-        private static void FFT_WithoutChecks(Complex[] buffer)
+        /// <summary>
+        /// High performance FFT function.
+        /// Complex input will be transformed in place.
+        /// Input array length must be a power of two. This length is NOT validated.
+        /// Running on an array with an invalid length may throw an invalid index exception.
+        /// </summary>
+        private static void FFT_WithoutChecks(Span<Complex> buffer)
         {
             for (int i = 1; i < buffer.Length; i++)
             {
@@ -157,9 +173,19 @@ namespace FftSharp
         public static Complex[] MakeComplex(double[] real)
         {
             Complex[] com = new Complex[real.Length];
+            MakeComplex(com, real);
+            return com;
+        }
+
+        /// <summary>
+        /// Create an array of Complex data given the real component
+        /// </summary>
+        public static void MakeComplex(Span<Complex> com, Span<double> real)
+        {
+            if (com.Length != real.Length)
+                throw new ArgumentOutOfRangeException("Input length must match");
             for (int i = 0; i < real.Length; i++)
                 com[i] = new Complex(real[i], 0);
-            return com;
         }
 
         /// <summary>
@@ -199,11 +225,42 @@ namespace FftSharp
             if (!IsPowerOfTwo(input.Length))
                 throw new ArgumentException("Input length must be an even power of 2");
 
-            Complex[] buffer = MakeComplex(input);
-            FFT(buffer);
             Complex[] realBuffer = new Complex[input.Length / 2 + 1];
-            Array.Copy(buffer, 0, realBuffer, 0, realBuffer.Length);
+            RFFT(realBuffer, input);
             return realBuffer;
+        }
+
+        /// <summary>
+        /// Compute the 1D discrete Fourier Transform using the Fast Fourier Transform (FFT) algorithm
+        /// </summary>
+        /// <param name="destination">Memory location of the results (must be an equal to input length / 2 + 1)</param>
+        /// <param name="input">real input (must be an array with length that is a power of 2)</param>
+        /// <returns>real component of transformed input</returns>
+        public static void RFFT(Span<Complex> destination, Span<double> input)
+        {
+            if (!IsPowerOfTwo(input.Length))
+                throw new ArgumentException("Input length must be an even power of 2");
+
+            if (destination.Length != input.Length / 2 + 1)
+                throw new ArgumentException("Destination length must be an equal to input length / 2 + 1");
+
+            Complex[] temp = ArrayPool<Complex>.Shared.Rent(input.Length);
+
+            try
+            {
+                Span<Complex> buffer = temp;
+                MakeComplex(buffer, input);
+                FFT(buffer);
+                buffer.Slice(0, destination.Length).CopyTo(destination);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not calculate RFFT", ex);
+            }
+            finally
+            {
+                ArrayPool<Complex>.Shared.Return(temp);
+            }
         }
 
         /// <summary>
@@ -225,23 +282,44 @@ namespace FftSharp
         /// <param name="input">real input</param>
         public static double[] FFTmagnitude(double[] input)
         {
+            double[] output = new double[input.Length / 2 + 1];
+            FFTmagnitude(output, input);
+            return output;
+        }
+
+        /// <summary>
+        /// Calculte power spectrum density (PSD) original (RMS) units
+        /// </summary>
+        /// <param name="destination">Memory location of the results.</param>
+        /// <param name="input">real input</param>
+        public static void FFTmagnitude(Span<double> destination, Span<double> input)
+        {
             if (!IsPowerOfTwo(input.Length))
                 throw new ArgumentException("Input length must be an even power of 2");
 
-            // first calculate the FFT
-            Complex[] rfft = RFFT(input);
+            var temp = ArrayPool<Complex>.Shared.Rent(destination.Length);
+            try
+            {
+                var buffer = temp.AsSpan(0, destination.Length);
 
-            // create an array for the absolute magnitudes
-            double[] output = new double[rfft.Length];
+                // first calculate the FFT
+                RFFT(buffer, input);
 
-            // first point (DC component) is not doubled
-            output[0] = rfft[0].Magnitude / input.Length;
+                // first point (DC component) is not doubled
+                destination[0] = buffer[0].Magnitude / input.Length;
 
-            // subsequent points are doubled to account for combined positive and negative frequencies
-            for (int i = 1; i < rfft.Length; i++)
-                output[i] = 2 * rfft[i].Magnitude / input.Length;
-
-            return output;
+                // subsequent points are doubled to account for combined positive and negative frequencies
+                for (int i = 1; i < buffer.Length; i++)
+                    destination[i] = 2 * buffer[i].Magnitude / input.Length;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Could not calculate FFT magnitude", ex);
+            }
+            finally
+            {
+                ArrayPool<Complex>.Shared.Return(temp);
+            }
         }
 
         /// <summary>
@@ -257,6 +335,21 @@ namespace FftSharp
             for (int i = 0; i < output.Length; i++)
                 output[i] = 2 * 10 * Math.Log10(output[i]);
             return output;
+        }
+
+        /// <summary>
+        /// Calculte power spectrum density (PSD) in dB units
+        /// </summary>
+        /// <param name="destination">Memory location of the results.</param>
+        /// <param name="input">real input</param>
+        public static void FFTpower(Span<double> destination, double[] input)
+        {
+            if (!IsPowerOfTwo(input.Length))
+                throw new ArgumentException("Input length must be an even power of 2");
+
+            FFTmagnitude(destination, input);
+            for (int i = 0; i < destination.Length; i++)
+                destination[i] = 2 * 10 * Math.Log10(destination[i]);
         }
 
         public static double MelToFreq(double mel)
