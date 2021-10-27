@@ -12,13 +12,9 @@ on:
       - created
 
 jobs:
-  package:
-    # build, test, and deploy the core package on Linux
-    name: Package
+  test:
+    name: Test
     runs-on: ubuntu-latest
-    env:
-      CSPROJ_CORE: src/FftSharp/FftSharp.csproj
-      CSPROJ_TESTS: src/FftSharp/FftSharp.csproj
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
@@ -27,48 +23,24 @@ jobs:
         with:
           dotnet-version: "6.0.x"
           include-prerelease: true
+      - name: 🛠️ Setup NuGet
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
       - name: 🚚 Restore
-        run: |
-          dotnet restore ${{ env.CSPROJ_CORE }}
-          dotnet restore ${{ env.CSPROJ_TESTS }}
+        run: dotnet restore src
       - name: 🛠️ Build
-        run: |
-          dotnet build ${{ env.CSPROJ_CORE }} --configuration Release
-          dotnet build ${{ env.CSPROJ_TESTS }}
+        run: dotnet restore src --configuration Release
       - name: 🧪 Test
-        run: dotnet test ${{ env.CSPROJ_TESTS }}
+        run: dotnet test src
       - name: 📦 Pack
-        run: dotnet pack ${{ env.CSPROJ_CORE }} --configuration Release
+        run: dotnet pack src --configuration Release
       - name: 💾 Store
         uses: actions/upload-artifact@v2
         with:
           name: Packages
           retention-days: 1
           path: src/FftSharp/bin/Release/*.nupkg
-      - name: 🛠️ Setup NuGet
-        if: github.event_name == 'release'
-        uses: nuget/setup-nuget@v1
-        with:
-          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
       - name: 🚀 Publish
         if: github.event_name == 'release'
         run: nuget push "src/FftSharp/bin/Release/*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
-
-  solution:
-    # build the whole solution (.NET Framework demos require Windows/MSBuild)
-    name: Build Solution
-    runs-on: windows-latest
-    steps:
-      - name: 🛒 Checkout
-        uses: actions/checkout@v1
-      - name: ✨ Setup .NET 5
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: "5.0.x"
-      - name: ✨ Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.0.3
-      - name: 🚚 Restore
-        working-directory: src
-        run: nuget restore
-      - name: 🛠️ Build Release
-        run: msbuild src -verbosity:minimal
