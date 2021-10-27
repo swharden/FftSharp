@@ -49,4 +49,4 @@ jobs:
             src/FftSharp/bin/Release/*.snupkg
       - name: 🚀 Publish
         if: github.event_name == 'release'
-        run: nuget push "src/FftSharp/bin/Release/*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+        run: nuget push "src\FftSharp\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
