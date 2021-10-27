@@ -148,14 +148,17 @@ This chart (adapted from [](https://www.egr.msu.edu/classes/me451/me451_labs/Fal
 Window           | Use Case       | Frequency Resolution | Spectral Leakage | Amplitude Accuracy
 -----------------|----------------|------|------|-----
 Barlett          | Random         | Good | Fair | Fair
-Blackman         | Random / mixed | Poor | Best | Good
+Blackman         | Random         | Poor | Best | Good
+Cosine           | Random         | Fair | Fair | Fair
 Flat Top         | Sine waves     | Poor | Good | Best
 Hanning          | Random         | Good | Good | Fair
 Hamming          | Random         | Good | Fair | Fair
-Kaiser-Bessel    | Random         | Fair | Good | Good
-None / Boxcar    | Transient / synchronous | Best | Poor Poor
-Tukey            | Random         | Good | Poor | Poor
-Welch            | Random         | Good | Good | Fair
+Kaiser           | Random         | Fair | Good | Good
+Rectangular      | Transient      | Best | Poor Poor
+Tukey*            | Random         | Good | Poor | Poor
+Welch*            | Random         | Good | Good | Fair
+
+_* not yet supported ([#41](https://github.com/swharden/FftSharp/issues/41))_
 
 ## Demo Application
 
