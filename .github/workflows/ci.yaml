@@ -30,7 +30,7 @@ jobs:
       - name: 🚚 Restore
         run: dotnet restore src
       - name: 🛠️ Build
-        run: dotnet restore src --configuration Release
+        run: dotnet build src --configuration Release
       - name: 🧪 Test
         run: dotnet test src
       - name: 📦 Pack
