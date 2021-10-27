@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 
 namespace FftSharp
 {
     public static class Window
     {
         /// <summary>
-        /// Return an array of all available windows.
-        /// Note that some windows have customization options in their constructors.
+        /// Return an array containing all available windows.
+        /// Note that all windows returned will use the default constructor, but some
+        /// windows have customization options in their constructors if you create them individually.
         /// </summary>
         public static IWindow[] GetWindows()
         {
@@ -18,33 +18,41 @@ namespace FftSharp
                 .Where(x => x.IsClass)
                 .Where(x => !x.IsAbstract)
                 .Where(x => x.GetInterfaces().Contains(typeof(IWindow)))
-                //.Select(x => (IWindow)FormatterServices.GetUninitializedObject(x))
-                //.Select(x=> typeof(Person).Assembly)
                 .Select(x => (IWindow)Activator.CreateInstance(x))
                 .ToArray();
         }
 
+        [Obsolete("This method is obsolete. Create a window in the Windows namespace and interact with its methods.")]
         public static double[] Rectangular(int pointCount) => new Windows.Rectangular().Create(pointCount);
 
+        [Obsolete("This method is obsolete. Create a window in the Windows namespace and interact with its methods.")]
         public static double[] Hanning(int pointCount) => new Windows.Hanning().Create(pointCount);
 
+        [Obsolete("This method is obsolete. Create a window in the Windows namespace and interact with its methods.")]
         public static double[] Hamming(int pointCount) => new Windows.Hanning().Create(pointCount);
 
+        [Obsolete("This method is obsolete. Create a window in the Windows namespace and interact with its methods.")]
         public static double[] Blackman(int pointCount) => new Windows.Blackman().Create(pointCount);
 
+        [Obsolete("This method is obsolete. Create a window in the Windows namespace and interact with its methods.")]
         public static double[] BlackmanCustom(int pointCount, double a = .42, double b = .5, double c = .08) => new Windows.Blackman(a, b, c).Create(pointCount);
 
+        [Obsolete("This method is obsolete. Create a window in the Windows namespace and interact with its methods.")]
         public static double[] BlackmanHarris(int pointCount) => new Windows.Blackman(0.42323, 0.49755, 0.07922).Create(pointCount);
 
-        public static double[] FlatTop(int pointCount) => new Windows.Blackman(0.2810639, 0.5208972, 0.1980399).Create(pointCount);
+        [Obsolete("This method is obsolete. Create a window in the Windows namespace and interact with its methods.")]
+        public static double[] FlatTop(int pointCount) => new Windows.FlatTop().Create(pointCount);
 
+        [Obsolete("This method is obsolete. Create a window in the Windows namespace and interact with its methods.")]
         public static double[] Bartlett(int pointCount) => new Windows.Bartlett().Create(pointCount);
 
+        [Obsolete("This method is obsolete. Create a window in the Windows namespace and interact with its methods.")]
         public static double[] Cosine(int pointCount) => new Windows.Cosine().Create(pointCount);
 
+        [Obsolete("This method is obsolete. Create a window in the Windows namespace and interact with its methods.")]
         public static double[] Kaiser(int pointCount, double beta) => new Windows.Kaiser(beta).Create(pointCount);
 
-        [Obsolete("Create a window (in the Windows namespace) and use its Apply() method.")]
+        [Obsolete("This method is obsolete. Create a window in the Windows namespace and interact with its methods.")]
         public static double[] Apply(double[] window, double[] signal)
         {
             if (window.Length != signal.Length)
@@ -58,7 +66,7 @@ namespace FftSharp
             return output;
         }
 
-        [Obsolete("Create a window (in the Windows namespace) and use its ApplyInPlace() method.")]
+        [Obsolete("This method is obsolete. Create a window in the Windows namespace and interact with its methods.")]
         public static void ApplyInPlace(double[] window, double[] signal)
         {
             if (window.Length != signal.Length)

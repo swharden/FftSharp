@@ -25,27 +25,12 @@ namespace FftSharp.Demo
             plotAudio.Plot.Margins(0);
             plotFFT.Plot.Margins(0);
 
-            // generate the sample signal
             OriginalAudio = new double[fftSize];
-            SampleData.AddWhiteNoise(OriginalAudio, 1);
-            SampleData.AddSin(OriginalAudio, sampleRate, 2_000, 1);
-            SampleData.AddSin(OriginalAudio, sampleRate, 10_000, 2);
-            SampleData.AddSin(OriginalAudio, sampleRate, 20_000, .5);
-            PlotOriginalSignal();
+            GenerateSignal();
 
-            comboBox1.Items.AddRange(Window.GetWindows());
-            comboBox1.SelectedIndex = 0;
-        }
-
-        private void PlotOriginalSignal()
-        {
-            plotAudio.Plot.Clear();
-            plotAudio.Plot.AddSignal(OriginalAudio, sampleRate / 1e3);
-            plotAudio.Plot.Title("Input Signal");
-            plotAudio.Plot.YLabel("Amplitude");
-            plotAudio.Plot.XLabel("Time (milliseconds)");
-            plotAudio.Plot.AxisAuto(0);
-            plotAudio.Refresh();
+            IWindow[] windows = Window.GetWindows();
+            comboBox1.Items.AddRange(windows);
+            comboBox1.SelectedIndex = windows.ToList().FindIndex(x => x.Name == "Hanning");
         }
 
         private void OnSelectedWindow(object sender, EventArgs e)
@@ -61,12 +46,48 @@ namespace FftSharp.Demo
 
             UpdateKernel(window);
             UpdateWindowed(audio);
-            UpdateFFT(window, audio);
+            UpdateFFT(audio);
+        }
+
+        private void tbNoise_KeyUp(object sender, KeyEventArgs e) => tbNoise_MouseUp(null, null);
+
+        private void tbNoise_MouseUp(object sender, MouseEventArgs e)
+        {
+            GenerateSignal();
+            OnSelectedWindow(null, null);
+        }
+
+        private void cbLog_CheckedChanged(object sender, EventArgs e) => OnSelectedWindow(null, null);
+
+        private void GenerateSignal()
+        {
+            for (int i = 0; i < OriginalAudio.Length; i++)
+                OriginalAudio[i] = 0;
+
+            SampleData.AddWhiteNoise(OriginalAudio, tbNoise.Value / 10.0);
+            SampleData.AddSin(OriginalAudio, sampleRate, 2_000, 1);
+            SampleData.AddSin(OriginalAudio, sampleRate, 10_000, 2);
+            SampleData.AddSin(OriginalAudio, sampleRate, 20_000, .5);
+            PlotOriginalSignal();
+        }
+
+        private void PlotOriginalSignal()
+        {
+            plotAudio.Plot.Clear();
+            plotAudio.Plot.AddSignal(OriginalAudio, sampleRate / 1e3);
+            plotAudio.Plot.Title("Input Signal");
+            plotAudio.Plot.YLabel("Amplitude");
+            plotAudio.Plot.XLabel("Time (milliseconds)");
+            plotAudio.Plot.AxisAuto(0);
+            plotAudio.Refresh();
         }
 
         private void UpdateKernel(IWindow window)
         {
-            double[] ys = window.Create(4096);
+            double[] kernel = window.Create(fftSize);
+            double[] pad = ScottPlot.DataGen.Zeros(kernel.Length / 4);
+            double[] ys = pad.Concat(kernel).Concat(pad).ToArray();
+
             plotKernel.Plot.Clear();
             plotKernel.Plot.AddSignal(ys, sampleRate / 1e3, Color.Red);
             plotKernel.Plot.AxisAuto(0);
@@ -87,15 +108,15 @@ namespace FftSharp.Demo
             plotWindowed.Refresh();
         }
 
-        private void UpdateFFT(IWindow window, double[] audio)
+        private void UpdateFFT(double[] audio)
         {
-            double[] fftPower = FftSharp.Transform.FFTpower(audio);
-            double fftPeriod = (double)fftSize / sampleRate;
+            double[] ys = cbLog.Checked ? Transform.FFTpower(audio) : Transform.FFTmagnitude(audio);
+            string yLabel = cbLog.Checked ? "Power (dB)" : "Magnitude (RMS²)";
 
             plotFFT.Plot.Clear();
-            plotFFT.Plot.AddSignal(fftPower, fftPeriod);
-            plotFFT.Plot.Title("FFT Signal");
-            plotFFT.Plot.YLabel("Power (dB)");
+            plotFFT.Plot.AddSignal(ys, (double)fftSize / sampleRate);
+            plotFFT.Plot.Title("Fast Fourier Transform");
+            plotFFT.Plot.YLabel(yLabel);
             plotFFT.Plot.XLabel("Frequency (Hz)");
             plotFFT.Plot.AxisAuto(0);
             plotFFT.Refresh();
