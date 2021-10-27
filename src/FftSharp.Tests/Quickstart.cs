@@ -1,17 +1,23 @@
-﻿using System;
-using System.Drawing.Printing;
+﻿using NUnit.Framework;
+using System;
+using System.IO;
 
-namespace FftSharp.Quickstart
+namespace FftSharp.Tests
 {
-    class Program
+    class Quickstart
     {
-        static void Main(string[] args)
+        public static string OUTPUT_FOLDER = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "../../../../../dev/quickstart/"));
+
+        [Test]
+        public static void Test_OutputFolder_Exists()
         {
-            SimpleFftWithGraphs(useWindow: false);
-            SimpleFftWithGraphs(useWindow: true);
+            Console.WriteLine(OUTPUT_FOLDER);
+            Assert.That(Directory.Exists(OUTPUT_FOLDER), $"output folder does not exist: {OUTPUT_FOLDER}");
         }
 
-        static void SimpleFftWithGraphs(bool useWindow = false)
+        [TestCase(true)]
+        [TestCase(false)]
+        public static void Test_SimpleFftWithGraphs(bool useWindow)
         {
             // load sample audio with noise and sine waves at 500, 1200, and 1500 Hz
             double[] audio = FftSharp.SampleData.SampleAudio1();
@@ -20,8 +26,8 @@ namespace FftSharp.Quickstart
             // optionally apply a window to the data before calculating the FFT
             if (useWindow)
             {
-                double[] window = FftSharp.Window.Hanning(audio.Length);
-                FftSharp.Window.ApplyInPlace(window, audio);
+                var window = new FftSharp.Windows.Hanning();
+                window.ApplyInPlace(audio);
             }
 
             // You could get the FFT as a complex result
@@ -38,16 +44,14 @@ namespace FftSharp.Quickstart
 
             // plot the sample audio
             var plt1 = new ScottPlot.Plot(400, 300);
-            plt1.PlotScatter(times, audio, markerSize: 3);
-            //plt1.Title("Audio Signal");
+            plt1.AddScatter(times, audio, markerSize: 3);
             plt1.YLabel("Amplitude");
             plt1.XLabel("Time (ms)");
             plt1.AxisAuto(0);
 
             // plot the FFT amplitude
             var plt2 = new ScottPlot.Plot(400, 300);
-            plt2.PlotScatter(freqs, fftPower, markerSize: 3);
-            //plt2.Title("Fast Fourier Transformation (FFT)");
+            plt2.AddScatter(freqs, fftPower, markerSize: 3);
             plt2.YLabel("Power (dB)");
             plt2.XLabel("Frequency (Hz)");
             plt2.AxisAuto(0);
@@ -55,13 +59,13 @@ namespace FftSharp.Quickstart
             // save output
             if (useWindow)
             {
-                plt1.SaveFig("../../../output/audio-windowed.png");
-                plt2.SaveFig("../../../output/fft-windowed.png");
+                plt1.SaveFig(Path.Combine(OUTPUT_FOLDER, "audio-windowed.png"));
+                plt2.SaveFig(Path.Combine(OUTPUT_FOLDER, "fft-windowed.png"));
             }
             else
             {
-                plt1.SaveFig("../../../output/audio.png");
-                plt2.SaveFig("../../../output/fft.png");
+                plt1.SaveFig(Path.Combine(OUTPUT_FOLDER, "audio.png"));
+                plt2.SaveFig(Path.Combine(OUTPUT_FOLDER, "fft.png"));
             }
         }
     }

@@ -2,90 +2,103 @@
 using ScottPlot;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace FftSharp.Tests
 {
     class Window
     {
+        public static string OUTPUT_FOLDER = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "../../../../../dev/quickstart/"));
+
         [Test]
-        public void Test_Window_Functions()
+        public void Test_GetWindow_Works()
+        {
+            IWindow[] windows = FftSharp.Window.GetWindows();
+
+            foreach (IWindow window in windows)
+            {
+                Console.WriteLine(window);
+            }
+
+            Assert.IsNotNull(windows);
+            Assert.IsNotEmpty(windows);
+        }
+
+        [Test]
+        public void Test_WindowNames_AreNotEmpty()
+        {
+            foreach (var window in FftSharp.Window.GetWindows())
+            {
+                Assert.That(string.IsNullOrWhiteSpace(window.Name) == false);
+            }
+        }
+
+        [Test]
+        public void Test_WindowDescriptions_AreNotEmpty()
+        {
+            foreach (var window in FftSharp.Window.GetWindows())
+            {
+                Assert.That(string.IsNullOrWhiteSpace(window.Description) == false);
+            }
+        }
+
+        [Test]
+        public void Test_WindowNames_AreUnique()
+        {
+            var names = FftSharp.Window.GetWindows().Select(x => x.Name);
+
+            Assert.IsNotEmpty(names);
+            Assert.AreEqual(names.Count(), names.Distinct().Count());
+        }
+
+        [Test]
+        public void Test_WindowDescriptions_AreUnique()
+        {
+            var descriptions = FftSharp.Window.GetWindows().Select(x => x.Description);
+
+            Assert.IsNotEmpty(descriptions);
+            Assert.AreEqual(descriptions.Count(), descriptions.Distinct().Count());
+        }
+
+        [Test]
+        public void Test_NormalizedWindows_SumIsOne()
+        {
+            foreach (IWindow window in FftSharp.Window.GetWindows())
+            {
+                double[] kernel = window.Create(123, true);
+                double sum = kernel.Sum();
+                Assert.AreEqual(1, sum, delta: 1e-10, $"{window} sum is {sum}");
+            }
+        }
+
+        [Test]
+        public void Test_Plot_AllWindowKernels()
         {
             var plt = new ScottPlot.Plot(500, 400);
+            plt.Palette = ScottPlot.Palette.ColorblindFriendly;
 
-            double[] xs = ScottPlot.DataGen.Range(-1, 1, .01, true);
-            plt.AddScatter(xs, FftSharp.Window.Hanning(xs.Length), label: "Hanning");
-            plt.AddScatter(xs, FftSharp.Window.Hamming(xs.Length), label: "Hamming");
-            plt.AddScatter(xs, FftSharp.Window.Bartlett(xs.Length), label: "Bartlett");
-            plt.AddScatter(xs, FftSharp.Window.Blackman(xs.Length), label: "Blackman");
-            //plt.AddScatter(xs, FftSharp.Window.BlackmanExact(xs.Length), label: "BlackmanExact");
-            //plt.AddScatter(xs, FftSharp.Window.BlackmanHarris(xs.Length), label: "BlackmanHarris");
-            plt.AddScatter(xs, FftSharp.Window.FlatTop(xs.Length), label: "FlatTop");
-            plt.AddScatter(xs, FftSharp.Window.Cosine(xs.Length), label: "Cosine");
-            plt.AddScatter(xs, FftSharp.Window.Kaiser(xs.Length, 15), label: "Kaiser");
-
-            // customize line styles post-hoc
-            foreach (var p in plt.GetPlottables())
+            foreach (IWindow window in FftSharp.Window.GetWindows())
             {
-                if (p is ScottPlot.Plottable.ScatterPlot sp)
-                {
-                    sp.MarkerSize = 0;
-                    sp.LineWidth = 3;
-                    sp.Color = System.Drawing.Color.FromArgb(200, sp.Color);
-                }
+                if (window.Name == "Rectangular")
+                    continue;
+                double[] xs = ScottPlot.DataGen.Range(-1, 1, .01, true);
+                double[] ys = window.Create(xs.Length);
+                var sp = plt.AddScatter(xs, ys, label: window.Name);
+                sp.MarkerSize = 0;
+                sp.LineWidth = 3;
+                sp.Color = System.Drawing.Color.FromArgb(200, sp.Color);
             }
 
             plt.Legend(enable: true, location: Alignment.UpperRight);
-            plt.SaveFig("../../../../../dev/windows.png");
+            plt.SaveFig(Path.Combine(OUTPUT_FOLDER, "windows.png"));
         }
 
         [Test]
         public void Test_Window_Reflection()
         {
-            foreach (var windowName in FftSharp.Window.GetWindowNames())
-            {
-                Console.WriteLine(windowName);
-                double[] windowed = FftSharp.Window.GetWindowByName(windowName, 5);
-                Console.WriteLine(String.Join(", ", windowed.Select(x => $"{x:N3}").ToArray()));
-                Console.WriteLine();
-                Assert.AreEqual(5, windowed.Length);
-            }
-        }
-
-        [TestCase(0, 1)]
-        [TestCase(1, 1)]
-        [TestCase(2, 2)]
-        [TestCase(3, 6)]
-        [TestCase(9, 362880)]
-        public void Test_Factorial_MatchesKnown(int k, int factorial)
-        {
-            Assert.AreEqual(factorial, FftSharp.Window.Factorial(k));
-        }
-
-        [Test]
-        public void Test_Bessel_MatchesPython()
-        {
-            /* expected values calculated with python:
-                >>> import numpy as np
-                >>> np.i0(np.arange(20))
-            */
-
-            double[] expected = {
-                1.00000000e+00, 1.26606588e+00, 2.27958530e+00, 4.88079259e+00,
-                1.13019220e+01, 2.72398718e+01, 6.72344070e+01, 1.68593909e+02,
-                4.27564116e+02, 1.09358835e+03, 2.81571663e+03, 7.28848934e+03,
-                1.89489253e+04, 4.94444896e+04, 1.29418563e+05, 3.39649373e+05,
-                8.93446228e+05, 2.35497022e+06, 6.21841242e+06, 1.64461904e+07,
-             };
-
-            double[] actual = FftSharp.Window.BesselZero(expected.Length);
-
-            for (int i = 0; i < expected.Length; i++)
-            {
-                double allowableError = .00001 * expected[i];
-                Assert.AreEqual(expected[i], actual[i], allowableError);
-            }
+            IWindow[] window = FftSharp.Window.GetWindows();
+            Assert.IsNotEmpty(window);
         }
 
         [Test]
@@ -108,7 +121,8 @@ namespace FftSharp.Tests
                 4.80567914e-03, 2.26624847e-03, 9.42588751e-04, 3.26000767e-04, 8.15094846e-05,
             };
 
-            double[] actual = FftSharp.Window.Kaiser(51, 14);
+            var window = new FftSharp.Windows.Kaiser(14);
+            double[] actual = window.Create(51);
 
             for (int i = 0; i < expected.Length; i++)
             {
