@@ -52,7 +52,6 @@ namespace FftSharp.Tests
             Assert.AreEqual(names.Count(), names.Distinct().Count());
         }
 
-        [Ignore("TODO")]
         [Test]
         public void Test_WindowDescriptions_AreUnique()
         {
@@ -63,30 +62,32 @@ namespace FftSharp.Tests
         }
 
         [Test]
-        public void Test_Window_Functions()
+        public void Test_NormalizedWindows_SumIsOne()
+        {
+            foreach (IWindow window in FftSharp.Window.GetWindows())
+            {
+                double[] kernel = window.Create(123, true);
+                double sum = kernel.Sum();
+                Assert.AreEqual(1, sum, delta: 1e-10, $"{window} sum is {sum}");
+            }
+        }
+
+        [Test]
+        public void Test_Plot_AllWindowKernels()
         {
             var plt = new ScottPlot.Plot(500, 400);
+            plt.Palette = ScottPlot.Palette.ColorblindFriendly;
 
-            double[] xs = ScottPlot.DataGen.Range(-1, 1, .01, true);
-            plt.AddScatter(xs, FftSharp.Window.Hanning(xs.Length), label: "Hanning");
-            plt.AddScatter(xs, FftSharp.Window.Hamming(xs.Length), label: "Hamming");
-            plt.AddScatter(xs, FftSharp.Window.Bartlett(xs.Length), label: "Bartlett");
-            plt.AddScatter(xs, FftSharp.Window.Blackman(xs.Length), label: "Blackman");
-            //plt.AddScatter(xs, FftSharp.Window.BlackmanExact(xs.Length), label: "BlackmanExact");
-            //plt.AddScatter(xs, FftSharp.Window.BlackmanHarris(xs.Length), label: "BlackmanHarris");
-            plt.AddScatter(xs, FftSharp.Window.FlatTop(xs.Length), label: "FlatTop");
-            plt.AddScatter(xs, FftSharp.Window.Cosine(xs.Length), label: "Cosine");
-            plt.AddScatter(xs, FftSharp.Window.Kaiser(xs.Length, 15), label: "Kaiser");
-
-            // customize line styles post-hoc
-            foreach (var p in plt.GetPlottables())
+            foreach (IWindow window in FftSharp.Window.GetWindows())
             {
-                if (p is ScottPlot.Plottable.ScatterPlot sp)
-                {
-                    sp.MarkerSize = 0;
-                    sp.LineWidth = 3;
-                    sp.Color = System.Drawing.Color.FromArgb(200, sp.Color);
-                }
+                if (window.Name == "Rectangular")
+                    continue;
+                double[] xs = ScottPlot.DataGen.Range(-1, 1, .01, true);
+                double[] ys = window.Create(xs.Length);
+                var sp = plt.AddScatter(xs, ys, label: window.Name);
+                sp.MarkerSize = 0;
+                sp.LineWidth = 3;
+                sp.Color = System.Drawing.Color.FromArgb(200, sp.Color);
             }
 
             plt.Legend(enable: true, location: Alignment.UpperRight);
@@ -96,14 +97,8 @@ namespace FftSharp.Tests
         [Test]
         public void Test_Window_Reflection()
         {
-            foreach (var windowName in FftSharp.Window.GetWindowNames())
-            {
-                Console.WriteLine(windowName);
-                double[] windowed = FftSharp.Window.GetWindowByName(windowName, 5);
-                Console.WriteLine(String.Join(", ", windowed.Select(x => $"{x:N3}").ToArray()));
-                Console.WriteLine();
-                Assert.AreEqual(5, windowed.Length);
-            }
+            IWindow[] window = FftSharp.Window.GetWindows();
+            Assert.IsNotEmpty(window);
         }
 
         [Test]
@@ -126,7 +121,8 @@ namespace FftSharp.Tests
                 4.80567914e-03, 2.26624847e-03, 9.42588751e-04, 3.26000767e-04, 8.15094846e-05,
             };
 
-            double[] actual = FftSharp.Window.Kaiser(51, 14);
+            var window = new FftSharp.Windows.Kaiser(14);
+            double[] actual = window.Create(51);
 
             for (int i = 0; i < expected.Length; i++)
             {

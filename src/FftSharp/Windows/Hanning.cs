@@ -2,7 +2,7 @@
 
 namespace FftSharp.Windows
 {
-    public class Hanning : WindowBase, IWindow
+    public class Hanning : Window, IWindow
     {
         public override string Name => "Hanning";
         public override string Description =>

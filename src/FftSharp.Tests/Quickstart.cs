@@ -26,8 +26,8 @@ namespace FftSharp.Tests
             // optionally apply a window to the data before calculating the FFT
             if (useWindow)
             {
-                double[] window = FftSharp.Window.Hanning(audio.Length);
-                FftSharp.Window.ApplyInPlace(window, audio);
+                var window = new FftSharp.Windows.Hanning();
+                window.ApplyInPlace(audio);
             }
 
             // You could get the FFT as a complex result

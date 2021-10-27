@@ -2,7 +2,7 @@
 
 namespace FftSharp.Windows
 {
-    public class Kaiser : WindowBase, IWindow
+    public class Kaiser : Window, IWindow
     {
         public readonly double Beta;
         public override string Name => $"Kaiser-Bessel";

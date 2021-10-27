@@ -2,7 +2,7 @@
 
 namespace FftSharp.Windows
 {
-    internal class Hamming : WindowBase, IWindow
+    internal class Hamming : Window, IWindow
     {
         public override string Name => "Hamming";
         public override string Description =>

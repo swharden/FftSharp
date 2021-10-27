@@ -31,19 +31,19 @@ namespace FftSharp.Demo
             double[] fft = FftSharp.Transform.FFTmagnitude(input);
 
             // plot the input signal
-            formsPlot1.plt.Clear();
-            formsPlot1.plt.PlotScatter(
+            formsPlot1.Plot.Clear();
+            formsPlot1.Plot.AddScatter(
                 xs: ScottPlot.DataGen.Consecutive(input.Length),
                 ys: input);
-            formsPlot1.plt.Title("Original Signal");
+            formsPlot1.Plot.Title("Original Signal");
             formsPlot1.Render();
 
             // plot the FFT
-            formsPlot2.plt.Clear();
-            formsPlot2.plt.PlotScatter(
+            formsPlot2.Plot.Clear();
+            formsPlot2.Plot.AddScatter(
                 xs: ScottPlot.DataGen.Consecutive(fft.Length),
                 ys: fft);
-            formsPlot2.plt.Title("Fast Fourier Transform (FFT)");
+            formsPlot2.Plot.Title("Fast Fourier Transform (FFT)");
             formsPlot2.Render();
         }
     }

@@ -2,7 +2,7 @@
 
 namespace FftSharp.Windows
 {
-    public class Bartlett : WindowBase, IWindow
+    public class Bartlett : Window, IWindow
     {
         public override string Name => "Bartlett–Hann";
         public override string Description =>

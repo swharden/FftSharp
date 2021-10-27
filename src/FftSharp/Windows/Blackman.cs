@@ -2,7 +2,7 @@
 
 namespace FftSharp.Windows
 {
-    public class Blackman : WindowBase, IWindow
+    public class Blackman : Window, IWindow
     {
         private readonly double A = 0.42659071;
         private readonly double B = 0.49656062;

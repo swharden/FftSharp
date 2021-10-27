@@ -1,6 +1,6 @@
 ﻿namespace FftSharp.Windows
 {
-    public class Rectangular : WindowBase, IWindow
+    public class Rectangular : Window, IWindow
     {
         public override string Name => "Rectangular";
         public override string Description =>

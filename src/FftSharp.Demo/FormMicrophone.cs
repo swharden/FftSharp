@@ -62,8 +62,8 @@ namespace FftSharp.Demo
             if (lastBuffer is null)
                 return;
 
-            double[] window = FftSharp.Window.Hanning(lastBuffer.Length);
-            double[] windowed = FftSharp.Window.Apply(window, lastBuffer);
+            var window = new Windows.Hanning();
+            double[] windowed = window.Apply(lastBuffer);
             double[] zeroPadded = FftSharp.Pad.ZeroPad(windowed);
             double[] fftPower = cbDecibel.Checked ?
                 FftSharp.Transform.FFTpower(zeroPadded) :
