@@ -128,6 +128,24 @@ No Window | Power Spectral Density
 ---|---
 ![](dev/quickstart/audio.png)|![](dev/quickstart/fft.png)
 
+### Window Functions
+
+This chart (adapted from [](https://www.egr.msu.edu/classes/me451/me451_labs/Fall_2013/Understanding_FFT_Windows.pdf)) summarizes windows commonly used for FFT analysis.
+
+Window           | Use Case       | Frequency Resolution | Spectral Leakage | Amplitude Accuracy
+-----------------|----------------|------|------|-----
+Barlett          | Random         | Good | Fair | Fair
+Blackman         | Random / mixed | Poor | Best | Good
+Flat Top         | Sine waves     | Poor | Good | Best
+Hanning          | Random         | Good | Good | Fair
+Hamming          | Random         | Good | Fair | Fair
+Kaiser-Bessel    | Random         | Fair | Good | Good
+None / Boxcar    | Transient / synchronous | Best | Poor Poor
+Tukey            | Random         | Good | Poor | Poor
+Welch            | Random         | Good | Good | Fair
+
+> 💡 **Tip:** The Hanning window is good for 95% of use cases
+
 ## Mel Scaling
 
 Analyses aimed at achieving maximum frequency resolution present power spectral density using linear scaling, where every point is evenly spaced in the frequency domain. However, biological sensory systems tend to be logarithmic, and the human ear can differentiate frequency shifts better at lower frequencies than at higher ones.
