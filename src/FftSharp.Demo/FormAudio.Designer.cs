@@ -39,6 +39,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tbNoise = new System.Windows.Forms.TrackBar();
             this.cbLog = new System.Windows.Forms.CheckBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbNoise)).BeginInit();
@@ -53,14 +54,14 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.plotFFT, 0, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(14, 54);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(14, 144);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1089, 566);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1089, 476);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -77,7 +78,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1083, 267);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1083, 222);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // plotAudio
@@ -87,7 +88,7 @@
             this.plotAudio.Location = new System.Drawing.Point(5, 3);
             this.plotAudio.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.plotAudio.Name = "plotAudio";
-            this.plotAudio.Size = new System.Drawing.Size(351, 261);
+            this.plotAudio.Size = new System.Drawing.Size(351, 216);
             this.plotAudio.TabIndex = 1;
             // 
             // plotKernel
@@ -96,7 +97,7 @@
             this.plotKernel.Location = new System.Drawing.Point(365, 3);
             this.plotKernel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.plotKernel.Name = "plotKernel";
-            this.plotKernel.Size = new System.Drawing.Size(353, 261);
+            this.plotKernel.Size = new System.Drawing.Size(353, 216);
             this.plotKernel.TabIndex = 2;
             // 
             // plotWindowed
@@ -105,17 +106,17 @@
             this.plotWindowed.Location = new System.Drawing.Point(726, 3);
             this.plotWindowed.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.plotWindowed.Name = "plotWindowed";
-            this.plotWindowed.Size = new System.Drawing.Size(353, 261);
+            this.plotWindowed.Size = new System.Drawing.Size(353, 216);
             this.plotWindowed.TabIndex = 3;
             // 
             // plotFFT
             // 
             this.plotFFT.BackColor = System.Drawing.Color.Transparent;
             this.plotFFT.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plotFFT.Location = new System.Drawing.Point(5, 276);
+            this.plotFFT.Location = new System.Drawing.Point(5, 231);
             this.plotFFT.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.plotFFT.Name = "plotFFT";
-            this.plotFFT.Size = new System.Drawing.Size(1079, 267);
+            this.plotFFT.Size = new System.Drawing.Size(1079, 222);
             this.plotFFT.TabIndex = 1;
             // 
             // label1
@@ -179,11 +180,25 @@
             this.cbLog.UseVisualStyleBackColor = true;
             this.cbLog.CheckedChanged += new System.EventHandler(this.cbLog_CheckedChanged);
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.richTextBox1.Location = new System.Drawing.Point(14, 49);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(1091, 92);
+            this.richTextBox1.TabIndex = 6;
+            this.richTextBox1.Text = "";
+            // 
             // FormAudio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1117, 634);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.cbLog);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox1);
@@ -214,5 +229,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar tbNoise;
         private System.Windows.Forms.CheckBox cbLog;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }

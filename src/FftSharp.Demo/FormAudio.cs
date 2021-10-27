@@ -37,7 +37,14 @@ namespace FftSharp.Demo
         {
             IWindow window = (IWindow)comboBox1.SelectedItem;
             if (window is null)
+            {
+                richTextBox1.Clear();
                 return;
+            }
+            else
+            {
+                richTextBox1.Text = window.Description;
+            }
 
             // apply window
             double[] audio = new double[OriginalAudio.Length];
