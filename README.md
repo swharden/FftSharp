@@ -154,11 +154,9 @@ Flat Top         | Sine waves     | Poor | Good | Best
 Hanning          | Random         | Good | Good | Fair
 Hamming          | Random         | Good | Fair | Fair
 Kaiser           | Random         | Fair | Good | Good
-Rectangular      | Transient      | Best | Poor Poor
-Tukey*            | Random         | Good | Poor | Poor
-Welch*            | Random         | Good | Good | Fair
-
-_* not yet supported ([#41](https://github.com/swharden/FftSharp/issues/41))_
+Rectangular      | Transient      | Best | Poor | Poor
+Tukey            | Transient      | Good | Poor | Poor
+Welch            | Random         | Good | Good | Fair
 
 ## Demo Application
 
