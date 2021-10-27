@@ -17,19 +17,12 @@ namespace FftSharp.Demo
             InitializeComponent();
         }
 
-        private void btnQuickstart_Click(object sender, EventArgs e)
-        {
-            new FormQuickstart().ShowDialog();
-        }
+        private void btnQuickstart_Click(object sender, EventArgs e) => new FormQuickstart().ShowDialog();
 
-        private void btnSimAudio_Click(object sender, EventArgs e)
-        {
-            new FormAudio().ShowDialog();
-        }
+        private void btnWindowInspector_Click(object sender, EventArgs e) => new FormWindowInspector().ShowDialog();
 
-        private void btnMicrophone_Click(object sender, EventArgs e)
-        {
-            new FormMicrophone().ShowDialog();
-        }
+        private void btnSimAudio_Click(object sender, EventArgs e) => new FormAudio().ShowDialog();
+
+        private void btnMicrophone_Click(object sender, EventArgs e) => new FormMicrophone().ShowDialog();
     }
 }
