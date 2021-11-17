@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FftSharp.Windows
 {
-    internal class Tukey : Window, IWindow
+    public class Tukey : Window, IWindow
     {
         private readonly double Alpha;
 
