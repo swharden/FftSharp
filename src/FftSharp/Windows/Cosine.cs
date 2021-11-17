@@ -2,7 +2,7 @@
 
 namespace FftSharp.Windows
 {
-    internal class Cosine : Window, IWindow
+    public class Cosine : Window, IWindow
     {
         public override string Name => "Cosine";
         public override string Description =>

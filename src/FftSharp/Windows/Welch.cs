@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FftSharp.Windows
 {
-    internal class Welch : Window, IWindow
+    public class Welch : Window, IWindow
     {
         public override string Name => "Welch";
         public override string Description =>
