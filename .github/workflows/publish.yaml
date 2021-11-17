@@ -1,0 +1,36 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - created
+
+jobs:
+  test:
+    name: Publish
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ./src
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Setup .NET 6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+      - name: 🛠️ Setup NuGet
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+      - name: 🚚 Restore
+        run: dotnet restore
+      - name: 🛠️ Build
+        run: dotnet build --configuration Release
+      - name: 🧪 Test
+        run: dotnet test --configuration Release
+      - name: 📦 Pack
+        run: dotnet pack --configuration Release
+      - name: 🚀 Publish
+        run: nuget push "FftSharp\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json

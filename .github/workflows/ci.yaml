@@ -7,46 +7,24 @@ on:
       - master
   pull_request:
     types: [opened, synchronize, reopened]
-  release:
-    types:
-      - created
 
 jobs:
   test:
     name: Test
     runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ./src
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v2
-      - name: ✨ Setup .NET 5
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: "5.0.x"
       - name: ✨ Setup .NET 6
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "6.0.x"
-          include-prerelease: true
-      - name: 🛠️ Setup NuGet
-        uses: nuget/setup-nuget@v1
-        with:
-          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
       - name: 🚚 Restore
-        run: dotnet restore src
+        run: dotnet restore
       - name: 🛠️ Build
-        run: dotnet build src --configuration Release
+        run: dotnet build
       - name: 🧪 Test
-        run: dotnet test src
-      - name: 📦 Pack
-        run: dotnet pack src --configuration Release
-      - name: 💾 Store
-        uses: actions/upload-artifact@v2
-        with:
-          name: Packages
-          retention-days: 1
-          path: |
-            src/FftSharp/bin/Release/*.nupkg
-            src/FftSharp/bin/Release/*.snupkg
-      - name: 🚀 Publish
-        if: github.event_name == 'release'
-        run: nuget push "src\FftSharp\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
+        run: dotnet test
