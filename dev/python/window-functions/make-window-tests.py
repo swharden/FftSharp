@@ -1,4 +1,6 @@
 import numpy as np
+import scipy.signal
+import scipy.signal.windows
 
 
 def printCsArray(name: str, values: np.ndarray, precision: int = 8):
@@ -8,17 +10,13 @@ def printCsArray(name: str, values: np.ndarray, precision: int = 8):
 
 
 if __name__ == "__main__":
-
-    # https://numpy.org/doc/stable/reference/generated/numpy.hanning.html
-    printCsArray("bartlett", np.bartlett(13))
-    printCsArray("blackman", np.blackman(13))
-    # printCsArray("cosine", np.(13))
-    # printCsArray("flattop", np.(13))
-    printCsArray("hamming", np.hamming(13))
-    printCsArray("hanning", np.hanning(13))
-    printCsArray("kaiser_14", np.kaiser(13, 14))
-    # printCsArray("rectangular", np.(13))
-    # printCsArray("tukey", np.(13))
-    # printCsArray("welch", np.(13))
-
-    print("DONE")
+    printCsArray("bartlett", scipy.signal.windows.bartlett(13))
+    printCsArray("blackman", scipy.signal.windows.blackman(13))
+    printCsArray("cosine", scipy.signal.windows.cosine(13))
+    printCsArray("flattop", scipy.signal.windows.flattop(13))
+    printCsArray("hamming",  scipy.signal.windows.hamming(13))
+    printCsArray("hanning",  scipy.signal.windows.hanning(13))
+    printCsArray("kaiser_14", scipy.signal.windows.kaiser(13, beta=14))
+    printCsArray("rectangular", np.ones(13))
+    printCsArray("tukey",  scipy.signal.windows.tukey(13))
+    #printCsArray("welch", scipy.signal.welch())
