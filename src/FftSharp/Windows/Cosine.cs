@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace FftSharp.Windows
 {
@@ -11,10 +12,7 @@ namespace FftSharp.Windows
 
         public override double[] Create(int size, bool normalize = false)
         {
-            double[] window = new double[size];
-
-            for (int i = 0; i < size; i++)
-                window[i] = Math.Sin(i * Math.PI / (size - 1));
+            double[] window = Enumerable.Range(0, size).Select(x => Math.Sin(Math.PI / (size) * (x + .5))).ToArray();
 
             if (normalize)
                 NormalizeInPlace(window);
