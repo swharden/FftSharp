@@ -15,7 +15,7 @@ namespace FftSharp.Windows
             double[] window = new double[size];
 
             for (int i = 0; i < size; i++)
-                window[i] = 0.54 - 0.46 * Math.Cos(2 * Math.PI * i / size);
+                window[i] = 0.54 - 0.46 * Math.Cos(2 * Math.PI * i / (size - 1));
 
             if (normalize)
                 NormalizeInPlace(window);

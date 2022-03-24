@@ -13,8 +13,12 @@ namespace FftSharp.Windows
         {
             double[] window = new double[size];
 
+            bool isOddSize = size % 2 == 1;
+
+            double halfSize = isOddSize ? size / 2 : (size - 1) / 2.0;
+
             for (int i = 0; i < size; i++)
-                window[i] = 1 - Math.Abs((double)(i - (size / 2)) / (size / 2));
+                window[i] = 1 - Math.Abs((double)(i - halfSize) / halfSize);
 
             if (normalize)
                 NormalizeInPlace(window);

@@ -29,13 +29,29 @@ namespace FftSharp.Windows
         {
             double[] window = new double[size];
 
-            double m = 2 * Math.PI / (Alpha * size);
+            double m = 2 * Math.PI / (Alpha * (size - 1));
+
             int edgeSizePoints = (int)(size * Alpha / 2);
+
+            if (size % 2 == 0)
+                edgeSizePoints += 1;
 
             for (int i = 0; i < size; i++)
             {
-                bool isEdge = (i < edgeSizePoints) || (i > size - edgeSizePoints);
-                window[i] = isEdge ? (1 - Math.Cos(i * m)) / 2 : 1;
+                if (i < edgeSizePoints)
+                {
+                    // left edge
+                    window[i] = (1 - Math.Cos(i * m)) / 2;
+                }
+                else if (i >= size - edgeSizePoints)
+                {
+                    // right edge
+                    window[i] = (1 - Math.Cos(i * m)) / 2;
+                }
+                else
+                {
+                    window[i] = 1;
+                }
             }
 
             if (normalize)

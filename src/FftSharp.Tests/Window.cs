@@ -73,6 +73,27 @@ namespace FftSharp.Tests
         }
 
         [Test]
+        public void Test_OddLength_CenterIndexIsBiggest()
+        {
+            foreach (IWindow window in FftSharp.Window.GetWindows())
+            {
+                double[] values = window.Create(13);
+                Assert.GreaterOrEqual(values[6], values[5], window.Name);
+                Assert.GreaterOrEqual(values[6], values[7], window.Name);
+            }
+        }
+
+        [Test]
+        public void Test_EvenLength_CenterTwoAreSame()
+        {
+            foreach (IWindow window in FftSharp.Window.GetWindows())
+            {
+                double[] values = window.Create(12);
+                Assert.AreEqual(values[5], values[6], 1e-5, window.Name);
+            }
+        }
+
+        [Test]
         public void Test_Plot_AllWindowKernels()
         {
             var plt = new ScottPlot.Plot(500, 400);
@@ -99,36 +120,6 @@ namespace FftSharp.Tests
         {
             IWindow[] window = FftSharp.Window.GetWindows();
             Assert.IsNotEmpty(window);
-        }
-
-        [Test]
-        public void Test_Kaiser_MatchesPython()
-        {
-            /* expected values calculated with python:
-                >>> import numpy as np
-                >>> np.kaiser(50, 14)
-            */
-            double[] expected = {
-                7.72686684e-06, 8.15094846e-05, 3.26000767e-04, 9.42588751e-04, 2.26624847e-03,
-                4.80567914e-03, 9.27621459e-03, 1.66164301e-02, 2.79789657e-02, 4.46873500e-02,
-                6.81537432e-02, 9.97574012e-02, 1.40689805e-01, 1.91778970e-01, 2.53311387e-01,
-                3.24874218e-01, 4.05241756e-01, 4.92328143e-01, 5.83222700e-01, 6.74315433e-01,
-                7.61509399e-01, 8.40504954e-01, 9.07130390e-01, 9.57685605e-01, 9.89261639e-01,
-                1.00000000e+00, 9.89261639e-01, 9.57685605e-01, 9.07130390e-01, 8.40504954e-01,
-                7.61509399e-01, 6.74315433e-01, 5.83222700e-01, 4.92328143e-01, 4.05241756e-01,
-                3.24874218e-01, 2.53311387e-01, 1.91778970e-01, 1.40689805e-01, 9.97574012e-02,
-                6.81537432e-02, 4.46873500e-02, 2.79789657e-02, 1.66164301e-02, 9.27621459e-03,
-                4.80567914e-03, 2.26624847e-03, 9.42588751e-04, 3.26000767e-04, 8.15094846e-05,
-            };
-
-            var window = new FftSharp.Windows.Kaiser(14);
-            double[] actual = window.Create(51);
-
-            for (int i = 0; i < expected.Length; i++)
-            {
-                double allowableError = .00001 * expected[i];
-                Assert.AreEqual(expected[i], actual[i], allowableError);
-            }
         }
     }
 }

@@ -17,6 +17,7 @@ namespace FftSharp.Windows
         {
         }
 
+        //TODO: 5-term constructor to allow testing Python's flattop
         public Blackman(double a, double b, double c)
         {
             (A, B, C) = (a, b, c);
@@ -27,7 +28,10 @@ namespace FftSharp.Windows
             double[] window = new double[size];
 
             for (int i = 0; i < size; i++)
-                window[i] = A - B * Math.Cos(2 * Math.PI * i / size) + C * Math.Cos(4 * Math.PI * i / size);
+            {
+                double frac = (double)i / (size - 1);
+                window[i] = A - B * Math.Cos(2 * Math.PI * frac) + C * Math.Cos(4 * Math.PI * frac);
+            }
 
             if (normalize)
                 NormalizeInPlace(window);
