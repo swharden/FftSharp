@@ -52,7 +52,6 @@ namespace FftSharp.Tests
             AssertEqual(Known_cosine_14, new Windows.Cosine().Create(14));
         }
 
-        [Ignore("TODO: make this pass")]
         [Test]
         public void Test_FlatTop()
         {
@@ -89,7 +88,6 @@ namespace FftSharp.Tests
             AssertEqual(Known_rectangular_14, new Windows.Rectangular().Create(14));
         }
 
-        [Ignore("TODO: make this pass")]
         [Test]
         public void Test_Tukey()
         {
