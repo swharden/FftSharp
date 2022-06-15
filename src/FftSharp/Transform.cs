@@ -122,13 +122,16 @@ namespace FftSharp
         /// <summary>
         /// Calculate sample frequency for each point in a FFT
         /// </summary>
+        /// <param name="sampleRate">Sample rate (Hertz) of the signal whose FFT has already been computed</param>
+        /// <param name="pointCount">Length of the array returned by either <see cref="FFTpower"/> or <see cref="FFTmagnitude"/> functions</param>
+        /// <param name="oneSided"></param>
         public static double[] FFTfreq(double sampleRate, int pointCount, bool oneSided = true)
         {
             double[] freqs = new double[pointCount];
 
             if (oneSided)
             {
-                double fftPeriodHz = sampleRate / pointCount / 2;
+                double fftPeriodHz = sampleRate / (pointCount - 1) / 2;   // The FFT-array has n/2 + 1 points
 
                 // freqs start at 0 and approach maxFreq
                 for (int i = 0; i < pointCount; i++)
@@ -137,7 +140,7 @@ namespace FftSharp
             }
             else
             {
-                double fftPeriodHz = sampleRate / pointCount;
+                double fftPeriodHz = sampleRate / (pointCount - 1);       // The FFT-array has n/2 + 1 points
 
                 // first half: freqs start a 0 and approach maxFreq
                 int halfIndex = pointCount / 2;
@@ -149,6 +152,17 @@ namespace FftSharp
                     freqs[i] = -(pointCount - i) * fftPeriodHz;
                 return freqs;
             }
+        }
+
+        /// <summary>
+        /// Calculate sample frequency for each point in a FFT
+        /// </summary>
+        /// <param name="sampleRate">Sample rate (Hertz) of the signal whose FFT has already been computed</param>
+        /// <param name=signalt">The array returned by either <see cref="FFTpower"/> or <see cref="FFTmagnitude"/> functions</param>
+        /// <param name="oneSided"></param>
+        public static double[] FFTfreq(double sampleRate, double[] signal, bool oneSided = true)
+        {
+            return FFTfreq(sampleRate, signal.Length - 1, oneSided);
         }
 
         /// <summary>
