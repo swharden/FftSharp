@@ -157,12 +157,13 @@ namespace FftSharp
         /// <summary>
         /// Calculate sample frequency for each point in a FFT
         /// </summary>
-        /// <param name="sampleRate">Sample rate (Hertz) of the signal whose FFT has already been computed</param>
-        /// <param name=signalt">The array returned by either <see cref="FFTpower"/> or <see cref="FFTmagnitude"/> functions</param>
-        /// <param name="oneSided"></param>
-        public static double[] FFTfreq(double sampleRate, double[] signal, bool oneSided = true)
+        /// <param name="sampleRate">Sample rate (Hz) of the original signal</param>
+        /// <param name="fftInput">Original data passed into the FFT function (used to calculate size of the returned array)</param>
+        /// <param name="oneSided">Whether or not frequencies are for a one-sided FFT (containing only real numbers)</param>
+        public static double[] FFTfreq(double sampleRate, double[] fftInput, bool oneSided = true)
         {
-            return FFTfreq(sampleRate, signal.Length - 1, oneSided);
+            int fftOutputLength = fftInput.Length / 2 + 1;
+            return FFTfreq(sampleRate, fftOutputLength, oneSided);
         }
 
         /// <summary>
