@@ -23,8 +23,8 @@ namespace FftSharp
         /// <param name="buffer">Data to transform in-place. Length must be a power of 2.</param>
         public static void FFT(Span<Complex> buffer)
         {
-            if (buffer.Length < 16)
-                throw new ArgumentException("Buffer must contain at least 16 values");
+            if (buffer.Length == 0)
+                throw new ArgumentException("Buffer must not be empty");
 
             if (!IsPowerOfTwo(buffer.Length))
                 throw new ArgumentException("Buffer length must be a power of 2");
@@ -74,8 +74,8 @@ namespace FftSharp
             if (buffer is null)
                 throw new ArgumentNullException(nameof(buffer));
 
-            if (buffer.Length < 16)
-                throw new ArgumentException("Buffer must contain at least 16 values");
+            if (buffer.Length == 0)
+                throw new ArgumentException("Buffer must not be empty");
 
             if (!IsPowerOfTwo(buffer.Length))
                 throw new ArgumentException("Buffer length must be a power of 2");
@@ -212,8 +212,8 @@ namespace FftSharp
             if (input is null)
                 throw new ArgumentNullException(nameof(input));
 
-            if (input.Length < 16)
-                throw new ArgumentException("Input must have at least 16 values");
+            if (input.Length == 0)
+                throw new ArgumentException("Input must not be empty");
 
             if (!IsPowerOfTwo(input.Length))
                 throw new ArgumentException("Input length must be an even power of 2");
@@ -233,8 +233,8 @@ namespace FftSharp
             if (input is null)
                 throw new ArgumentNullException(nameof(input));
 
-            if (input.Length < 16)
-                throw new ArgumentException("Input must have at least 16 values");
+            if (input.Length == 0)
+                throw new ArgumentException("Input must not be empty");
 
             if (!IsPowerOfTwo(input.Length))
                 throw new ArgumentException("Input length must be an even power of 2");
