@@ -122,13 +122,16 @@ namespace FftSharp
         /// <summary>
         /// Calculate sample frequency for each point in a FFT
         /// </summary>
+        /// <param name="sampleRate">Sample rate (Hz) of the original signal</param>
+        /// <param name="pointCount">Number of points to generate (typically the length of the FFT)</param>
+        /// <param name="oneSided">Whether or not frequencies are for a one-sided FFT (containing only real numbers)</param>
         public static double[] FFTfreq(double sampleRate, int pointCount, bool oneSided = true)
         {
             double[] freqs = new double[pointCount];
 
             if (oneSided)
             {
-                double fftPeriodHz = sampleRate / pointCount / 2;
+                double fftPeriodHz = sampleRate / (pointCount - 1) / 2;
 
                 // freqs start at 0 and approach maxFreq
                 for (int i = 0; i < pointCount; i++)
@@ -149,6 +152,17 @@ namespace FftSharp
                     freqs[i] = -(pointCount - i) * fftPeriodHz;
                 return freqs;
             }
+        }
+
+        /// <summary>
+        /// Calculate sample frequency for each point in a FFT
+        /// </summary>
+        /// <param name="sampleRate">Sample rate (Hz) of the original signal</param>
+        /// <param name="fft">FFT array for which frequencies should be generated</param>
+        /// <param name="oneSided">Whether or not frequencies are for a one-sided FFT (containing only real numbers)</param>
+        public static double[] FFTfreq(double sampleRate, double[] fft, bool oneSided = true)
+        {
+            return FFTfreq(sampleRate, fft.Length, oneSided);
         }
 
         /// <summary>
@@ -294,6 +308,9 @@ namespace FftSharp
         /// <param name="input">real input</param>
         public static void FFTmagnitude(Span<double> destination, Span<double> input)
         {
+            if (input.Length < 16)
+                throw new ArgumentException("This overload requires an input with at least 16 points");
+
             if (!IsPowerOfTwo(input.Length))
                 throw new ArgumentException("Input length must be an even power of 2");
 
