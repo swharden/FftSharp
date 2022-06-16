@@ -122,16 +122,16 @@ namespace FftSharp
         /// <summary>
         /// Calculate sample frequency for each point in a FFT
         /// </summary>
-        /// <param name="sampleRate">Sample rate (Hertz) of the signal whose FFT has already been computed</param>
-        /// <param name="pointCount">Length of the array (minus 1) returned by either <see cref="FFTpower"/> or <see cref="FFTmagnitude"/> functions</param>
-        /// <param name="oneSided"></param>
+        /// <param name="sampleRate">Sample rate (Hz) of the original signal</param>
+        /// <param name="pointCount">Number of points to generate (typically the length of the FFT)</param>
+        /// <param name="oneSided">Whether or not frequencies are for a one-sided FFT (containing only real numbers)</param>
         public static double[] FFTfreq(double sampleRate, int pointCount, bool oneSided = true)
         {
             double[] freqs = new double[pointCount];
 
             if (oneSided)
             {
-                double fftPeriodHz = sampleRate / pointCount / 2;
+                double fftPeriodHz = sampleRate / (pointCount - 1) / 2;
 
                 // freqs start at 0 and approach maxFreq
                 for (int i = 0; i < pointCount; i++)
