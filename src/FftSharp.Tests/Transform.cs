@@ -155,5 +155,68 @@ namespace FftSharp.Tests
                 Assert.DoesNotThrow(realSpanRFFT);
             }
         }
+
+        [TestCase(0, true)]
+        [TestCase(1, false)]
+        [TestCase(2, false)]
+        [TestCase(4, false)]
+        [TestCase(8, false)]
+        [TestCase(16, false)]
+        [TestCase(32, false)]
+        [TestCase(64, false)]
+        public void Test_Fft_Complex_DifferentLengths(int pointCount, bool shouldFail)
+        {
+            Complex[] signal = new Complex[pointCount];
+            if (shouldFail)
+            {
+                Assert.Throws<ArgumentException>(() => FftSharp.Transform.FFT(signal));
+            }
+            else
+            {
+                Assert.DoesNotThrow(() => FftSharp.Transform.FFT(signal));
+            }
+        }
+
+        [TestCase(0, true)]
+        [TestCase(1, false)]
+        [TestCase(2, false)]
+        [TestCase(4, false)]
+        [TestCase(8, false)]
+        [TestCase(16, false)]
+        [TestCase(32, false)]
+        [TestCase(64, false)]
+        public void Test_Fft_Double_DifferentLengths(int pointCount, bool shouldFail)
+        {
+            double[] signal = new double[pointCount];
+            if (shouldFail)
+            {
+                Assert.Throws<ArgumentException>(() => FftSharp.Transform.FFT(signal));
+            }
+            else
+            {
+                Assert.DoesNotThrow(() => FftSharp.Transform.FFT(signal));
+            }
+        }
+
+        [TestCase(0, true)]
+        [TestCase(1, true)]
+        [TestCase(2, true)]
+        [TestCase(4, true)]
+        [TestCase(8, true)]
+        [TestCase(16, false)]
+        [TestCase(32, false)]
+        [TestCase(64, false)]
+        public void Test_Fft_Magnitude_DifferentLengths(int pointCount, bool shouldFail)
+        {
+            double[] signal = new double[pointCount];
+            if (shouldFail)
+            {
+                Assert.Throws<ArgumentException>(() => FftSharp.Transform.FFTmagnitude(signal));
+            }
+            else
+            {
+                Assert.DoesNotThrow(() => FftSharp.Transform.FFTmagnitude(signal));
+            }
+        }
     }
 }
