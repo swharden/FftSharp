@@ -25,9 +25,11 @@ namespace FftSharp.Tests
             Assert.That(fft, Is.EqualTo(fftKnown).Within(1e-10));
 
             // calculate FFT frequencies both ways
+            double[] fftFreqKnown = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
             double[] fftFreq = FftSharp.Transform.FFTfreq(sampleRateHz, fft.Length);
             double[] fftFreq2 = FftSharp.Transform.FFTfreq(sampleRateHz, fft);
-            Assert.That(fftFreq2, Is.EqualTo(fftFreq));
+            Assert.That(fftFreq, Is.EqualTo(fftFreqKnown));
+            Assert.That(fftFreq2, Is.EqualTo(fftFreqKnown));
 
             ScottPlot.Plot plt1 = new(400, 200);
             plt1.AddSignal(samples, sampleRateHz);
@@ -69,10 +71,8 @@ namespace FftSharp.Tests
             };
             double[] freqsHalf = FftSharp.Transform.FFTfreq(sampleRate, fft, oneSided: true);
             double[] freqsHalf2 = FftSharp.Transform.FFTfreq(sampleRate, fft.Length, oneSided: true);
-            Console.WriteLine(String.Join(",", freqsHalf2.Select(x => x.ToString())));
             Assert.That(freqsHalf, Is.EqualTo(freqsHalfKnown));
             Assert.That(freqsHalf2, Is.EqualTo(freqsHalfKnown));
-
         }
     }
 }
