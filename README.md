@@ -139,7 +139,7 @@ No Window | Power Spectral Density
 
 ### Window Functions
 
-This chart (adapted from [](https://www.egr.msu.edu/classes/me451/me451_labs/Fall_2013/Understanding_FFT_Windows.pdf)) summarizes windows commonly used for FFT analysis.
+This chart (adapted from [Understanding FFT Windows](https://www.egr.msu.edu/classes/me451/me451_labs/Fall_2013/Understanding_FFT_Windows.pdf)) summarizes windows commonly used for FFT analysis.
 
 Window           | Use Case       | Frequency Resolution | Spectral Leakage | Amplitude Accuracy
 -----------------|----------------|------|------|-----
