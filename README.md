@@ -110,7 +110,7 @@ double[] filtered = FftSharp.Filter.LowPass(audio, sampleRate, maxFrequency: 200
 
 ## Windowing
 
-Signals are often are _windowed_ prior to FFT analysis. Windowing is essentially multiplying the waveform by a bell-shaped curve prior to analysis, improving frequency resolution of the FFT output.
+Signals are often _windowed_ prior to FFT analysis. Windowing is essentially multiplying the waveform by a bell-shaped curve prior to analysis, improving the frequency resolution of the FFT output.
 
 <div align="center">
 
@@ -118,7 +118,7 @@ Signals are often are _windowed_ prior to FFT analysis. Windowing is essentially
 
 </div>
 
-The Hanning window is the most common window for general-purpose FFT analysis. Other window functions may have different _scallop loss_ or _spectral leakage_ properties. For more information review [window functions](https://en.wikipedia.org/wiki/Window_function) on Wikipedia.
+The Hanning window is the most common window function for general-purpose FFT analysis. Other window functions may have different _scallop loss_ or _spectral leakage_ properties. For more information review [window functions](https://en.wikipedia.org/wiki/Window_function) on Wikipedia.
 
 ```cs
 double[] signal = FftSharp.SampleData.SampleAudio1();
