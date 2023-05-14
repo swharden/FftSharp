@@ -291,7 +291,7 @@ namespace FftSharp
         }
 
         /// <summary>
-        /// Calculte power spectrum density (PSD) original (RMS) units
+        /// Calculate power spectrum density (PSD) original (RMS) units
         /// </summary>
         /// <param name="input">real input</param>
         public static double[] FFTmagnitude(double[] input)
@@ -302,7 +302,7 @@ namespace FftSharp
         }
 
         /// <summary>
-        /// Calculte power spectrum density (PSD) original (RMS) units
+        /// Calculate power spectrum density (PSD) original (RMS) units
         /// </summary>
         /// <param name="destination">Memory location of the results.</param>
         /// <param name="input">real input</param>
@@ -340,7 +340,7 @@ namespace FftSharp
         }
 
         /// <summary>
-        /// Calculte power spectrum density (PSD) in dB units
+        /// Calculate power spectrum density (PSD) in dB units
         /// </summary>
         /// <param name="input">real input</param>
         public static double[] FFTpower(double[] input)
@@ -355,7 +355,7 @@ namespace FftSharp
         }
 
         /// <summary>
-        /// Calculte power spectrum density (PSD) in dB units
+        /// Calculate power spectrum density (PSD) in dB units
         /// </summary>
         /// <param name="destination">Memory location of the results.</param>
         /// <param name="input">real input</param>
