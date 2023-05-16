@@ -155,6 +155,29 @@ namespace FftSharp
         }
 
         /// <summary>
+        /// Return the phase for each point in a Complex array
+        /// </summary>
+        public static double[] FFTphase(Complex[] values)
+        {
+            double[] phase = new double[values.Length];
+
+            for (int i = 0; i < values.Length; i++)
+                phase[i] = values[i].Phase;
+
+            return phase;
+        }
+
+        /// <summary>
+        /// Take the FFT of the given array and return its phase
+        /// </summary>
+        public static double[] FFTphase(double[] values)
+        {
+            Complex[] fft = FFT(values);
+            double[] phase = FFTphase(fft);
+            return phase;
+        }
+
+        /// <summary>
         /// Calculate sample frequency for each point in a FFT
         /// </summary>
         /// <param name="sampleRate">Sample rate (Hz) of the original signal</param>
