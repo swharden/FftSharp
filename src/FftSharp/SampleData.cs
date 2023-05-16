@@ -62,6 +62,9 @@ namespace FftSharp
             return values;
         }
 
+        /// <summary>
+        /// Sample audio (48 kHz sample rate) with tones at 2 kHz, 10 kHz, and 20 kHz
+        /// </summary>
         public static double[] SampleAudio1()
         {
             /* This sample data was created to serve as a standard sample to test
