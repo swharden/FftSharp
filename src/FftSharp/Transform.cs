@@ -262,7 +262,7 @@ namespace FftSharp
 
             try
             {
-                Span<Complex> buffer = temp;
+                Span<Complex> buffer = temp.AsSpan(0, input.Length);
                 MakeComplex(buffer, input);
                 FFT(buffer);
                 buffer.Slice(0, destination.Length).CopyTo(destination);
@@ -308,8 +308,8 @@ namespace FftSharp
         /// <param name="input">real input</param>
         public static void FFTmagnitude(Span<double> destination, Span<double> input)
         {
-            if (input.Length < 16)
-                throw new ArgumentException("This overload requires an input with at least 16 points");
+            if (input.Length < 2)
+                throw new ArgumentException("Input should have 2 points at least");
 
             if (!IsPowerOfTwo(input.Length))
                 throw new ArgumentException("Input length must be an even power of 2");
