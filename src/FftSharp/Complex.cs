@@ -8,8 +8,9 @@ namespace FftSharp
     {
         public double Real;
         public double Imaginary;
-        public double MagnitudeSquared { get { return Real * Real + Imaginary * Imaginary; } }
-        public double Magnitude { get { return Math.Sqrt(MagnitudeSquared); } }
+        public double MagnitudeSquared => Real * Real + Imaginary * Imaginary;
+        public double Magnitude => Math.Sqrt(MagnitudeSquared);
+        public double Phase => Math.Atan2(Imaginary, Real);
 
         public Complex(double real, double imaginary)
         {

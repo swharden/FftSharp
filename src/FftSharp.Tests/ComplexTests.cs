@@ -16,5 +16,12 @@ namespace FftSharp.Tests
             Assert.AreEqual("3-5j", new FftSharp.Complex(3, -5).ToString());
             Assert.AreEqual("-3+5j", new FftSharp.Complex(-3, 5).ToString());
         }
+
+        [Test]
+        public void Test_Complex_Phase()
+        {
+            Complex v = new(42, 69);
+            Assert.AreEqual(1.0240074859056494, v.Phase);
+        }
     }
 }
