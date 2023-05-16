@@ -200,9 +200,9 @@ namespace FftSharp.Tests
 
         [TestCase(0, true)]
         [TestCase(1, true)]
-        [TestCase(2, true)]
-        [TestCase(4, true)]
-        [TestCase(8, true)]
+        [TestCase(2, false)]
+        [TestCase(4, false)]
+        [TestCase(8, false)]
         [TestCase(16, false)]
         [TestCase(32, false)]
         [TestCase(64, false)]
