@@ -48,9 +48,11 @@ if __name__ == "__main__":
     fftMag = np.abs(fftReal) * 2 / N
     fftMag[0] = np.abs(fftReal[0]) / N  # special case for DC
     fftDB = 20 * np.log10(fftMag)
+    fftPhase = np.angle(fft)
 
     saveData("fft.txt", fft)
     saveData("fftFreq.txt", fftFreq)
     saveData("fftReal.txt", fftReal)
     saveData("fftMag.txt", fftMag)
     saveData("fftDB.txt", fftDB)
+    saveData("fftPhase.txt", fftPhase)
