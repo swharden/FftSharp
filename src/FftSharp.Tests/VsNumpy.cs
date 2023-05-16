@@ -77,6 +77,18 @@ namespace FftSharp.Tests
         }
 
         [Test]
+        public void Test_VsNumpy_FftPhase()
+        {
+            double[] phases = FftSharp.Transform.FFTphase(values);
+            double[] numpyFftPhase = LoadData.Double("fftPhase.txt");
+
+            Assert.AreEqual(numpyFftPhase.Length, phases.Length);
+
+            for (int i = 0; i < phases.Length; i++)
+                Assert.AreEqual(numpyFftPhase[i], phases[i], 1e-10);
+        }
+
+        [Test]
         public void Test_VsNumpy_FftFreq()
         {
             double[] fftFreq = FftSharp.Transform.FFTfreq(sampleRate: 48_000, pointCount: values.Length, oneSided: false);
