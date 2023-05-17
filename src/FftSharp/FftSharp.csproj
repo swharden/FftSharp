@@ -1,48 +1,49 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net5.0;</TargetFrameworks>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <OutputType>Library</OutputType>
-    <PackageProjectUrl>https://github.com/swharden/FftSharp</PackageProjectUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Description>A .NET Standard library for computing the Fast Fourier Transform (FFT) of real or complex data</Description>
-    <Authors>Scott Harden</Authors>
-    <Company>Harden Technologies, LLC</Company>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/swharden/FftSharp</RepositoryUrl>
-    <PackageTags>fft ifft fourier transform audio signal sound filter window hanning hamming</PackageTags>
-    <PackageReleaseNotes>https://github.com/swharden/FftSharp/releases</PackageReleaseNotes>
-    <IncludeSymbols>true</IncludeSymbols>
-    <DocumentationFile>FftSharp.xml</DocumentationFile>
-    <Version>1.1.6</Version>
-    <AssemblyVersion>1.1.6.0</AssemblyVersion>
-    <FileVersion>1.1.6.0</FileVersion>
-    <NoWarn>1591</NoWarn>
-    <DebugType>portable</DebugType>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <Deterministic>true</Deterministic>
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <OutputType>Library</OutputType>
+        <PackageProjectUrl>https://github.com/swharden/FftSharp</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Description>A .NET Standard library for computing the Fast Fourier Transform (FFT) of real or complex data</Description>
+        <Authors>Scott Harden</Authors>
+        <Company>Harden Technologies, LLC</Company>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/swharden/FftSharp</RepositoryUrl>
+        <PackageTags>fft ifft fourier transform audio signal sound filter window hanning hamming</PackageTags>
+        <PackageReleaseNotes>https://github.com/swharden/FftSharp/releases</PackageReleaseNotes>
+        <IncludeSymbols>true</IncludeSymbols>
+        <DocumentationFile>FftSharp.xml</DocumentationFile>
+        <Version>1.1.6</Version>
+        <AssemblyVersion>1.1.6.0</AssemblyVersion>
+        <FileVersion>1.1.6.0</FileVersion>
+        <NoWarn>1591</NoWarn>
+        <DebugType>portable</DebugType>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <Deterministic>true</Deterministic>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="icon.png" Pack="true" PackagePath="\" />
-    <None Include="README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Include="icon.png" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    <PackageReference Include="System.Memory" Version="4.5.5" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+        <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+        <PackageReference Include="System.Memory" Version="4.5.5" />
+    </ItemGroup>
 
 </Project>
