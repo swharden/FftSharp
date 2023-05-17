@@ -18,8 +18,8 @@ window.ApplyInPlace(signal);
 System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(signal);
 
 // or get the magnitude (units²) or power (dB) as real numbers
-double[] magnitude = FftSharp.FFT.Magnitude(signal);
-double[] power = FftSharp.FFT.Power(signal);
+double[] magnitude = FftSharp.FFT.Magnitude(spectrum);
+double[] power = FftSharp.FFT.Power(spectrum);
 ```
 
 Signal | Windowed Signal | FFT
@@ -60,7 +60,7 @@ int sampleRate = 48_000;
 
 // calculate the power spectral density using FFT
 System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(audio);
-double[] psd = FftSharp.FFT.Power(signal);
+double[] psd = FftSharp.FFT.Power(spectrum);
 double[] freq = FftSharp.FFT.FrequencyScale(psd.Length, sampleRate);
 
 // plot the sample audio
