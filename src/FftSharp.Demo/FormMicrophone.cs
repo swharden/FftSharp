@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,14 +16,16 @@ namespace FftSharp.Demo
 {
     public partial class FormMicrophone : Form
     {
-        private const int SAMPLE_RATE = 48000;
-        private NAudio.Wave.WaveInEvent wvin;
+        const int SAMPLE_RATE = 48000;
+        NAudio.Wave.WaveInEvent wvin;
+        double MaxLevel = 0;
 
         public FormMicrophone()
         {
             InitializeComponent();
 
             formsPlot1.Plot.Margins(0);
+            formsPlot1.Plot.Layout(left: 50);
 
             cbDevices.Items.Clear();
             for (int i = 0; i < NAudio.Wave.WaveIn.DeviceCount; i++)
@@ -65,10 +68,11 @@ namespace FftSharp.Demo
             var window = new Windows.Hanning();
             double[] windowed = window.Apply(lastBuffer);
             double[] zeroPadded = FftSharp.Pad.ZeroPad(windowed);
+            System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(zeroPadded);
             double[] fftPower = cbDecibel.Checked ?
-                FftSharp.Transform.FFTpower(zeroPadded) :
-                FftSharp.Transform.FFTmagnitude(zeroPadded);
-            double[] fftFreq = FftSharp.Transform.FFTfreq(SAMPLE_RATE, fftPower.Length);
+                FftSharp.FFT.Power(spectrum) :
+                FftSharp.FFT.Magnitude(spectrum);
+            double[] fftFreq = FftSharp.FFT.FrequencyScale(fftPower.Length, SAMPLE_RATE);
 
             // determine peak frequency
             double peakFreq = 0;
@@ -86,7 +90,7 @@ namespace FftSharp.Demo
             formsPlot1.Plot.XLabel("Frequency Hz");
 
             // make the plot for the first time, otherwise update the existing plot
-            if (formsPlot1.Plot.GetPlottables().Count() == 0)
+            if (formsPlot1.Plot.GetPlottables().Length == 0)
             {
                 signalPlot = formsPlot1.Plot.AddSignal(fftPower, 2.0 * fftPower.Length / SAMPLE_RATE);
                 peakLine = formsPlot1.Plot.AddVerticalLine(peakFreq, ColorTranslator.FromHtml("#66FF0000"), 2);
@@ -103,6 +107,8 @@ namespace FftSharp.Demo
                 try
                 {
                     formsPlot1.Plot.AxisAuto(horizontalMargin: 0);
+                    MaxLevel = Math.Max(MaxLevel, formsPlot1.Plot.GetAxisLimits().YMax);
+                    formsPlot1.Plot.SetAxisLimitsY(-MaxLevel / 100, MaxLevel);
                 }
                 catch (Exception ex)
                 {
@@ -118,6 +124,16 @@ namespace FftSharp.Demo
             {
                 System.Diagnostics.Debug.WriteLine(ex);
             }
+        }
+
+        private void cbAutoAxis_CheckedChanged(object sender, EventArgs e)
+        {
+            MaxLevel = 0;
+        }
+
+        private void cbDecibel_CheckedChanged(object sender, EventArgs e)
+        {
+            MaxLevel = 0;
         }
     }
 }

@@ -21,15 +21,14 @@ namespace FftSharp
         /// </summary>
         public static double[] BandPass(double[] values, double sampleRate, double minFrequency, double maxFrequency)
         {
-            Complex[] fft = Transform.FFT(values);
-            double[] fftFreqs = Transform.FFTfreq(sampleRate, fft.Length, oneSided: false);
+            System.Numerics.Complex[] fft = FFT.Forward(values);
+            double[] fftFreqs = FFT.FrequencyScale(fft.Length, sampleRate, false);
             for (int i = 0; i < fft.Length; i++)
             {
                 double freq = Math.Abs(fftFreqs[i]);
                 if ((freq > maxFrequency) || (freq < minFrequency))
                 {
-                    fft[i].Real = 0;
-                    fft[i].Imaginary = 0;
+                    fft[i] = new(0, 0);
                 }
             }
             return InverseReal(fft);
@@ -40,23 +39,22 @@ namespace FftSharp
         /// </summary>
         public static double[] BandStop(double[] values, double sampleRate, double minFrequency, double maxFrequency)
         {
-            Complex[] fft = Transform.FFT(values);
-            double[] fftFreqs = Transform.FFTfreq(sampleRate, fft.Length, oneSided: false);
+            System.Numerics.Complex[] fft = FFT.Forward(values);
+            double[] fftFreqs = FFT.FrequencyScale(fft.Length, sampleRate, false);
             for (int i = 0; i < fft.Length; i++)
             {
                 double freq = Math.Abs(fftFreqs[i]);
                 if ((freq <= maxFrequency) && (freq >= minFrequency))
                 {
-                    fft[i].Real = 0;
-                    fft[i].Imaginary = 0;
+                    fft[i] = new(0, 0);
                 }
             }
             return InverseReal(fft);
         }
 
-        private static double[] InverseReal(Complex[] fft)
+        private static double[] InverseReal(System.Numerics.Complex[] fft)
         {
-            Transform.IFFT(fft);
+            FFT.Inverse(fft);
             double[] Filtered = new double[fft.Length];
             for (int i = 0; i < fft.Length; i++)
                 Filtered[i] = fft[i].Real;

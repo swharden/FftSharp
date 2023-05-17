@@ -12,11 +12,11 @@ namespace FftSharp.Tests
                  .Select(x => double.Parse(x))
                  .ToArray();
 
-        public static Complex[] Complex(string fileName) =>
+        public static System.Numerics.Complex[] Complex(string fileName) =>
              File.ReadLines($"../../../../../dev/data/{fileName}")
                  .Select(x => x.Trim('(').Trim(')').Trim('j'))
                  .Select(x => x.Replace("-", " -").Replace("+", " +").Trim())
-                 .Select(x => new Complex(double.Parse(x.Split(' ')[0]), double.Parse(x.Split(' ')[1])))
+                 .Select(x => new System.Numerics.Complex(double.Parse(x.Split(' ')[0]), double.Parse(x.Split(' ')[1])))
                  .ToArray();
     }
 }

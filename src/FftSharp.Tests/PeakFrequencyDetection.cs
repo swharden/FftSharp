@@ -15,8 +15,9 @@ namespace FftSharp.Tests
             double sampleRate = 48_000;
 
             double[] signal = FftSharp.SampleData.SampleAudio1(); // 2 kHz peak frequency
-            double[] fftMag = FftSharp.Transform.FFTmagnitude(signal);
-            double[] fftFreq = FftSharp.Transform.FFTfreq(sampleRate, fftMag);
+            System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(signal);
+            double[] fftMag = FftSharp.FFT.Magnitude(spectrum);
+            double[] fftFreq = FftSharp.FFT.FrequencyScale(fftMag.Length, sampleRate);
 
             int peakIndex = 0;
             double peakValue = fftMag[0];

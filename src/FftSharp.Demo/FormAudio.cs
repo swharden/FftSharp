@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScottPlot.Drawing.Colormaps;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -117,7 +118,8 @@ namespace FftSharp.Demo
 
         private void UpdateFFT(double[] audio)
         {
-            double[] ys = cbLog.Checked ? Transform.FFTpower(audio) : Transform.FFTmagnitude(audio);
+            System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(audio);
+            double[] ys = cbLog.Checked ? FftSharp.FFT.Power(spectrum) : FftSharp.FFT.Magnitude(spectrum);
             string yLabel = cbLog.Checked ? "Power (dB)" : "Magnitude (RMS²)";
 
             plotFFT.Plot.Clear();

@@ -48,7 +48,8 @@ namespace FftSharp.Demo
             double[] xs = ScottPlot.DataGen.Consecutive(fftSize);
             double[] ys = xs.Select(x => Math.Sin(x / fftSize * Math.PI * fftSize / 2)).ToArray();
             double[] windowed = window.Apply(ys);
-            double[] power = Transform.FFTpower(windowed);
+            System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(windowed);
+            double[] power = FFT.Power(spectrum);
 
             // hide DC component
             power[0] = power[1];

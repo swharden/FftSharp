@@ -5,6 +5,7 @@ using System.Text;
 
 namespace FftSharp.Tests
 {
+    [Obsolete("Use methods which consume System.Numerics.Complex")]
     class ComplexTests
     {
         [Test]
