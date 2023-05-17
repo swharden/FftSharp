@@ -21,7 +21,34 @@ namespace FftSharp
         /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm.
         /// </summary>
         /// <param name="buffer">Data to transform in-place. Length must be a power of 2.</param>
+        public static void FFT(System.Numerics.Complex[] buffer)
+        {
+            if (buffer is null)
+                throw new ArgumentNullException(nameof(buffer));
+
+            FFT(buffer.AsSpan());
+        }
+
+        /// <summary>
+        /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm.
+        /// </summary>
+        /// <param name="buffer">Data to transform in-place. Length must be a power of 2.</param>
         public static void FFT(Span<Complex> buffer)
+        {
+            if (buffer.Length == 0)
+                throw new ArgumentException("Buffer must not be empty");
+
+            if (!IsPowerOfTwo(buffer.Length))
+                throw new ArgumentException("Buffer length must be a power of 2");
+
+            FFT_WithoutChecks(buffer);
+        }
+
+        /// <summary>
+        /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm.
+        /// </summary>
+        /// <param name="buffer">Data to transform in-place. Length must be a power of 2.</param>
+        public static void FFT(Span<System.Numerics.Complex> buffer)
         {
             if (buffer.Length == 0)
                 throw new ArgumentException("Buffer must not be empty");
@@ -57,6 +84,39 @@ namespace FftSharp
                         int evenI = j + k;
                         int oddI = j + k + i;
                         Complex temp = new Complex(Math.Cos(mult1 * k), Math.Sin(mult1 * k));
+                        temp *= buffer[oddI];
+                        buffer[oddI] = buffer[evenI] - temp;
+                        buffer[evenI] += temp;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// High performance FFT function.
+        /// Complex input will be transformed in place.
+        /// Input array length must be a power of two. This length is NOT validated.
+        /// Running on an array with an invalid length may throw an invalid index exception.
+        /// </summary>
+        private static void FFT_WithoutChecks(Span<System.Numerics.Complex> buffer)
+        {
+            for (int i = 1; i < buffer.Length; i++)
+            {
+                int j = BitReverse(i, buffer.Length);
+                if (j > i)
+                    (buffer[j], buffer[i]) = (buffer[i], buffer[j]);
+            }
+
+            for (int i = 1; i <= buffer.Length / 2; i *= 2)
+            {
+                double mult1 = -Math.PI / i;
+                for (int j = 0; j < buffer.Length; j += (i * 2))
+                {
+                    for (int k = 0; k < i; k++)
+                    {
+                        int evenI = j + k;
+                        int oddI = j + k + i;
+                        System.Numerics.Complex temp = new System.Numerics.Complex(Math.Cos(mult1 * k), Math.Sin(mult1 * k));
                         temp *= buffer[oddI];
                         buffer[oddI] = buffer[evenI] - temp;
                         buffer[evenI] += temp;

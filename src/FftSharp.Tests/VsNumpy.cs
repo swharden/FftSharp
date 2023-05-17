@@ -38,6 +38,26 @@ namespace FftSharp.Tests
         }
 
         [Test]
+        public void Test_VsNumpy_Fft_SystemNumericsComplex()
+        {
+            System.Numerics.Complex[] buffer = new System.Numerics.Complex[values.Length];
+            for (int i = 0; i < values.Length; i++)
+                buffer[i] = new System.Numerics.Complex(real: values[i], imaginary: 0);
+
+            FftSharp.Transform.FFT(buffer);
+
+            Complex[] numpyFft = LoadData.Complex("fft.txt");
+
+            Assert.AreEqual(numpyFft.Length, buffer.Length);
+
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                Assert.AreEqual(numpyFft[i].Real, buffer[i].Real, 1e-10);
+                Assert.AreEqual(numpyFft[i].Imaginary, buffer[i].Imaginary, 1e-10);
+            }
+        }
+
+        [Test]
         public void Test_VsNumpy_Rfft()
         {
             Complex[] rfft = FftSharp.Transform.RFFT(values);
