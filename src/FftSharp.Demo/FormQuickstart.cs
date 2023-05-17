@@ -28,7 +28,8 @@ namespace FftSharp.Demo
         private void UpdateFFT(double[] input)
         {
             // calculate FFT
-            double[] fft = FftSharp.Transform.FFTmagnitude(input);
+            System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(input);
+            double[] fft = FftSharp.FFT.Magnitude(spectrum);
 
             // plot the input signal
             formsPlot1.Plot.Clear();

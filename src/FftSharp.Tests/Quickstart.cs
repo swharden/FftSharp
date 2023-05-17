@@ -31,13 +31,13 @@ namespace FftSharp.Tests
             }
 
             // You could get the FFT as a complex result
-            Complex[] fft = FftSharp.Transform.FFT(audio);
+            System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(audio);
 
             // For audio we typically want the FFT amplitude (in dB)
-            double[] fftPower = FftSharp.Transform.FFTpower(audio);
+            double[] fftPower = FftSharp.FFT.Power(spectrum);
 
             // Create an array of frequencies for each point of the FFT
-            double[] freqs = FftSharp.Transform.FFTfreq(sampleRate, fftPower.Length);
+            double[] freqs = FftSharp.FFT.FrequencyScale(fftPower.Length, sampleRate);
 
             // create an array of audio sample times to aid plotting
             double[] times = ScottPlot.DataGen.Consecutive(audio.Length, 1000d / sampleRate);

@@ -2,49 +2,99 @@
 
 namespace FftSharp;
 
-// TODO: support spans
-
 /// <summary>
 /// Fast Fourier Transform (FFT) operations using System.Numerics.Complex data types.
 /// </summary>
 public static class FFT
 {
     /// <summary>
-    /// Apply the Fast Fourier Transform (FFT) to the Complex array in place.
-    /// Length of the array must be a power of 2.
+    /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm.
     /// </summary>
+    /// <param name="samples">Data to transform in-place. Length must be a power of 2.</param>
     public static void Forward(System.Numerics.Complex[] samples)
     {
-        if (!Transform.IsPowerOfTwo(samples.Length))
+        if (samples is null)
+            throw new ArgumentNullException(nameof(samples));
+
+        Forward(samples.AsSpan());
+    }
+
+    /// <summary>
+    /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm.
+    /// </summary>
+    /// <param name="samples">Data to transform in-place. Length must be a power of 2.</param>
+    public static System.Numerics.Complex[] Forward(double[] samples)
+    {
+        if (samples is null)
+            throw new ArgumentNullException(nameof(samples));
+
+        System.Numerics.Complex[] buffer = samples.ToComplexArray();
+        Forward(buffer);
+        return buffer;
+    }
+
+    /// <summary>
+    /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm.
+    /// </summary>
+    /// <param name="samples">Data to transform in-place. Length must be a power of 2.</param>
+    public static void Forward(Span<System.Numerics.Complex> samples)
+    {
+        if (!FftOperations.IsPowerOfTwo(samples.Length))
             throw new ArgumentException($"{nameof(samples)} length must be a power of 2");
+
+        if (samples.Length < 2)
+            throw new ArgumentException($"FFT requires at least 2 samples but sample length was {samples.Length}");
 
         FftOperations.FFT_WithoutChecks(samples);
     }
 
     /// <summary>
-    /// Create a Complex array from the given data, apply the FFT, and return the result.
-    /// Length of the array must be a power of 2.
+    /// Calculate FFT and return just the real component of the spectrum
     /// </summary>
-    public static System.Numerics.Complex[] Forward(double[] real)
+    public static System.Numerics.Complex[] ForwardReal(System.Numerics.Complex[] samples)
     {
-        if (!Transform.IsPowerOfTwo(real.Length))
-            throw new ArgumentException($"{nameof(real)} length must be a power of 2");
+        if (!FftOperations.IsPowerOfTwo(samples.Length))
+            throw new ArgumentException($"{nameof(samples)} length must be a power of 2");
 
-        System.Numerics.Complex[] samples = real.ToComplexArray();
-        FftOperations.FFT_WithoutChecks(samples);
-        return samples;
+        System.Numerics.Complex[] realBuffer = new System.Numerics.Complex[samples.Length / 2 + 1];
+        FftOperations.RFFT_WithoutChecks(realBuffer, samples);
+        return realBuffer;
+    }
+
+    /// <summary>
+    /// Calculate FFT and return just the real component of the spectrum
+    /// </summary>
+    public static System.Numerics.Complex[] ForwardReal(double[] samples)
+    {
+        System.Numerics.Complex[] buffer = samples.ToComplexArray();
+        Forward(buffer);
+        System.Numerics.Complex[] real = new System.Numerics.Complex[samples.Length / 2 + 1];
+        Array.Copy(buffer, 0, real, 0, real.Length);
+        return real;
     }
 
     /// <summary>
     /// Apply the inverse Fast Fourier Transform (iFFT) to the Complex array in place.
     /// Length of the array must be a power of 2.
     /// </summary>
-    public static void Inverse(System.Numerics.Complex[] samples)
+    public static void Inverse(System.Numerics.Complex[] spectrum)
     {
-        if (!Transform.IsPowerOfTwo(samples.Length))
-            throw new ArgumentException($"{nameof(samples)} length must be a power of 2");
+        if (spectrum is null)
+            throw new ArgumentNullException(nameof(spectrum));
 
-        FftOperations.IFFT_WithoutChecks(samples);
+        Inverse(spectrum.AsSpan());
+    }
+
+    /// <summary>
+    /// Apply the inverse Fast Fourier Transform (iFFT) to the Complex array in place.
+    /// Length of the array must be a power of 2.
+    /// </summary>
+    public static void Inverse(Span<System.Numerics.Complex> spectrum)
+    {
+        if (!FftOperations.IsPowerOfTwo(spectrum.Length))
+            throw new ArgumentException($"{nameof(spectrum)} length must be a power of 2");
+
+        FftOperations.IFFT_WithoutChecks(spectrum);
     }
 
     /// <summary>
@@ -52,6 +102,87 @@ public static class FFT
     /// </summary>
     public static double[] FrequencyScale(int length, double sampleRate, bool positiveOnly = true)
     {
-        return Transform.FFTfreq(sampleRate: sampleRate, pointCount: length, oneSided: positiveOnly);
+        double[] freqs = new double[length];
+
+        if (positiveOnly)
+        {
+            double fftPeriodHz = sampleRate / (length - 1) / 2;
+
+            // freqs start at 0 and approach maxFreq
+            for (int i = 0; i < length; i++)
+                freqs[i] = i * fftPeriodHz;
+
+            return freqs;
+        }
+        else
+        {
+            double fftPeriodHz = sampleRate / length;
+
+            // first half: freqs start a 0 and approach maxFreq
+            int halfIndex = length / 2;
+            for (int i = 0; i < halfIndex; i++)
+                freqs[i] = i * fftPeriodHz;
+
+            // second half: then start at -maxFreq and approach 0
+            for (int i = halfIndex; i < length; i++)
+                freqs[i] = -(length - i) * fftPeriodHz;
+
+            return freqs;
+        }
+    }
+
+    /// <summary>
+    /// Return the resolution (distance between each frequency) of the FFT in Hz
+    /// </summary>
+    public static double FrequencyResolution(int length, double sampleRate, bool positiveOnly = true)
+    {
+        return positiveOnly
+            ? sampleRate / (length - 1) / 2
+            : sampleRate / length;
+    }
+
+    /// <summary>
+    /// Return the phase for each point in a Complex array
+    /// </summary>
+    public static double[] Phase(System.Numerics.Complex[] spectrum)
+    {
+        double[] phase = new double[spectrum.Length];
+
+        for (int i = 0; i < spectrum.Length; i++)
+            phase[i] = spectrum[i].Phase;
+
+        return phase;
+    }
+
+    /// <summary>
+    /// Calculate power spectrum density (PSD) in RMS units
+    /// </summary>
+    public static double[] Magnitude(System.Numerics.Complex[] spectrum, bool positiveOnly = true)
+    {
+        int length = positiveOnly ? spectrum.Length / 2 + 1 : spectrum.Length;
+
+        double[] output = new double[length];
+
+        // first point (DC component) is not doubled
+        output[0] = spectrum[0].Magnitude / spectrum.Length;
+
+        // subsequent points are doubled to account for combined positive and negative frequencies
+        for (int i = 1; i < output.Length; i++)
+            output[i] = 2 * spectrum[i].Magnitude / spectrum.Length;
+
+        return output;
+    }
+
+    /// <summary>
+    /// Calculate power spectrum density (PSD) in dB units
+    /// </summary>
+    public static double[] Power(System.Numerics.Complex[] spectrum, bool positiveOnly = true)
+    {
+        double[] output = Magnitude(spectrum, positiveOnly);
+
+        for (int i = 0; i < output.Length; i++)
+            output[i] = 20 * Math.Log10(output[i]);
+
+        return output;
     }
 }

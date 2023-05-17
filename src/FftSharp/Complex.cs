@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FftSharp
 {
+    [Obsolete("Use System.Numerics.Complex")]
     public struct Complex
     {
         public double Real;
@@ -62,6 +64,16 @@ namespace FftSharp
             for (int i = 0; i < input.Length; i++)
                 output[i] = input[i].Magnitude;
             return output;
+        }
+
+        public System.Numerics.Complex ToNumerics()
+        {
+            return new(Real, Imaginary);
+        }
+
+        public static System.Numerics.Complex[] ToNumerics(Complex[] values)
+        {
+            return values.Select(x => x.ToNumerics()).ToArray();
         }
     }
 }

@@ -10,7 +10,7 @@ internal class FftTests
         double[] sample = LoadData.Double("sample.txt");
         System.Numerics.Complex[] fft = FftSharp.FFT.Forward(sample);
 
-        Complex[] numpyFft = LoadData.Complex("fft.txt");
+        System.Numerics.Complex[] numpyFft = LoadData.Complex("fft.txt");
         Assert.AreEqual(numpyFft.Length, fft.Length);
 
         for (int i = 0; i < fft.Length; i++)

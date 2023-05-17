@@ -20,9 +20,9 @@
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="NAudio" Version="1.10.0" />
         <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.8.64" />
-        <PackageReference Include="ScottPlot" Version="4.1.27" />
-        <PackageReference Include="ScottPlot.WinForms" Version="4.1.27" />
+        <PackageReference Include="ScottPlot" Version="4.1.63" />
+        <PackageReference Include="ScottPlot.WinForms" Version="4.1.63" />
         <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
-        <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+        <PackageReference Include="System.Drawing.Common" Version="*" />
     </ItemGroup>
 </Project>

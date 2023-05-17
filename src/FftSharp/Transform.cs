@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Buffers;
+using System.Linq;
 
 namespace FftSharp;
 
-/// <summary>
-/// FFT operations and helper methods
-/// </summary>
+//[Obsolete("Use methods in the FftSharp.FFT class")]
 public static class Transform
 {
     /// <summary>
     /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm.
     /// </summary>
     /// <param name="buffer">Data to transform in-place. Length must be a power of 2.</param>
+    [Obsolete("Use FftSharp.FFT.Forward()")]
     public static void FFT(Complex[] buffer)
     {
         if (buffer is null)
@@ -24,34 +24,8 @@ public static class Transform
     /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm.
     /// </summary>
     /// <param name="buffer">Data to transform in-place. Length must be a power of 2.</param>
-    public static void FFT(System.Numerics.Complex[] buffer)
-    {
-        if (buffer is null)
-            throw new ArgumentNullException(nameof(buffer));
-
-        FFT(buffer.AsSpan());
-    }
-
-    /// <summary>
-    /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm.
-    /// </summary>
-    /// <param name="buffer">Data to transform in-place. Length must be a power of 2.</param>
+    [Obsolete("Use FftSharp.FFT.Forward()")]
     public static void FFT(Span<Complex> buffer)
-    {
-        if (buffer.Length == 0)
-            throw new ArgumentException("Buffer must not be empty");
-
-        if (!IsPowerOfTwo(buffer.Length))
-            throw new ArgumentException("Buffer length must be a power of 2");
-
-        FftOperations.FFT_WithoutChecks(buffer);
-    }
-
-    /// <summary>
-    /// Compute the discrete Fourier Transform (in-place) using the FFT algorithm.
-    /// </summary>
-    /// <param name="buffer">Data to transform in-place. Length must be a power of 2.</param>
-    public static void FFT(Span<System.Numerics.Complex> buffer)
     {
         if (buffer.Length == 0)
             throw new ArgumentException("Buffer must not be empty");
@@ -68,69 +42,10 @@ public static class Transform
     /// <param name="sampleRate">Sample rate (Hz) of the original signal</param>
     /// <param name="pointCount">Number of points to generate (typically the length of the FFT)</param>
     /// <param name="oneSided">Whether or not frequencies are for a one-sided FFT (containing only real numbers)</param>
+    [Obsolete("Use FftSharp.FFT.FrequencyScale()")]
     public static double[] FFTfreq(double sampleRate, int pointCount, bool oneSided = true)
     {
-        double[] freqs = new double[pointCount];
-
-        if (oneSided)
-        {
-            double fftPeriodHz = sampleRate / (pointCount - 1) / 2;
-
-            // freqs start at 0 and approach maxFreq
-            for (int i = 0; i < pointCount; i++)
-                freqs[i] = i * fftPeriodHz;
-            return freqs;
-        }
-        else
-        {
-            double fftPeriodHz = sampleRate / pointCount;
-
-            // first half: freqs start a 0 and approach maxFreq
-            int halfIndex = pointCount / 2;
-            for (int i = 0; i < halfIndex; i++)
-                freqs[i] = i * fftPeriodHz;
-
-            // second half: then start at -maxFreq and approach 0
-            for (int i = halfIndex; i < pointCount; i++)
-                freqs[i] = -(pointCount - i) * fftPeriodHz;
-            return freqs;
-        }
-    }
-
-    /// <summary>
-    /// Return the phase for each point in a Complex array
-    /// </summary>
-    public static double[] FFTphase(Complex[] values)
-    {
-        double[] phase = new double[values.Length];
-
-        for (int i = 0; i < values.Length; i++)
-            phase[i] = values[i].Phase;
-
-        return phase;
-    }
-
-    /// <summary>
-    /// Return the phase for each point in a Complex array
-    /// </summary>
-    public static double[] FFTphase(System.Numerics.Complex[] values)
-    {
-        double[] phase = new double[values.Length];
-
-        for (int i = 0; i < values.Length; i++)
-            phase[i] = values[i].Phase;
-
-        return phase;
-    }
-
-    /// <summary>
-    /// Take the FFT of the given array and return its phase
-    /// </summary>
-    public static double[] FFTphase(double[] values)
-    {
-        Complex[] fft = FFT(values);
-        double[] phase = FFTphase(fft);
-        return phase;
+        return FftSharp.FFT.FrequencyScale(pointCount, sampleRate, oneSided);
     }
 
     /// <summary>
@@ -139,14 +54,36 @@ public static class Transform
     /// <param name="sampleRate">Sample rate (Hz) of the original signal</param>
     /// <param name="fft">FFT array for which frequencies should be generated</param>
     /// <param name="oneSided">Whether or not frequencies are for a one-sided FFT (containing only real numbers)</param>
+    [Obsolete("Use FftSharp.FFT.FrequencyScale()")]
     public static double[] FFTfreq(double sampleRate, double[] fft, bool oneSided = true)
     {
         return FFTfreq(sampleRate, fft.Length, oneSided);
     }
 
     /// <summary>
+    /// Return the phase for each point in a Complex array
+    /// </summary>
+    [Obsolete("Use FftSharp.FFT.Phase()")]
+    public static double[] FFTphase(Complex[] values)
+    {
+        return FftSharp.FFT.Phase(Complex.ToNumerics(values));
+    }
+
+    /// <summary>
+    /// Take the FFT of the given array and return its phase
+    /// </summary>
+    [Obsolete("Use FftSharp.FFT.Phase()")]
+    public static double[] FFTphase(double[] values)
+    {
+        Complex[] fft = FFT(values);
+        double[] phase = FFTphase(fft);
+        return phase;
+    }
+
+    /// <summary>
     /// Return the distance between each FFT point in frequency units (Hz)
     /// </summary>
+    [Obsolete("Use FftSharp.FFT.FrequencyResolution()")]
     public static double FFTfreqPeriod(int sampleRate, int pointCount)
     {
         return .5 * sampleRate / pointCount;
@@ -155,14 +92,13 @@ public static class Transform
     /// <summary>
     /// Returns true if the given number is evenly divisible by a power of 2
     /// </summary>
-    public static bool IsPowerOfTwo(int x)
-    {
-        return ((x & (x - 1)) == 0) && (x > 0);
-    }
+    [Obsolete("Use FftSharp.FftOperations.IsPowerOfTwo()")]
+    public static bool IsPowerOfTwo(int x) => FftOperations.IsPowerOfTwo(x);
 
     /// <summary>
     /// Create an array of Complex data given the real component
     /// </summary>
+    [Obsolete("Use System.Numerics.Complex data structures instead")]
     public static Complex[] MakeComplex(double[] real)
     {
         Complex[] com = new Complex[real.Length];
@@ -173,6 +109,7 @@ public static class Transform
     /// <summary>
     /// Create an array of Complex data given the real component
     /// </summary>
+    [Obsolete("Use System.Numerics.Complex data structures instead")]
     public static void MakeComplex(Span<Complex> com, Span<double> real)
     {
         if (com.Length != real.Length)
@@ -183,22 +120,11 @@ public static class Transform
     }
 
     /// <summary>
-    /// Create an array of Complex data given the real component
-    /// </summary>
-    internal static void MakeComplexNumeric(Span<System.Numerics.Complex> com, Span<double> real)
-    {
-        if (com.Length != real.Length)
-            throw new ArgumentOutOfRangeException("Input length must match");
-
-        for (int i = 0; i < real.Length; i++)
-            com[i] = new System.Numerics.Complex(real[i], 0);
-    }
-
-    /// <summary>
     /// Compute the 1D discrete Fourier Transform using the Fast Fourier Transform (FFT) algorithm
     /// </summary>
     /// <param name="input">real input (must be an array with length that is a power of 2)</param>
     /// <returns>transformed input</returns>
+    [Obsolete("Use FftSharp.FFT.Forward()")]
     public static Complex[] FFT(double[] input)
     {
         if (input is null)
@@ -220,6 +146,7 @@ public static class Transform
     /// </summary>
     /// <param name="input">real input (must be an array with length that is a power of 2)</param>
     /// <returns>real component of transformed input</returns>
+    [Obsolete("Use FftSharp.FFT.ForwardReal()")]
     public static Complex[] RFFT(double[] input)
     {
         if (input is null)
@@ -242,6 +169,7 @@ public static class Transform
     /// <param name="destination">Memory location of the results (must be an equal to input length / 2 + 1)</param>
     /// <param name="input">real input (must be an array with length that is a power of 2)</param>
     /// <returns>real component of transformed input</returns>
+    [Obsolete("Use FftSharp.FFT.ForwardReal()")]
     public static void RFFT(Span<Complex> destination, Span<double> input)
     {
         if (!IsPowerOfTwo(input.Length))
@@ -273,6 +201,7 @@ public static class Transform
     /// Compute the inverse discrete Fourier Transform (in-place) using the FFT algorithm.
     /// </summary>
     /// <param name="buffer">Data to transform in-place. Length must be a power of 2.</param>
+    [Obsolete("Use FftSharp.FFT.Inverse()")]
     public static void IFFT(Complex[] buffer)
     {
         if (buffer is null)
@@ -292,6 +221,7 @@ public static class Transform
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
+    [Obsolete("Use FftSharp.FFT.Magnitude()")]
     public static double[] Absolute(Complex[] input)
     {
         double[] output = new double[input.Length];
@@ -304,6 +234,7 @@ public static class Transform
     /// Calculate power spectrum density (PSD) original (RMS) units
     /// </summary>
     /// <param name="input">real input</param>
+    [Obsolete("Use FftSharp.FFT.Forward() then FftSharp.FFT.Magnitude()")]
     public static double[] FFTmagnitude(double[] input)
     {
         double[] output = new double[input.Length / 2 + 1];
@@ -316,6 +247,7 @@ public static class Transform
     /// </summary>
     /// <param name="destination">Memory location of the results.</param>
     /// <param name="input">real input</param>
+    [Obsolete("Use FftSharp.FFT.Magnitude()")]
     public static void FFTmagnitude(Span<double> destination, Span<double> input)
     {
         if (input.Length < 2)
@@ -353,6 +285,7 @@ public static class Transform
     /// Calculate power spectrum density (PSD) in dB units
     /// </summary>
     /// <param name="input">real input</param>
+    [Obsolete("Use FftSharp.FFT.Forward() then FftSharp.FFT.Power()")]
     public static double[] FFTpower(double[] input)
     {
         if (!IsPowerOfTwo(input.Length))
@@ -369,6 +302,7 @@ public static class Transform
     /// </summary>
     /// <param name="destination">Memory location of the results.</param>
     /// <param name="input">real input</param>
+    [Obsolete("Use FftSharp.FFT.Power()")]
     public static void FFTpower(Span<double> destination, double[] input)
     {
         if (!IsPowerOfTwo(input.Length))
@@ -379,46 +313,27 @@ public static class Transform
             destination[i] = 2 * 10 * Math.Log10(destination[i]);
     }
 
+    /// <summary>
+    /// Convert a Mel bin to frequency (Hz)
+    /// </summary>
+    [Obsolete("use FftSharp.Mel.ToFreq()")]
     public static double MelToFreq(double mel)
     {
-        return 700 * (Math.Pow(10, mel / 2595d) - 1);
+        return Mel.ToFreq(mel);
     }
 
+    /// <summary>
+    /// Convert a frequency (Hz) to a Mel bin
+    /// </summary>
+    [Obsolete("use FftSharp.Mel.FromFreq()")]
     public static double MelFromFreq(double frequencyHz)
     {
-        return 2595 * Math.Log10(1 + frequencyHz / 700);
+        return Mel.FromFreq(frequencyHz);
     }
 
+    [Obsolete("use FftSharp.Mel.FrequencyScale()")]
     public static double[] MelScale(double[] fft, int sampleRate, int melBinCount)
     {
-        double freqMax = sampleRate / 2;
-        double maxMel = MelFromFreq(freqMax);
-
-        double[] fftMel = new double[melBinCount];
-        double melPerBin = maxMel / (melBinCount + 1);
-        for (int binIndex = 0; binIndex < melBinCount; binIndex++)
-        {
-            double melLow = melPerBin * binIndex;
-            double melHigh = melPerBin * (binIndex + 2);
-
-            double freqLow = MelToFreq(melLow);
-            double freqHigh = MelToFreq(melHigh);
-
-            int indexLow = (int)(fft.Length * freqLow / freqMax);
-            int indexHigh = (int)(fft.Length * freqHigh / freqMax);
-            int indexSpan = indexHigh - indexLow;
-
-            double binScaleSum = 0;
-            for (int i = 0; i < indexSpan; i++)
-            {
-                double binFrac = (double)i / indexSpan;
-                double indexScale = (binFrac < .5) ? binFrac * 2 : 1 - binFrac;
-                binScaleSum += indexScale;
-                fftMel[binIndex] += fft[indexLow + i] * indexScale;
-            }
-            fftMel[binIndex] /= binScaleSum;
-        }
-
-        return fftMel;
+        return Mel.Scale(fft, sampleRate, melBinCount);
     }
 }

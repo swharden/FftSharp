@@ -11,12 +11,12 @@ namespace FftSharp.Tests
         [Test]
         public void Test_FFT_AllLengthInput()
         {
-            for (int i = 1; i < 200; i++)
+            for (int i = 2; i < 200; i++)
             {
-                Complex[] input = new Complex[i];
-                Complex[] padded = FftSharp.Pad.ZeroPad(input);
+                System.Numerics.Complex[] input = new System.Numerics.Complex[i];
+                System.Numerics.Complex[] padded = FftSharp.Pad.ZeroPad(input);
                 Console.WriteLine($"Length {input.Length} -> {padded.Length}");
-                FftSharp.Transform.FFT(padded);
+                FftSharp.FFT.Forward(padded);
             }
         }
     }

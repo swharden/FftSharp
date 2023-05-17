@@ -18,11 +18,11 @@ namespace FftSharp.Tests
             window.ApplyInPlace(signal);
 
             // Calculate the FFT as an array of complex numbers
-            Complex[] fft = FftSharp.Transform.FFT(signal);
+            System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(signal);
 
             // Or get the spectral power (dB) or magnitude (RMS²) as real numbers
-            double[] fftPwr = FftSharp.Transform.FFTpower(signal);
-            double[] fftMag = FftSharp.Transform.FFTmagnitude(signal);
+            double[] fftPower = FftSharp.FFT.Power(spectrum);
+            double[] fftMagnitude = FftSharp.FFT.Magnitude(spectrum);
         }
 
         [Test]
@@ -49,8 +49,9 @@ namespace FftSharp.Tests
             int sampleRate = 48_000;
 
             // calculate the power spectral density using FFT
-            double[] psd = FftSharp.Transform.FFTpower(signal);
-            double[] freq = FftSharp.Transform.FFTfreq(sampleRate, psd.Length);
+            System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(signal);
+            double[] psd = FftSharp.FFT.Power(spectrum);
+            double[] freq = FftSharp.FFT.FrequencyScale(psd.Length, sampleRate);
 
             // plot the sample audio
             var plt = new ScottPlot.Plot(400, 200);
@@ -60,20 +61,6 @@ namespace FftSharp.Tests
             plt.Margins(0);
 
             plt.SaveFig(Path.Combine(OUTPUT_FOLDER, "periodogram.png"));
-        }
-
-        [Test]
-        public void Test_Complex()
-        {
-            Complex[] buffer =
-            {
-                new Complex(42, 0),
-                new Complex(96, 0),
-                new Complex(13, 0),
-                new Complex(99, 0),
-            };
-
-            FftSharp.Transform.FFT(buffer);
         }
 
         [Test]

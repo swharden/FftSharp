@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 
 namespace FftSharp;
 
@@ -8,11 +9,20 @@ namespace FftSharp;
 internal class FftOperations
 {
     /// <summary>
+    /// Returns true if the given number is evenly divisible by a power of 2
+    /// </summary>
+    public static bool IsPowerOfTwo(int x)
+    {
+        return ((x & (x - 1)) == 0) && (x > 0);
+    }
+
+    /// <summary>
     /// High performance FFT function.
     /// Complex input will be transformed in place.
     /// Input array length must be a power of two. This length is NOT validated.
     /// Running on an array with an invalid length may throw an invalid index exception.
     /// </summary>
+    [Obsolete("Use methods which consume System.Numerics.Complex")]
     public static void FFT_WithoutChecks(Span<Complex> buffer)
     {
         for (int i = 1; i < buffer.Length; i++)
@@ -74,23 +84,63 @@ internal class FftOperations
     }
 
     /// <summary>
+    /// Calculate FFT of the input and return just the real component
+    /// Input array length must be a power of two. This length is NOT validated.
+    /// Running on an array with an invalid length may throw an invalid index exception.
+    /// </summary>
+    public static void RFFT_WithoutChecks(Span<System.Numerics.Complex> destination, Span<System.Numerics.Complex> input)
+    {
+        System.Numerics.Complex[] temp = ArrayPool<System.Numerics.Complex>.Shared.Rent(input.Length);
+
+        Span<System.Numerics.Complex> buffer = temp.AsSpan(0, input.Length);
+
+        FFT_WithoutChecks(buffer);
+        buffer.Slice(0, destination.Length).CopyTo(destination);
+
+        ArrayPool<System.Numerics.Complex>.Shared.Return(temp);
+    }
+
+    /// <summary>
     /// High performance inverse FFT function.
     /// Complex input will be transformed in place.
     /// Input array length must be a power of two. This length is NOT validated.
     /// Running on an array with an invalid length may throw an invalid index exception.
     /// </summary>
-    public static void IFFT_WithoutChecks(Complex[] buffer)
+    [Obsolete("Use methods which consume System.Numerics.Complex")]
+    public static void IFFT_WithoutChecks(Span<Complex> buffer)
     {
         // invert the imaginary component
         for (int i = 0; i < buffer.Length; i++)
-            buffer[i] = new Complex(buffer[i].Real, -buffer[i].Imaginary);
+            buffer[i] = new(buffer[i].Real, -buffer[i].Imaginary);
 
         // perform a forward Fourier transform
         FFT_WithoutChecks(buffer);
 
         // invert the imaginary component again and scale the output
         for (int i = 0; i < buffer.Length; i++)
-            buffer[i] = new Complex(
+            buffer[i] = new(
+                real: buffer[i].Real / buffer.Length,
+                imaginary: -buffer[i].Imaginary / buffer.Length);
+    }
+
+    /// <summary>
+    /// High performance inverse FFT function.
+    /// Complex input will be transformed in place.
+    /// Input array length must be a power of two. This length is NOT validated.
+    /// Running on an array with an invalid length may throw an invalid index exception.
+    /// </summary>
+    public static void IFFT_WithoutChecks(Span<System.Numerics.Complex> buffer)
+    {
+        // invert the imaginary component
+        for (int i = 0; i < buffer.Length; i++)
+            buffer[i] = new(buffer[i].Real, -buffer[i].Imaginary);
+
+        // perform a forward Fourier transform
+        FFT_WithoutChecks(buffer);
+
+        // invert the imaginary component again and scale the output
+        for (int i = 0; i < buffer.Length; i++)
+            buffer[i] = new(
                 real: buffer[i].Real / buffer.Length,
                 imaginary: -buffer[i].Imaginary / buffer.Length);
     }
