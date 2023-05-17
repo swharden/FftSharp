@@ -15,11 +15,11 @@ var window = new FftSharp.Windows.Hanning();
 window.ApplyInPlace(signal);
 
 // Calculate the FFT as an array of complex numbers
-Complex[] fftRaw = FftSharp.Transform.FFT(signal);
+System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(signal);
 
 // or get the magnitude (units²) or power (dB) as real numbers
-double[] fftMag = FftSharp.Transform.FFTmagnitude(signal);
-double[] fftPwr = FftSharp.Transform.FFTpower(signal);
+double[] magnitude = FftSharp.FFT.Magnitude(signal);
+double[] power = FftSharp.FFT.Power(signal);
 ```
 
 Signal | Windowed Signal | FFT
@@ -32,12 +32,12 @@ Signal | Windowed Signal | FFT
 // sample audio with tones at 2, 10, and 20 kHz plus white noise
 double[] signal = FftSharp.SampleData.SampleAudio1();
 int sampleRate = 48_000;
+double samplePeriod = sampleRate / 1000.0;
 
 // plot the sample audio
-var plt = new ScottPlot.Plot(400, 200);
-plt.AddSignal(signal, sampleRate / 1000.0);
+ScottPlot.Plot plt = new();
+plt.AddSignal(signal, samplePeriod);
 plt.YLabel("Amplitude");
-plt.Margins(0);
 plt.SaveFig("time-series.png");
 ```
 
@@ -59,15 +59,15 @@ double[] signal = FftSharp.SampleData.SampleAudio1();
 int sampleRate = 48_000;
 
 // calculate the power spectral density using FFT
-double[] psd = FftSharp.Transform.FFTpower(signal);
-double[] freq = FftSharp.Transform.FFTfreq(sampleRate, psd.Length);
+System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(audio);
+double[] psd = FftSharp.FFT.Power(signal);
+double[] freq = FftSharp.FFT.FrequencyScale(psd.Length, sampleRate);
 
 // plot the sample audio
-var plt = new ScottPlot.Plot(400, 200);
+ScottPlot.Plot plt = new ScottPlot.Plot();
 plt.AddScatterLines(freq, psd);
 plt.YLabel("Power (dB)");
 plt.XLabel("Frequency (Hz)");
-plt.Margins(0);
 plt.SaveFig("periodogram.png");
 ```
 
@@ -82,12 +82,12 @@ plt.SaveFig("periodogram.png");
 If you are writing a performance application or just enjoy working with real and imaginary components of complex numbers, you can build your own complex array perform FFT operations on it in place:
 
 ```cs
-Complex[] buffer =
+System.Numerics.Complex[] buffer =
 {
-    new Complex(42, 0),
-    new Complex(96, 0),
-    new Complex(13, 0),
-    new Complex(99, 0),
+    new(real: 42, imaginary: 12),
+    new(real: 96, imaginary: 34),
+    new(real: 13, imaginary: 56),
+    new(real: 99, imaginary: 78),
 };
 
 FftSharp.Transform.FFT(buffer);
