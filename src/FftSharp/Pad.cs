@@ -7,11 +7,6 @@ namespace FftSharp
     public static class Pad
     {
         /// <summary>
-        /// Test if a number is an even power of 2
-        /// </summary>
-        public static bool IsPowerOfTwo(int x) => ((x & (x - 1)) == 0) && (x > 0);
-
-        /// <summary>
         /// Return the input array (or a new zero-padded new one) ensuring length is a power of 2
         /// </summary>
         /// <param name="input">array of any length</param>
@@ -19,7 +14,7 @@ namespace FftSharp
         [Obsolete("Use methods which consume System.Numerics.Complex")]
         public static Complex[] ZeroPad(Complex[] input)
         {
-            if (IsPowerOfTwo(input.Length))
+            if (FftOperations.IsPowerOfTwo(input.Length))
                 return input;
 
             int targetLength = 1;
@@ -40,7 +35,7 @@ namespace FftSharp
         /// <returns>the input array or a zero-padded copy</returns>
         public static System.Numerics.Complex[] ZeroPad(System.Numerics.Complex[] input)
         {
-            if (IsPowerOfTwo(input.Length))
+            if (FftOperations.IsPowerOfTwo(input.Length))
                 return input;
 
             int targetLength = 1;
@@ -61,7 +56,7 @@ namespace FftSharp
         /// <returns>the input array or a zero-padded copy</returns>
         public static double[] ZeroPad(double[] input)
         {
-            if (IsPowerOfTwo(input.Length))
+            if (FftOperations.IsPowerOfTwo(input.Length))
                 return input;
 
             int targetLength = 1;
