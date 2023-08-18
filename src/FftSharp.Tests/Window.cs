@@ -86,7 +86,7 @@ namespace FftSharp.Tests
         [Test]
         public void Test_EvenLength_CenterTwoAreSame()
         {
-            foreach (IWindow window in FftSharp.Window.GetWindows())
+            foreach (IWindow window in FftSharp.Window.GetSymmetricWindows())
             {
                 double[] values = window.Create(12);
                 Assert.AreEqual(values[5], values[6], 1e-5, window.Name);

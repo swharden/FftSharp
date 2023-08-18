@@ -63,6 +63,13 @@ namespace FftSharp
                 .ToArray();
         }
 
+        public static IWindow[] GetSymmetricWindows()
+        {
+            return GetWindows()
+                .Where(x => !x.Name.Contains("Periodic"))
+                .ToArray();
+        }
+
         [Obsolete("This method is obsolete. Create a window in the Windows namespace and interact with its methods.")]
         public static double[] Rectangular(int pointCount) => new Windows.Rectangular().Create(pointCount);
 
