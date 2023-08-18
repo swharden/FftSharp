@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace FftSharp;
 
@@ -71,6 +71,34 @@ public static class FFT
         System.Numerics.Complex[] real = new System.Numerics.Complex[samples.Length / 2 + 1];
         Array.Copy(buffer, 0, real, 0, real.Length);
         return real;
+    }
+
+    /// <summary>
+    /// Calculate IFFT and return just the real component of the spectrum
+    /// </summary>
+    public static double[] InverseReal(System.Numerics.Complex[] spectrum)
+    {
+        int spectrumSize = spectrum.Length;
+        int windowSize = (spectrumSize - 1) * 2;
+
+        if (!FftOperations.IsPowerOfTwo(windowSize))
+            throw new ArgumentException($"{nameof(spectrum)} length is not valid");
+
+        System.Numerics.Complex[] buffer = new System.Numerics.Complex[windowSize];
+
+        for (int i = 0; i < spectrumSize; i++)
+            buffer[i] = spectrum[i];
+
+        for (int i = spectrumSize; i < windowSize; i++)
+            buffer[i] = System.Numerics.Complex.Conjugate(spectrum[spectrumSize - (i - (spectrumSize - 2))]);
+
+        Inverse(buffer);
+
+        double[] result = new double[windowSize];
+        for (int i = 0; i < windowSize; i++)
+            result[i] = buffer[i].Real;
+
+        return result;
     }
 
     /// <summary>
