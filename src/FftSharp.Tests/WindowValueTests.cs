@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,12 +71,30 @@ namespace FftSharp.Tests
         }
 
         [Test]
+        public void Test_HammingPeriodic()
+        {
+            double[] Known_hamming_periodic_13 = { 0.08, 0.13269023, 0.27869022, 0.48455313, 0.70311825, 0.88431494,0.98663324, 0.98663324, 0.88431494, 0.70311825, 0.48455313, 0.27869022, 0.13269023 };
+            double[] Known_hamming_periodic_14 = { 0.08, 0.12555432, 0.25319469, 0.43764037, 0.64235963, 0.82680531, 0.95444568, 1.0, 0.95444568, 0.82680531, 0.64235963, 0.43764037, 0.25319469, 0.12555432 };
+            AssertEqual(Known_hamming_periodic_13, new Windows.HammingPeriodic().Create(13));
+            AssertEqual(Known_hamming_periodic_14, new Windows.HammingPeriodic().Create(14));
+        }
+
+        [Test]
         public void Test_Hanning()
         {
             double[] Known_hanning_13 = { 0.0, 0.0669873, 0.25, 0.5, 0.75, 0.9330127, 1.0, 0.9330127, 0.75, 0.5, 0.25, 0.0669873, 0.0 };
             double[] Known_hanning_14 = { 0.0, 0.05727199, 0.21596763, 0.43973166, 0.67730244, 0.87425537, 0.98547091, 0.98547091, 0.87425537, 0.67730244, 0.43973166, 0.21596763, 0.05727199, 0.0 };
             AssertEqual(Known_hanning_13, new Windows.Hanning().Create(13));
             AssertEqual(Known_hanning_14, new Windows.Hanning().Create(14));
+        }
+
+        [Test]
+        public void Test_HanningPeriodic()
+        {
+            double[] Known_hanning_periodic_13 = { 0.0, 0.05727199, 0.21596763, 0.43973166, 0.67730244, 0.87425537, 0.98547091, 0.98547091, 0.87425537, 0.67730244, 0.43973166, 0.21596763, 0.05727199 };
+            double[] Known_hanning_periodic_14 = { 0.0, 0.04951557, 0.1882551, 0.38873953, 0.61126047, 0.8117449, 0.95048443, 1.0, 0.95048443, 0.8117449, 0.61126047, 0.38873953, 0.1882551, 0.04951557 };
+            AssertEqual(Known_hanning_periodic_13, new Windows.HanningPeriodic().Create(13));
+            AssertEqual(Known_hanning_periodic_14, new Windows.HanningPeriodic().Create(14));
         }
 
         [Test]
