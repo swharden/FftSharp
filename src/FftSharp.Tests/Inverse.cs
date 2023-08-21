@@ -51,5 +51,24 @@ namespace FftSharp.Tests
                 Assert.AreEqual(original[i].Imaginary, ifft[i].Imaginary, 1e-6);
             }
         }
+
+        [Test]
+        public void Test_InverseReal_MatchesOriginal()
+        {
+            Random rand = new Random(0);
+            double[] original = new double[1024];
+            for (int i = 0; i < original.Length; i++)
+                original[i] = rand.NextDouble() - .5;
+
+            System.Numerics.Complex[] rfft = FftSharp.FFT.ForwardReal(original);
+            double[] irfft = FftSharp.FFT.InverseReal(rfft);
+
+            Assert.AreEqual(original.Length, irfft.Length);
+
+            for (int i = 0; i < irfft.Length; i++)
+            {
+                Assert.AreEqual(original[i], irfft[i], 1e-10);
+            }
+        }
     }
 }
