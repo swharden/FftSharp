@@ -12,6 +12,8 @@ namespace FftSharp.Windows
             "Its frequency response is better than that of the Bartlett windowed cosc function below pi, " +
             "but it shows again a rather distinctive bump above.";
 
+        public override bool IsSymmetric => true;
+
         public override double[] Create(int size, bool normalize = false)
         {
             double[] window = new double[size];

@@ -89,7 +89,16 @@ namespace FftSharp.Tests
             foreach (IWindow window in FftSharp.Window.GetWindows())
             {
                 double[] values = window.Create(12);
-                Assert.AreEqual(values[5], values[6], 1e-5, window.Name);
+                if (window.IsSymmetric)
+                {
+                    Assert.AreEqual(values[5], values[6], 1e-5, window.Name);
+                    Assert.AreEqual(values.First(), values.Last(), 1e-5, window.Name);
+                }
+                else
+                {
+                    Assert.AreNotEqual(values[5], values[6], window.Name);
+                    Assert.AreNotEqual(values.First(), values.Last(), window.Name);
+                }
             }
         }
 
@@ -120,6 +129,24 @@ namespace FftSharp.Tests
         {
             IWindow[] window = FftSharp.Window.GetWindows();
             Assert.IsNotEmpty(window);
+        }
+
+        [Test]
+        public void Test_PlotAllWindows()
+        {
+            foreach (IWindow window in FftSharp.Window.GetWindows())
+            {
+                double[] values = window.Create(32);
+                ScottPlot.Plot plt = new();
+                var sig = plt.AddSignal(values);
+                sig.OffsetX = -values.Length / 2 + .5;
+                plt.Title(window.Name);
+                plt.AddVerticalLine(0);
+
+                string filename = Path.GetFullPath($"test_window_{window.Name}.png");
+                Console.WriteLine(filename);
+                plt.SaveFig(filename);
+            }
         }
     }
 }

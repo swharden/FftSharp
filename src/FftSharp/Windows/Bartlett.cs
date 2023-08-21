@@ -9,6 +9,8 @@ namespace FftSharp.Windows
             "The Bartlett–Hann window is triangular in shape (a 2nd order B-spline) which is effectively the " +
             "convolution of two half-sized rectangular windows.";
 
+        public override bool IsSymmetric => true;
+
         public override double[] Create(int size, bool normalize = false)
         {
             double[] window = new double[size];

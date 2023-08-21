@@ -10,6 +10,8 @@ namespace FftSharp
 
         public abstract string Description { get; }
 
+        public abstract bool IsSymmetric { get; }
+
         public override string ToString() => Name;
 
         public abstract double[] Create(int size, bool normalize = false);

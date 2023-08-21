@@ -15,6 +15,8 @@ namespace FftSharp.Windows
             "Tukey windows are ideal for analyzing transient data since the amplitude of transient signal " +
             "in the time domain is less likely to be altered compared to using Hanning or flat top.";
 
+        public override bool IsSymmetric => true;
+
         public Tukey()
         {
             Alpha = .5;
