@@ -73,7 +73,7 @@ namespace FftSharp.Tests
         [Test]
         public void Test_HammingPeriodic()
         {
-            double[] Known_hamming_periodic_13 = { 0.08, 0.13269023, 0.27869022, 0.48455313, 0.70311825, 0.88431494,0.98663324, 0.98663324, 0.88431494, 0.70311825, 0.48455313, 0.27869022, 0.13269023 };
+            double[] Known_hamming_periodic_13 = { 0.08, 0.13269023, 0.27869022, 0.48455313, 0.70311825, 0.88431494, 0.98663324, 0.98663324, 0.88431494, 0.70311825, 0.48455313, 0.27869022, 0.13269023 };
             double[] Known_hamming_periodic_14 = { 0.08, 0.12555432, 0.25319469, 0.43764037, 0.64235963, 0.82680531, 0.95444568, 1.0, 0.95444568, 0.82680531, 0.64235963, 0.43764037, 0.25319469, 0.12555432 };
             AssertEqual(Known_hamming_periodic_13, new Windows.HammingPeriodic().Create(13));
             AssertEqual(Known_hamming_periodic_14, new Windows.HammingPeriodic().Create(14));
