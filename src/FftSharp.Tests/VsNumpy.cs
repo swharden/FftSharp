@@ -58,9 +58,25 @@ namespace FftSharp.Tests
         }
 
         [Test]
-        public void Test_VsNumpy_Rfft()
+        public void Test_VsNumpy_ForwardRealDoubles()
         {
             System.Numerics.Complex[] rfft = FftSharp.FFT.ForwardReal(values);
+            System.Numerics.Complex[] numpyRfft = LoadData.Complex("fftReal.txt");
+
+            Assert.AreEqual(numpyRfft.Length, rfft.Length);
+
+            for (int i = 0; i < rfft.Length; i++)
+            {
+                Assert.AreEqual(numpyRfft[i].Real, rfft[i].Real, 1e-10);
+                Assert.AreEqual(numpyRfft[i].Imaginary, rfft[i].Imaginary, 1e-10);
+            }
+        }
+
+        [Test]
+        public void Test_VsNumpy_ForwardRealComplex()
+        {
+            System.Numerics.Complex[] complexValues = values.Select(value => new System.Numerics.Complex(real: value, imaginary: 0)).ToArray();
+            System.Numerics.Complex[] rfft = FftSharp.FFT.ForwardReal(complexValues);
             System.Numerics.Complex[] numpyRfft = LoadData.Complex("fftReal.txt");
 
             Assert.AreEqual(numpyRfft.Length, rfft.Length);
