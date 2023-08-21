@@ -1,0 +1,38 @@
+name: Package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Package and Deploy
+    runs-on: windows-latest
+    steps:
+      - name: 🛒 Checkout
+        uses: actions/checkout@v2
+      - name: ✨ Setup .NET 6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+      - name: 🚚 Restore
+        run: dotnet restore src
+      - name: 🛠️ Build
+        run: dotnet build src --configuration Release --no-restore
+      - name: 🧪 Test
+        run: dotnet test src --configuration Release --no-build
+      - name: 📦 Pack
+        run: dotnet pack src --configuration Release --no-build
+      - name: 💾 Store Release Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: Packages
+          retention-days: 1
+          path: |
+            src/FftSharp/bin/Release/*.nupkg
+            src/FftSharp/bin/Release/*.snupkg
+      - name: 🔑 Configure NuGet Secrets
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+      - name: 🚀 Deploy Release Package
+        run: nuget push "src\FftSharp\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
