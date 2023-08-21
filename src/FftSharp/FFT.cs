@@ -82,7 +82,7 @@ public static class FFT
         int windowSize = (spectrumSize - 1) * 2;
 
         if (!FftOperations.IsPowerOfTwo(windowSize))
-            throw new ArgumentException($"{nameof(spectrum)} length is not valid");
+            throw new ArgumentException($"{nameof(spectrum)} length must be a power of two plus 1");
 
         System.Numerics.Complex[] buffer = new System.Numerics.Complex[windowSize];
 
@@ -90,7 +90,10 @@ public static class FFT
             buffer[i] = spectrum[i];
 
         for (int i = spectrumSize; i < windowSize; i++)
-            buffer[i] = System.Numerics.Complex.Conjugate(spectrum[spectrumSize - (i - (spectrumSize - 2))]);
+        {
+            int iMirrored = spectrumSize - (i - (spectrumSize - 2));
+            buffer[i] = System.Numerics.Complex.Conjugate(spectrum[iMirrored]);
+        }
 
         Inverse(buffer);
 
