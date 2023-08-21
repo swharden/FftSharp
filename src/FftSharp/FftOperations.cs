@@ -96,7 +96,7 @@ internal class FftOperations
         {
             Span<System.Numerics.Complex> buffer = temp.AsSpan(0, input.Length);
             input.CopyTo(buffer);
-            FFT.Forward(buffer);
+            FFT_WithoutChecks(buffer);
             buffer.Slice(0, destination.Length).CopyTo(destination);
         }
         catch (Exception ex)
