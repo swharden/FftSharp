@@ -216,4 +216,18 @@ public static class FFT
 
         return output;
     }
+
+    /// <summary>
+    /// Return a copy of the given values with the zero frequency component shifted to the center.
+    /// </summary>
+    public static double[] FftShift(double[] values)
+    {
+        int shiftBy = (values.Length + 1) / 2;
+
+        double[] values2 = new double[values.Length];
+        for (int i = 0; i < values.Length; i++)
+            values2[i] = values[(i + shiftBy) % values.Length];
+
+        return values2;
+    }
 }

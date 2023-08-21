@@ -46,4 +46,22 @@ internal class FftTests
             Assert.AreEqual(fftFreq[i], fftFreq[i], 1e-10);
         }
     }
+
+    [Test]
+    public void Test_FftShift_Odd()
+    {
+        double[] values = { 0, 1, 2, 3, 4, 5, 6 };
+        double[] shifted = FFT.FftShift(values);
+        double[] expectedResult = { 4, 5, 6, 0, 1, 2, 3 };
+        Assert.AreEqual(expectedResult, shifted);
+    }
+
+    [Test]
+    public void Test_FftShift_Even()
+    {
+        double[] values = { 0, 1, 2, 3, 4, 5, 6, 7 };
+        double[] shifted = FFT.FftShift(values);
+        double[] expectedResult = { 4, 5, 6, 7, 0, 1, 2, 3 };
+        Assert.AreEqual(expectedResult, shifted);
+    }
 }
