@@ -11,6 +11,8 @@ namespace FftSharp.Windows
             "It may be a good choice for low-quality (8-bit) auto where side lobes lie beyond the quantization noise floor." +
             "A symmetric window, for use in filter design.";
 
+        public override bool IsSymmetric => true;
+
         public override double[] Create(int size, bool normalize = false)
         {
             double[] window = new double[size];

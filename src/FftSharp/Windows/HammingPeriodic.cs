@@ -11,6 +11,8 @@ namespace FftSharp.Windows
             "It may be a good choice for low-quality (8-bit) auto where side lobes lie beyond the quantization noise floor." +
             "A periodic window, for use in spectral analysis.";
 
+        public override bool IsSymmetric => false;
+
         public override double[] Create(int size, bool normalize = false)
         {
             double[] window = new double[size];

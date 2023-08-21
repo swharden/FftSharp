@@ -8,6 +8,8 @@
             "equivalent to replacing all but N values of a data sequence by zeros, making it appear as though " +
             "the waveform suddenly turns on and off. This window preserves transients at the start and end of the signal.";
 
+        public override bool IsSymmetric => true;
+
         public override double[] Create(int size, bool normalize = false)
         {
             double[] window = new double[size];

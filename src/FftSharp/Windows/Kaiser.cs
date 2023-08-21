@@ -12,6 +12,8 @@ namespace FftSharp.Windows
             "but for the same main lobe width, the near side lobes tend to be higher, but the further out side lobes are lower. " +
             "Choosing this window often reveals signals close to the noise floor";
 
+        public override bool IsSymmetric => true;
+
         public Kaiser()
         {
             Beta = 15;

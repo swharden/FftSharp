@@ -11,6 +11,8 @@ namespace FftSharp.Windows
             "If you do not know the nature of the signal but you want to apply a smoothing window, start with the Hann window." +
             "A periodic window, for use in spectral analysis.";
 
+        public override bool IsSymmetric => false;
+
         public override double[] Create(int size, bool normalize = false)
         {
             double[] window = new double[size];

@@ -29,5 +29,10 @@
         /// A brief description of what makes this window unique and what it is typically used for.
         /// </summary>
         string Description { get; }
+
+        /// <summary>
+        /// Indicates whether the window is symmetric around its midpoint
+        /// </summary>
+        bool IsSymmetric { get; }
     }
 }

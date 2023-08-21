@@ -13,6 +13,8 @@ namespace FftSharp.Windows
             "The Blackman-Harris window is similar to Hamming and Hanning windows. " +
             "The resulting spectrum has a wide peak, but good side lobe compression.";
 
+        public override bool IsSymmetric => true;
+
         public Blackman()
         {
         }

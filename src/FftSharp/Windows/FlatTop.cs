@@ -14,6 +14,8 @@ namespace FftSharp.Windows
             "The flat top window crosses the zero line causing a broader peak in the frequency domain, " +
             "which is closer to the true amplitude of the signal than with other windows";
 
+        public override bool IsSymmetric => true;
+
         public readonly double A0 = 0.21557895;
         public readonly double A1 = 0.41663158;
         public readonly double A2 = 0.277263158;

@@ -10,6 +10,8 @@ namespace FftSharp
 
         public abstract string Description { get; }
 
+        public abstract bool IsSymmetric { get; }
+
         public override string ToString() => Name;
 
         public abstract double[] Create(int size, bool normalize = false);
@@ -60,13 +62,6 @@ namespace FftSharp
                 .Where(x => !x.IsAbstract)
                 .Where(x => x.GetInterfaces().Contains(typeof(IWindow)))
                 .Select(x => (IWindow)Activator.CreateInstance(x))
-                .ToArray();
-        }
-
-        public static IWindow[] GetSymmetricWindows()
-        {
-            return GetWindows()
-                .Where(x => !x.Name.Contains("Periodic"))
                 .ToArray();
         }
 

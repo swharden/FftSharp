@@ -11,6 +11,8 @@ namespace FftSharp.Windows
             "If you do not know the nature of the signal but you want to apply a smoothing window, start with the Hann window." +
             "A symmetric window, for use in filter design.";
 
+        public override bool IsSymmetric => true;
+
         public override double[] Create(int size, bool normalize = false)
         {
             double[] window = new double[size];
