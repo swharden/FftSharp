@@ -64,15 +64,15 @@ namespace FftSharp.Tests
             int reps = 10;
 
             // create random input
-            Complex[] input = new Complex[fftSize];
+            System.Numerics.Complex[] input = new System.Numerics.Complex[fftSize];
             for (int j = 0; j < input.Length; j++)
-                input[j] = new Complex(rand.NextDouble(), rand.NextDouble());
+                input[j] = new System.Numerics.Complex(rand.NextDouble(), rand.NextDouble());
 
             // benchmark FFT
             sw.Restart();
             for (int j = 0; j < reps; j++)
             {
-                FftSharp.Transform.FFT(input);
+                FftSharp.FFT.Forward(input);
             }
             sw.Stop();
             double fftMsec = 1000.0 * sw.ElapsedTicks / Stopwatch.Frequency;

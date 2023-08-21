@@ -36,8 +36,8 @@ namespace FftSharp.Tests
             double[] audio = SampleData.SampleAudio1();
 
             // FFT and DST output should be identical (aside from floating-point errors)
-            Complex[] fft = FftSharp.Transform.FFT(audio);
-            Complex[] dft = FftSharp.Experimental.DFT(audio);
+            System.Numerics.Complex[] fft = FftSharp.FFT.Forward(audio);
+            System.Numerics.Complex[] dft = FftSharp.Experimental.DFT(audio);
 
             for (int i = 0; i < fft.Length; i++)
             {
@@ -84,16 +84,16 @@ namespace FftSharp.Tests
         [Test]
         public void Test_FftInput_ContainsAllZeros()
         {
-            Complex[] complex = new Complex[128];
+            System.Numerics.Complex[] complex = new System.Numerics.Complex[128];
             for (int i = 0; i < complex.Length; i++)
-                complex[i] = new Complex(0, 0);
+                complex[i] = new System.Numerics.Complex(0, 0);
             FftSharp.Experimental.DFT(complex);
         }
 
         [Test]
         public void Test_FftInput_Uninitialized()
         {
-            Complex[] complex = new Complex[128];
+            System.Numerics.Complex[] complex = new System.Numerics.Complex[128];
             FftSharp.Experimental.DFT(complex);
         }
 
