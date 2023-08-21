@@ -121,5 +121,23 @@ namespace FftSharp.Tests
             IWindow[] window = FftSharp.Window.GetWindows();
             Assert.IsNotEmpty(window);
         }
+
+        [Test]
+        public void Test_PlotAllWindows()
+        {
+            foreach (IWindow window in FftSharp.Window.GetWindows())
+            {
+                double[] values = window.Create(32);
+                ScottPlot.Plot plt = new();
+                var sig = plt.AddSignal(values);
+                sig.OffsetX = -values.Length / 2 + .5;
+                plt.Title(window.Name);
+                plt.AddVerticalLine(0);
+
+                string filename = Path.GetFullPath($"test_window_{window.Name}.png");
+                Console.WriteLine(filename);
+                plt.SaveFig(filename);
+            }
+        }
     }
 }
