@@ -92,12 +92,21 @@ internal class FftOperations
     {
         System.Numerics.Complex[] temp = ArrayPool<System.Numerics.Complex>.Shared.Rent(input.Length);
 
-        Span<System.Numerics.Complex> buffer = temp.AsSpan(0, input.Length);
-
-        FFT_WithoutChecks(buffer);
-        buffer.Slice(0, destination.Length).CopyTo(destination);
-
-        ArrayPool<System.Numerics.Complex>.Shared.Return(temp);
+        try
+        {
+            Span<System.Numerics.Complex> buffer = temp.AsSpan(0, input.Length);
+            input.CopyTo(buffer);
+            FFT.Forward(buffer);
+            buffer.Slice(0, destination.Length).CopyTo(destination);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Could not calculate RFFT", ex);
+        }
+        finally
+        {
+            ArrayPool<System.Numerics.Complex>.Shared.Return(temp);
+        }
     }
 
     /// <summary>
