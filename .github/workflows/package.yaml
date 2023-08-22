@@ -9,9 +9,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: ✨ Setup .NET 6
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.x"
       - name: 🚚 Restore
@@ -22,7 +22,7 @@ jobs:
         run: dotnet test src --configuration Release --no-build
       - name: 📦 Pack
         run: dotnet pack src --configuration Release --no-build
-      - name: 💾 Store Release Package
+      - name: 💾 Store
         uses: actions/upload-artifact@v2
         with:
           name: Packages
@@ -30,9 +30,9 @@ jobs:
           path: |
             src/FftSharp/bin/Release/*.nupkg
             src/FftSharp/bin/Release/*.snupkg
-      - name: 🔑 Configure NuGet Secrets
+      - name: 🔑 Secret
         uses: nuget/setup-nuget@v1
         with:
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
-      - name: 🚀 Deploy Release Package
+      - name: 🚀 Deploy
         run: nuget push "src\FftSharp\bin\Release\*.nupkg" -SkipDuplicate -Source https://api.nuget.org/v3/index.json
