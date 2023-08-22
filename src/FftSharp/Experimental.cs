@@ -70,5 +70,34 @@ namespace FftSharp
 
             return DFT(inputComplex, inverse);
         }
+
+        /// <summary>
+        /// Computes the discrete Fourier transform (DFT) of the given array.
+        /// The array may have any length.
+        /// Uses Bluestein's chirp z-transform algorithm.
+        /// </summary>
+        public static System.Numerics.Complex[] Bluestein(double[] real, bool inverse = false)
+        {
+            System.Numerics.Complex[] buffer = new System.Numerics.Complex[real.Length];
+
+            for (int i = 0; i < real.Length; i++)
+            {
+                buffer[i] = new System.Numerics.Complex(real[i], 0);
+            }
+
+            Bluestein(buffer, inverse);
+
+            return buffer;
+        }
+
+        /// <summary>
+        /// Computes the discrete Fourier transform (DFT) of the given complex vector in place.
+        /// The vector can have any length.
+        /// Uses Bluestein's chirp z-transform algorithm.
+        /// </summary>
+        public static void Bluestein(System.Numerics.Complex[] buffer, bool inverse = false)
+        {
+            BluesteinOperations.TransformBluestein(buffer, inverse);
+        }
     }
 }
