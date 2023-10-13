@@ -59,7 +59,7 @@ double[] signal = FftSharp.SampleData.SampleAudio1();
 int sampleRate = 48_000;
 
 // calculate the power spectral density using FFT
-System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(audio);
+System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(signal);
 double[] psd = FftSharp.FFT.Power(spectrum);
 double[] freq = FftSharp.FFT.FrequencyScale(psd.Length, sampleRate);
 
