@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [windows-latest, ubuntu-latest]
         arch: [x64]
         dotnetVersion: [6.0.x 8.0.x]
     steps:
@@ -27,8 +27,24 @@ jobs:
       - name: Display Dotnet Versio  n
         run: dotnet --version
       - name: 🚚 Restore
-        run: dotnet restore src
+        run: >
+          dotnet restore src/FftSharp/FftSharp.csproj
+          dotnet restore src/FftSharp.Benchmark/FftSharp.Benchmark.csproj
+          dotnet restore src/FftSharp.Tests/FftSharp.Tests.csproj
       - name: 🛠️ Build
-        run: dotnet build src --configuration Release --no-restore
+        run: >
+          dotnet build src --configuration Release --no-restore --project FftSharp/FftSharp.csproj
+          dotnet build src --configuration Release --no-restore --project FftSharp.Benchmark/FftSharp.Benchmark.csproj
+          dotnet build src --configuration Release --no-restore --project FftSharp.Tests/FftSharp.Tests.csproj
+      - name: 🧪 Benchmark
+        run: dotnet run --project src/FftSharp.Benchmark/FftSharp.Benchmark.csproj --configuration Release --no-build
+      - name: Benchmark Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: benchmark-results
+          path: src/FftSharp.Benchmark/BenchmarkDotNet.Artifacts/results/*.md
       - name: 🧪 Test
-        run: dotnet test src --configuration Release --no-build
+        run: dotnet test src --configuration Release --no-build --project FftSharp.Tests/FftSharp.Tests.csproj
+      - name: Build Windows Demo
+        if: matrix.os == 'windows-latest'
+        run: dotnet publish src/FftSharp.Demo/FftSharp.Demo.csproj --configuration Release --no-build --output ./build/windows --runtime win-x64
