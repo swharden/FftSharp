@@ -5,9 +5,11 @@ VisualStudioVersion = 17.0.31815.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FftSharp", "FftSharp\FftSharp.csproj", "{43680BFA-9D82-41F2-A56A-6B93433AE4E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FftSharp.Demo", "FftSharp.Demo\FftSharp.Demo.csproj", "{9EA24240-F1BF-4C5F-B08C-6D5C8AFBFDE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FftSharp.Demo", "FftSharp.Demo\FftSharp.Demo.csproj", "{9EA24240-F1BF-4C5F-B08C-6D5C8AFBFDE7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FftSharp.Tests", "FftSharp.Tests\FftSharp.Tests.csproj", "{A82CD7FC-ECA6-4BF7-BC73-22675DEC1CD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FftSharp.Benchmark", "FftSharp.Benchmark\FftSharp.Benchmark.csproj", "{A3DE12AF-60E1-4CF2-86BF-73C2B345091B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{A82CD7FC-ECA6-4BF7-BC73-22675DEC1CD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A82CD7FC-ECA6-4BF7-BC73-22675DEC1CD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A82CD7FC-ECA6-4BF7-BC73-22675DEC1CD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3DE12AF-60E1-4CF2-86BF-73C2B345091B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3DE12AF-60E1-4CF2-86BF-73C2B345091B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3DE12AF-60E1-4CF2-86BF-73C2B345091B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3DE12AF-60E1-4CF2-86BF-73C2B345091B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
