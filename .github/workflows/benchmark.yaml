@@ -1,0 +1,21 @@
+name: Benchmark
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  benchmark:
+    name: Run Benchmark.Net benchmark example
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        dotnet-version: [6.x, 8.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{matrix.dotnet-version}}  # SDK Version to use. keep in line with examples/benchmarkdotnet/global.json
+      - name: Run benchmark
+        run: cd src/FftSharp.Benchmark && dotnet run --exporters json --filter '*'
+
