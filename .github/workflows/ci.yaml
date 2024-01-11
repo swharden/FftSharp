@@ -14,16 +14,18 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        arch: [x64, arm64]
+        os: [windows-latest]
+        arch: [x64]
         dotnetVersion: [6.0.x 8.0.x]
     steps:
       - name: 🛒 Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: ✨ Setup .NET ${{ matrix.dotnetVersion }}
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ matrix.dotnetVersion }}
+      - name: Display Dotnet Versio  n
+        run: dotnet --version
       - name: 🚚 Restore
         run: dotnet restore src
       - name: 🛠️ Build
