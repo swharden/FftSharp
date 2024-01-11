@@ -44,7 +44,7 @@ jobs:
           name: benchmark-results
           path: src/FftSharp.Benchmark/BenchmarkDotNet.Artifacts/results/*.md
       - name: 🧪 Test
-        run: dotnet test FftSharp.Tests/FftSharp.Tests.csproj --configuration Release --no-build
+        run: dotnet test src/FftSharp.Tests/FftSharp.Tests.csproj --configuration Release --no-build
       - name: Build Windows Demo
         if: matrix.os == 'windows-latest'
         run: dotnet publish src/FftSharp.Demo/FftSharp.Demo.csproj --configuration Release --no-build --output ./build/windows --runtime win-x64
