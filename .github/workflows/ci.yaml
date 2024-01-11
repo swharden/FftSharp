@@ -27,12 +27,12 @@ jobs:
       - name: Display Dotnet Versio  n
         run: dotnet --version
       - name: 🚚 Restore
-        run: >
+        run: |
           dotnet restore src/FftSharp/FftSharp.csproj
           dotnet restore src/FftSharp.Benchmark/FftSharp.Benchmark.csproj
           dotnet restore src/FftSharp.Tests/FftSharp.Tests.csproj
       - name: 🛠️ Build
-        run: >
+        run: |
           dotnet build src --configuration Release --no-restore --project FftSharp/FftSharp.csproj
           dotnet build src --configuration Release --no-restore --project FftSharp.Benchmark/FftSharp.Benchmark.csproj
           dotnet build src --configuration Release --no-restore --project FftSharp.Tests/FftSharp.Tests.csproj
