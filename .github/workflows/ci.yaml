@@ -33,9 +33,9 @@ jobs:
           dotnet restore src/FftSharp.Tests/FftSharp.Tests.csproj
       - name: 🛠️ Build
         run: |
-          dotnet build src --configuration Release --no-restore --project FftSharp/FftSharp.csproj
-          dotnet build src --configuration Release --no-restore --project FftSharp.Benchmark/FftSharp.Benchmark.csproj
-          dotnet build src --configuration Release --no-restore --project FftSharp.Tests/FftSharp.Tests.csproj
+          dotnet build FftSharp/FftSharp.csproj --configuration Release --no-restore
+          dotnet build FftSharp.Benchmark/FftSharp.Benchmark.csproj --configuration Release --no-restore
+          dotnet build FftSharp.Tests/FftSharp.Tests.csproj --configuration Release --no-restore
       - name: 🧪 Benchmark
         run: dotnet run --project src/FftSharp.Benchmark/FftSharp.Benchmark.csproj --configuration Release --no-build
       - name: Benchmark Artifacts
