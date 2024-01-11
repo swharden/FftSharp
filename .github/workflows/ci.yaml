@@ -16,7 +16,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         arch: [x64, arm64]
-        dotnetVersion: [6.0.x. 8.0.x]
+        dotnetVersion: [6.0.x 8.0.x]
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v3
