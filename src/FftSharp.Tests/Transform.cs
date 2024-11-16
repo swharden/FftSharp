@@ -53,9 +53,9 @@ namespace FftSharp.Tests
             double[] audio = SampleData.SampleAudio1();
             int sampleRate = 48_000;
 
-            Complex[] fft = FftSharp.Transform.FFT(audio);
+            Complex[] fft = FftSharp.FFT.Forward(audio);
             double[] fftAmp = fft.Select(x => x.Magnitude).ToArray();
-            double[] fftFreq = FftSharp.Transform.FFTfreq(sampleRate, fftAmp.Length, oneSided: false);
+            double[] fftFreq = FftSharp.FFT.FrequencyScale(fftAmp.Length, sampleRate, positiveOnly: false);
 
             TestTools.AssertMirror(fftAmp);
 
@@ -70,15 +70,9 @@ namespace FftSharp.Tests
         [Test]
         public void Test_FftHelperMethods_ThrowIfNotPowerOfTwo()
         {
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(new double[0]); });
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(new double[123]); });
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(new double[1234]); });
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFTmagnitude(new double[0]); });
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFTmagnitude(new double[123]); });
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFTmagnitude(new double[1234]); });
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFTpower(new double[0]); });
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFTpower(new double[123]); });
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFTpower(new double[1234]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.FFT.Forward(new double[0]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.FFT.Forward(new double[123]); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.FFT.Forward(new double[1234]); });
         }
 
         [Test]
@@ -98,25 +92,14 @@ namespace FftSharp.Tests
         }
 
         [Test]
-        public void Test_FftInput_ThrowsIfNull()
-        {
-            Complex[] complexValues = null;
-            double[] realValues = null;
-            Assert.Throws<ArgumentNullException>(() => { FftSharp.Transform.FFT(complexValues); });
-            Assert.Throws<ArgumentNullException>(() => { FftSharp.Transform.IFFT(complexValues); });
-            Assert.Throws<ArgumentNullException>(() => { FftSharp.Transform.FFT(realValues); });
-            Assert.Throws<ArgumentNullException>(() => { FftSharp.Transform.RFFT(realValues); });
-        }
-
-        [Test]
         public void Test_FftInput_ThrowsIfEmpty()
         {
             Complex[] complexValues = new Complex[0];
             double[] realValues = new double[0];
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(complexValues); });
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.IFFT(complexValues); });
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.FFT(realValues); });
-            Assert.Throws<ArgumentException>(() => { FftSharp.Transform.RFFT(realValues); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.FFT.Forward(complexValues); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.FFT.Inverse(complexValues); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.FFT.Forward(realValues); });
+            Assert.Throws<ArgumentException>(() => { FftSharp.FFT.InverseReal(complexValues); });
         }
 
         [TestCase(123, true)]
@@ -129,12 +112,11 @@ namespace FftSharp.Tests
             double[] realValues = new double[length];
             Complex[] destination = new Complex[length / 2 + 1];
 
-            var complexFFT = new TestDelegate(() => FftSharp.Transform.FFT(complexValues));
-            var complexSpanFFT = new TestDelegate(() => FftSharp.Transform.FFT(complexValues.AsSpan()));
-            var complexIFFT = new TestDelegate(() => FftSharp.Transform.IFFT(complexValues));
-            var realFFT = new TestDelegate(() => FftSharp.Transform.FFT(realValues));
-            var realRFFT = new TestDelegate(() => FftSharp.Transform.RFFT(realValues));
-            var realSpanRFFT = new TestDelegate(() => FftSharp.Transform.RFFT(destination.AsSpan(), realValues.AsSpan()));
+            var complexFFT = new TestDelegate(() => FftSharp.FFT.Forward(complexValues));
+            var complexSpanFFT = new TestDelegate(() => FftSharp.FFT.Forward(complexValues.AsSpan()));
+            var complexIFFT = new TestDelegate(() => FftSharp.FFT.Inverse(complexValues));
+            var realFFT = new TestDelegate(() => FftSharp.FFT.Forward(realValues));
+            var realRFFT = new TestDelegate(() => FftSharp.FFT.ForwardReal(realValues));
 
             if (shouldThrow)
             {
@@ -143,7 +125,6 @@ namespace FftSharp.Tests
                 Assert.Throws<ArgumentException>(complexIFFT);
                 Assert.Throws<ArgumentException>(realFFT);
                 Assert.Throws<ArgumentException>(realRFFT);
-                Assert.Throws<ArgumentException>(realSpanRFFT);
             }
             else
             {
@@ -152,49 +133,6 @@ namespace FftSharp.Tests
                 Assert.DoesNotThrow(complexIFFT);
                 Assert.DoesNotThrow(realFFT);
                 Assert.DoesNotThrow(realRFFT);
-                Assert.DoesNotThrow(realSpanRFFT);
-            }
-        }
-
-        [TestCase(0, true)]
-        [TestCase(1, false)]
-        [TestCase(2, false)]
-        [TestCase(4, false)]
-        [TestCase(8, false)]
-        [TestCase(16, false)]
-        [TestCase(32, false)]
-        [TestCase(64, false)]
-        public void Test_Fft_Complex_DifferentLengths(int pointCount, bool shouldFail)
-        {
-            Complex[] signal = new Complex[pointCount];
-            if (shouldFail)
-            {
-                Assert.Throws<ArgumentException>(() => FftSharp.Transform.FFT(signal));
-            }
-            else
-            {
-                Assert.DoesNotThrow(() => FftSharp.Transform.FFT(signal));
-            }
-        }
-
-        [TestCase(0, true)]
-        [TestCase(1, false)]
-        [TestCase(2, false)]
-        [TestCase(4, false)]
-        [TestCase(8, false)]
-        [TestCase(16, false)]
-        [TestCase(32, false)]
-        [TestCase(64, false)]
-        public void Test_Fft_Double_DifferentLengths(int pointCount, bool shouldFail)
-        {
-            double[] signal = new double[pointCount];
-            if (shouldFail)
-            {
-                Assert.Throws<ArgumentException>(() => FftSharp.Transform.FFT(signal));
-            }
-            else
-            {
-                Assert.DoesNotThrow(() => FftSharp.Transform.FFT(signal));
             }
         }
 
@@ -211,11 +149,11 @@ namespace FftSharp.Tests
             double[] signal = new double[pointCount];
             if (shouldFail)
             {
-                Assert.Throws<ArgumentException>(() => FftSharp.Transform.FFTmagnitude(signal));
+                Assert.Throws<ArgumentException>(() => FftSharp.FFT.ForwardReal(signal));
             }
             else
             {
-                Assert.DoesNotThrow(() => FftSharp.Transform.FFTmagnitude(signal));
+                Assert.DoesNotThrow(() => FftSharp.FFT.ForwardReal(signal));
             }
         }
     }

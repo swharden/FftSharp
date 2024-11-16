@@ -39,11 +39,11 @@ namespace FftSharp.Tests
 
             Complex[] fft = new Complex[original.Length];
             Array.Copy(original, 0, fft, 0, original.Length);
-            FftSharp.Transform.FFT(fft);
+            FftSharp.FFT.Forward(fft);
 
             Complex[] ifft = new Complex[fft.Length];
             Array.Copy(fft, 0, ifft, 0, fft.Length);
-            FftSharp.Transform.IFFT(ifft);
+            FftSharp.FFT.Inverse(ifft);
 
             for (int i = 0; i < ifft.Length; i++)
             {
