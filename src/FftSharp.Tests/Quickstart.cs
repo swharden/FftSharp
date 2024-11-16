@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using ScottPlot;
 using System;
 using System.IO;
 
@@ -69,5 +70,80 @@ class Quickstart
             plt1.SavePng(Path.Combine(OUTPUT_FOLDER, "audio.png"), 400, 300);
             plt2.SavePng(Path.Combine(OUTPUT_FOLDER, "fft.png"), 400, 300);
         }
+    }
+
+    [Test]
+    public void Test_ExampleCode_Quickstart()
+    {
+        // Begin with an array containing sample data
+        double[] signal = FftSharp.SampleData.SampleAudio1();
+
+        // Shape the signal using a Hanning window
+        var window = new FftSharp.Windows.Hanning();
+        window.ApplyInPlace(signal);
+
+        // Calculate the FFT as an array of complex numbers
+        System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(signal);
+
+        // or get the magnitude (units²) or power (dB) as real numbers
+        double[] magnitude = FftSharp.FFT.Magnitude(spectrum);
+        double[] power = FftSharp.FFT.Power(spectrum);
+
+        // plot the result
+        ScottPlot.Plot plot = new();
+        plot.Add.Signal(power);
+        plot.SavePng("quickstart.png", 600, 400).ConsoleWritePath();
+    }
+
+    [Test]
+    public void Test_ExampleCode_SampleData()
+    {
+        // sample audio with tones at 2, 10, and 20 kHz plus white noise
+        double[] signal = FftSharp.SampleData.SampleAudio1();
+        int sampleRate = 48_000;
+        double samplePeriod = sampleRate / 1000.0;
+
+        // plot the sample audio
+        ScottPlot.Plot plt = new();
+        plt.Add.Signal(signal, samplePeriod);
+        plt.YLabel("Amplitude");
+        plt.SavePng("time-series.png", 500, 200).ConsoleWritePath();
+    }
+
+    [Test]
+    public void Test_ExampleCode_SpectralDensity()
+    {
+        // sample audio with tones at 2, 10, and 20 kHz plus white noise
+        double[] signal = FftSharp.SampleData.SampleAudio1();
+        int sampleRate = 48_000;
+
+        // calculate the power spectral density using FFT
+        System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(signal);
+        double[] psd = FftSharp.FFT.Power(spectrum);
+        double[] freq = FftSharp.FFT.FrequencyScale(psd.Length, sampleRate);
+
+        // plot the sample audio
+        ScottPlot.Plot plt = new();
+        plt.Add.ScatterLine(freq, psd);
+        plt.YLabel("Power (dB)");
+        plt.XLabel("Frequency (Hz)");
+        plt.SavePng("periodogram.png", 500, 200).ConsoleWritePath();
+    }
+
+    [Test]
+    public void Test_ExampleCode_Filtering()
+    {
+        System.Numerics.Complex[] buffer =
+        {
+            new(real: 42, imaginary: 12),
+            new(real: 96, imaginary: 34),
+            new(real: 13, imaginary: 56),
+            new(real: 99, imaginary: 78),
+        };
+
+        FftSharp.FFT.Forward(buffer);
+
+        double[] audio = FftSharp.SampleData.SampleAudio1();
+        double[] filtered = FftSharp.Filter.LowPass(audio, sampleRate: 48000, maxFrequency: 2000);
     }
 }
