@@ -20,6 +20,6 @@ jobs:
       - name: 🚚 Restore
         run: dotnet restore src
       - name: 🛠️ Build
-        run: dotnet build src
+        run: dotnet build src --configuration Release --no-restore
       - name: 🧪 Test
-        run: dotnet test src
+        run: dotnet test src --configuration Release --no-build

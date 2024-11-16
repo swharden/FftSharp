@@ -15,11 +15,11 @@ jobs:
       - name: 🚚 Restore
         run: dotnet restore src
       - name: 🛠️ Build
-        run: dotnet build src
+        run: dotnet build src --configuration Release --no-restore
       - name: 🧪 Test
-        run: dotnet test src
+        run: dotnet test src --configuration Release --no-build
       - name: 📦 Pack
-        run: dotnet pack src
+        run: dotnet pack src --configuration Release
       - name: 🔑 Secret
         uses: nuget/setup-nuget@v1
         with:
