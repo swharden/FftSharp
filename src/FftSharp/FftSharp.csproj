@@ -15,15 +15,15 @@
         <PackageTags>fft ifft fourier transform audio signal sound filter window hanning hamming</PackageTags>
         <PackageReleaseNotes>https://github.com/swharden/FftSharp/releases</PackageReleaseNotes>
         <IncludeSymbols>true</IncludeSymbols>
-        <DocumentationFile>FftSharp.xml</DocumentationFile>
-        <Version>2.1.0</Version>
-        <AssemblyVersion>2.1.0.0</AssemblyVersion>
-        <FileVersion>2.1.0.0</FileVersion>
+        <Version>2.2.0</Version>
+        <AssemblyVersion>2.2.0.0</AssemblyVersion>
+        <FileVersion>2.2.0.0</FileVersion>
         <NoWarn>1591</NoWarn>
         <DebugType>portable</DebugType>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Deterministic>true</Deterministic>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
         <LangVersion>10</LangVersion>
