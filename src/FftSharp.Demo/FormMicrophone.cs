@@ -103,7 +103,7 @@ namespace FftSharp.Demo
                 {
                     formsPlot1.Plot.Axes.AutoScale();
                     MaxLevel = Math.Max(MaxLevel, formsPlot1.Plot.Axes.GetLimits().Top);
-                    double minLevel = cbDecibel.Checked ? -80 : -MaxLevel/100;
+                    double minLevel = cbDecibel.Checked ? -80 : -MaxLevel / 100;
                     formsPlot1.Plot.Axes.SetLimitsY(minLevel, MaxLevel);
                 }
                 catch (Exception ex)
