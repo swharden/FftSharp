@@ -12,10 +12,7 @@
     <PackageReference Include="BenchmarkDotNet.Annotations" Version="0.13.11" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFrameworkIdentifier)' == '.NETFramework' ">
-    <Reference Include="System.Reflection" />
-    <PackageReference Include="System.Memory" Version="4.5.5" />
-  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\FftSharp\FftSharp.csproj" />
   </ItemGroup>
