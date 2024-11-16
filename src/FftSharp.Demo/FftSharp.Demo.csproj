@@ -5,8 +5,7 @@
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <UseWindowsForms>true</UseWindowsForms>
         <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-        <NoWarn>CA1416</NoWarn>
-        <NoWarn>NU1701</NoWarn>
+        <NoWarn>NU1701;CA1416</NoWarn>
     </PropertyGroup>
     <PropertyGroup>
         <ApplicationIcon>icon.ico</ApplicationIcon>
