@@ -1,21 +1,23 @@
 name: Benchmark
+
 on:
+  workflow_dispatch:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   benchmark:
-    name: Run Benchmark.Net benchmark example
+    name: Run Benchmarks
     runs-on: windows-latest
     strategy:
       matrix:
-        dotnet-version: [6.x, 8.x]
+        dotnet-version: [8.x, 9.x]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{matrix.dotnet-version}}  # SDK Version to use. keep in line with examples/benchmarkdotnet/global.json
+          dotnet-version: ${{matrix.dotnet-version}}
       - name: Run benchmark
-        run: cd src/FftSharp.Benchmark && dotnet run --exporters json --filter '*'
-
+        working-directory: src/FftSharp.Benchmark
+        run: dotnet run --exporters json --filter '*'
