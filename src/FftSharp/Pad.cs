@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FftSharp;
 
+/// <summary>
+/// A collection of helper methods for padding data
+/// </summary>
 public static class Pad
 {
     /// <summary>

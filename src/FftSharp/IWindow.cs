@@ -1,5 +1,8 @@
 ﻿namespace FftSharp;
 
+/// <summary>
+/// Describes a window function that may be used to shape a segment of signal data before spectral transformation
+/// </summary>
 public interface IWindow
 {
     /// <summary>

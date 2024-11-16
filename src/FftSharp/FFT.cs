@@ -3,7 +3,7 @@ using System;
 namespace FftSharp;
 
 /// <summary>
-/// Fast Fourier Transform (FFT) operations using System.Numerics.Complex data types.
+/// Fast Fourier Transform (FFT) operations
 /// </summary>
 public static class FFT
 {

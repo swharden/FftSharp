@@ -2,6 +2,9 @@
 
 namespace FftSharp;
 
+/// <summary>
+/// A collection of helper methods for filtering signals using FFT/IFFT
+/// </summary>
 public static class Filter
 {
     /// <summary>

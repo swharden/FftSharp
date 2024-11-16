@@ -3,7 +3,7 @@
 namespace FftSharp;
 
 /// <summary>
-/// Methods for comuting the discrete Fourier transform (DFT) using Bluestein's chirp z-transform algorithm
+/// Methods for comuting the discrete Fourier transform (DFT) using Bluestein's chirp z-transform algorithm on arrays of any length
 /// </summary>
 public static class Bluestein
 {
