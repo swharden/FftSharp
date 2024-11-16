@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
       <NoWarn>$(NoWarn);CA1018;CA5351;CA1825;CA8618</NoWarn>
   </PropertyGroup>
