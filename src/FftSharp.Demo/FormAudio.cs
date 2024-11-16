@@ -1,13 +1,6 @@
-﻿using ScottPlot.Drawing.Colormaps;
+﻿using ScottPlot;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 #pragma warning disable CA1416 // Validate platform compatibility
@@ -23,8 +16,8 @@ namespace FftSharp.Demo
         public FormAudio()
         {
             InitializeComponent();
-            plotAudio.Plot.Margins(0);
-            plotFFT.Plot.Margins(0);
+            plotAudio.Plot.Axes.TightMargins();
+            plotFFT.Plot.Axes.TightMargins();
 
             OriginalAudio = new double[fftSize];
             GenerateSignal();
@@ -82,23 +75,24 @@ namespace FftSharp.Demo
         private void PlotOriginalSignal()
         {
             plotAudio.Plot.Clear();
-            plotAudio.Plot.AddSignal(OriginalAudio, sampleRate / 1e3);
+            plotAudio.Plot.Add.Signal(OriginalAudio, 1.0 / (sampleRate / 1e3));
             plotAudio.Plot.Title("Input Signal");
             plotAudio.Plot.YLabel("Amplitude");
             plotAudio.Plot.XLabel("Time (milliseconds)");
-            plotAudio.Plot.AxisAuto(0);
+            plotAudio.Plot.Axes.AutoScale();
             plotAudio.Refresh();
         }
 
         private void UpdateKernel(IWindow window)
         {
             double[] kernel = window.Create(fftSize);
-            double[] pad = ScottPlot.DataGen.Zeros(kernel.Length / 4);
+            double[] pad = ScottPlot.Generate.Zeros(kernel.Length / 4);
             double[] ys = pad.Concat(kernel).Concat(pad).ToArray();
 
             plotKernel.Plot.Clear();
-            plotKernel.Plot.AddSignal(ys, sampleRate / 1e3, Color.Red);
-            plotKernel.Plot.AxisAuto(0);
+            var sig = plotKernel.Plot.Add.Signal(ys, 1.0 / (sampleRate / 1e3));
+            sig.Color = Colors.Red;
+            plotKernel.Plot.Axes.AutoScale();
             plotKernel.Plot.Title($"{window} Window");
             plotKernel.Plot.YLabel("Amplitude");
             plotKernel.Plot.XLabel("Time (milliseconds)");
@@ -108,11 +102,11 @@ namespace FftSharp.Demo
         private void UpdateWindowed(double[] audio)
         {
             plotWindowed.Plot.Clear();
-            plotWindowed.Plot.AddSignal(audio, sampleRate / 1e3);
+            plotWindowed.Plot.Add.Signal(audio, 1.0 / (sampleRate / 1e3));
             plotWindowed.Plot.Title("Windowed Signal");
             plotWindowed.Plot.YLabel("Amplitude");
             plotWindowed.Plot.XLabel("Time (milliseconds)");
-            plotWindowed.Plot.AxisAuto(0);
+            plotWindowed.Plot.Axes.AutoScale();
             plotWindowed.Refresh();
         }
 
@@ -123,11 +117,11 @@ namespace FftSharp.Demo
             string yLabel = cbLog.Checked ? "Power (dB)" : "Magnitude (RMS²)";
 
             plotFFT.Plot.Clear();
-            plotFFT.Plot.AddSignal(ys, (double)fftSize / sampleRate);
+            plotFFT.Plot.Add.Signal(ys, 1.0 / ((double)fftSize / sampleRate));
             plotFFT.Plot.Title("Fast Fourier Transform");
             plotFFT.Plot.YLabel(yLabel);
             plotFFT.Plot.XLabel("Frequency (Hz)");
-            plotFFT.Plot.AxisAuto(0);
+            plotFFT.Plot.Axes.AutoScale();
             plotFFT.Refresh();
         }
     }

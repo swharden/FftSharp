@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Numerics;
 using System.Windows.Forms;
 
 namespace FftSharp.Demo
@@ -33,19 +31,19 @@ namespace FftSharp.Demo
 
             // plot the input signal
             formsPlot1.Plot.Clear();
-            formsPlot1.Plot.AddScatter(
-                xs: ScottPlot.DataGen.Consecutive(input.Length),
+            formsPlot1.Plot.Add.Scatter(
+                xs: ScottPlot.Generate.Consecutive(input.Length),
                 ys: input);
             formsPlot1.Plot.Title("Original Signal");
-            formsPlot1.Render();
+            formsPlot1.Refresh();
 
             // plot the FFT
             formsPlot2.Plot.Clear();
-            formsPlot2.Plot.AddScatter(
-                xs: ScottPlot.DataGen.Consecutive(fft.Length),
+            formsPlot2.Plot.Add.Scatter(
+                xs: ScottPlot.Generate.Consecutive(fft.Length),
                 ys: fft);
             formsPlot2.Plot.Title("Fast Fourier Transform (FFT)");
-            formsPlot2.Render();
+            formsPlot2.Refresh();
         }
     }
 }

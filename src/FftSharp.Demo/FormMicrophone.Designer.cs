@@ -31,7 +31,7 @@
             components = new System.ComponentModel.Container();
             cbDevices = new System.Windows.Forms.ComboBox();
             label1 = new System.Windows.Forms.Label();
-            formsPlot1 = new ScottPlot.FormsPlot();
+            formsPlot1 = new ScottPlot.WinForms.FormsPlot();
             timer1 = new System.Windows.Forms.Timer(components);
             cbAutoAxis = new System.Windows.Forms.CheckBox();
             cbDecibel = new System.Windows.Forms.CheckBox();
@@ -188,7 +188,7 @@
 
         private System.Windows.Forms.ComboBox cbDevices;
         private System.Windows.Forms.Label label1;
-        private ScottPlot.FormsPlot formsPlot1;
+        private ScottPlot.WinForms.FormsPlot formsPlot1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.CheckBox cbAutoAxis;
         private System.Windows.Forms.CheckBox cbDecibel;

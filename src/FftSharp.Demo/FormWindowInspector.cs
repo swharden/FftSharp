@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+#pragma warning disable CA1416 // Validate platform compatibility
+
 namespace FftSharp.Demo
 {
     public partial class FormWindowInspector : Form
@@ -32,11 +34,12 @@ namespace FftSharp.Demo
 
         private void UpdateTimePlot(IWindow window)
         {
-            double[] xs = ScottPlot.DataGen.Consecutive(101);
+            double[] xs = ScottPlot.Generate.Consecutive(101);
             double[] ys = window.Create(xs.Length);
 
             plotWindow.Plot.Clear();
-            plotWindow.Plot.AddScatterLines(xs, ys, lineWidth: 2);
+            var sp = plotWindow.Plot.Add.ScatterLine(xs, ys);
+            sp.LineWidth = 2;
             plotWindow.Plot.YLabel("Amplitude");
             plotWindow.Plot.XLabel("Samples");
             plotWindow.Refresh();
@@ -45,7 +48,7 @@ namespace FftSharp.Demo
         private void UpdateFrequencyPlot(IWindow window)
         {
             int fftSize = (int)Math.Pow(2, 14);
-            double[] xs = ScottPlot.DataGen.Consecutive(fftSize);
+            double[] xs = ScottPlot.Generate.Consecutive(fftSize);
             double[] ys = xs.Select(x => Math.Sin(x / fftSize * Math.PI * fftSize / 2)).ToArray();
             double[] windowed = window.Apply(ys);
             System.Numerics.Complex[] spectrum = FftSharp.FFT.Forward(windowed);
@@ -55,8 +58,8 @@ namespace FftSharp.Demo
             power[0] = power[1];
 
             plotFreq.Plot.Clear();
-            var sig = plotFreq.Plot.AddSignal(power, fftSize / 2);
-            sig.OffsetX = -.5;
+            var sig = plotFreq.Plot.Add.Signal(power, 1.0 / (fftSize / 2));
+            sig.Data.XOffset = -.5;
             plotFreq.Plot.YLabel("Power (dB)");
             plotFreq.Plot.XLabel("Frequency (cycles/sample)");
             plotFreq.Refresh();
