@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FftSharp.Tests;
 
@@ -17,7 +15,7 @@ public static class TestTools
 
         string fileName = callingMethod + subName + ".png";
         string filePath = System.IO.Path.GetFullPath(fileName);
-        plt.SaveFig(filePath);
+        plt.SavePng(filePath, 600, 400);
 
         Console.WriteLine($"Saved: {filePath}");
         Console.WriteLine();

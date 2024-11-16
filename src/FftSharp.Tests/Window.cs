@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 
 namespace FftSharp.Tests;
 
@@ -105,23 +106,24 @@ class Window
     [Test]
     public void Test_Plot_AllWindowKernels()
     {
-        var plt = new ScottPlot.Plot(500, 400);
-        plt.Palette = ScottPlot.Palette.ColorblindFriendly;
+        ScottPlot.Plot plt = new();
+        plt.Add.Palette = new ScottPlot.Palettes.ColorblindFriendly();
 
         foreach (IWindow window in FftSharp.Window.GetWindows())
         {
             if (window.Name == "Rectangular")
                 continue;
-            double[] xs = ScottPlot.DataGen.Range(-1, 1, .01, true);
+            double[] xs = ScottPlot.Generate.Range(-1, 1, .01);
             double[] ys = window.Create(xs.Length);
-            var sp = plt.AddScatter(xs, ys, label: window.Name);
+            var sp = plt.Add.Scatter(xs, ys);
+            sp.LegendText = window.Name;
             sp.MarkerSize = 0;
             sp.LineWidth = 3;
-            sp.Color = System.Drawing.Color.FromArgb(200, sp.Color);
+            sp.Color = sp.Color.WithAlpha(.8);
         }
 
-        plt.Legend(enable: true, location: Alignment.UpperRight);
-        plt.SaveFig(Path.Combine(OUTPUT_FOLDER, "windows.png"));
+        plt.Legend.Alignment = Alignment.UpperRight;
+        plt.SavePng(Path.Combine(OUTPUT_FOLDER, "windows.png"), 500, 400);
     }
 
     [Test]
@@ -138,14 +140,14 @@ class Window
         {
             double[] values = window.Create(32);
             ScottPlot.Plot plt = new();
-            var sig = plt.AddSignal(values);
-            sig.OffsetX = -values.Length / 2 + .5;
+            var sig = plt.Add.Signal(values);
+            sig.Data.XOffset = -values.Length / 2 + .5;
             plt.Title(window.Name);
-            plt.AddVerticalLine(0);
+            plt.Add.VerticalLine(0);
 
             string filename = Path.GetFullPath($"test_window_{window.Name}.png");
             Console.WriteLine(filename);
-            plt.SaveFig(filename);
+            plt.SavePng(filename, 400, 300);
         }
     }
 }

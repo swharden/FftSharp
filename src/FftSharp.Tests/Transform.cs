@@ -59,9 +59,9 @@ public class Transform
 
         TestTools.AssertMirror(fftAmp);
 
-        var plt = new ScottPlot.Plot(600, 400);
-        plt.AddLollipop(fftAmp, fftFreq);
-        plt.PlotHLine(0, color: Color.Black, lineWidth: 2);
+        var plt = new ScottPlot.Plot();
+        plt.Add.Lollipop(fftAmp, fftFreq);
+        plt.Add.HorizontalLine(0, 2, ScottPlot.Colors.Black);
         plt.YLabel("Magnitude (rms^2?)");
         plt.XLabel("Frequency (Hz)");
         TestTools.SaveFig(plt);

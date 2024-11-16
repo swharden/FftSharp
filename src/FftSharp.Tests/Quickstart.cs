@@ -40,32 +40,34 @@ class Quickstart
         double[] freqs = FftSharp.FFT.FrequencyScale(fftPower.Length, sampleRate);
 
         // create an array of audio sample times to aid plotting
-        double[] times = ScottPlot.DataGen.Consecutive(audio.Length, 1000d / sampleRate);
+        double[] times = ScottPlot.Generate.Consecutive(audio.Length, 1000d / sampleRate);
 
         // plot the sample audio
-        var plt1 = new ScottPlot.Plot(400, 300);
-        plt1.AddScatter(times, audio, markerSize: 3);
+        var plt1 = new ScottPlot.Plot();
+        var sp1 = plt1.Add.Scatter(times, audio);
+        sp1.MarkerSize = 3;
         plt1.YLabel("Amplitude");
         plt1.XLabel("Time (ms)");
-        plt1.AxisAuto(0);
+        plt1.Axes.TightMargins();
 
         // plot the FFT amplitude
-        var plt2 = new ScottPlot.Plot(400, 300);
-        plt2.AddScatter(freqs, fftPower, markerSize: 3);
+        var plt2 = new ScottPlot.Plot();
+        var sp2 = plt2.Add.Scatter(freqs, fftPower);
+        sp2.MarkerSize = 3;
         plt2.YLabel("Power (dB)");
         plt2.XLabel("Frequency (Hz)");
-        plt2.AxisAuto(0);
+        plt2.Axes.TightMargins();
 
         // save output
         if (useWindow)
         {
-            plt1.SaveFig(Path.Combine(OUTPUT_FOLDER, "audio-windowed.png"));
-            plt2.SaveFig(Path.Combine(OUTPUT_FOLDER, "fft-windowed.png"));
+            plt1.SavePng(Path.Combine(OUTPUT_FOLDER, "audio-windowed.png"), 400, 300);
+            plt2.SavePng(Path.Combine(OUTPUT_FOLDER, "fft-windowed.png"), 400, 300);
         }
         else
         {
-            plt1.SaveFig(Path.Combine(OUTPUT_FOLDER, "audio.png"));
-            plt2.SaveFig(Path.Combine(OUTPUT_FOLDER, "fft.png"));
+            plt1.SavePng(Path.Combine(OUTPUT_FOLDER, "audio.png"), 400, 300);
+            plt2.SavePng(Path.Combine(OUTPUT_FOLDER, "fft.png"), 400, 300);
         }
     }
 }

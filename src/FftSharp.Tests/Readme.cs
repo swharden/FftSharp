@@ -33,12 +33,12 @@ internal class Readme
         int sampleRate = 48_000;
 
         // plot the sample audio
-        var plt = new ScottPlot.Plot(400, 200);
-        plt.AddSignal(signal, sampleRate / 1000.0);
+        var plt = new ScottPlot.Plot();
+        plt.Add.Signal(signal, 1.0 / (sampleRate / 1000.0));
         plt.YLabel("Amplitude");
-        plt.Margins(0);
+        plt.Axes.TightMargins();
 
-        plt.SaveFig(Path.Combine(OUTPUT_FOLDER, "time-series.png"));
+        plt.SavePng(Path.Combine(OUTPUT_FOLDER, "time-series.png"), 400, 200);
     }
 
     [Test]
@@ -54,13 +54,13 @@ internal class Readme
         double[] freq = FftSharp.FFT.FrequencyScale(psd.Length, sampleRate);
 
         // plot the sample audio
-        var plt = new ScottPlot.Plot(400, 200);
-        plt.AddScatterLines(freq, psd);
+        var plt = new ScottPlot.Plot();
+        plt.Add.ScatterLine(freq, psd);
         plt.YLabel("Power (dB)");
         plt.XLabel("Frequency (Hz)");
-        plt.Margins(0);
+        plt.Axes.TightMargins();
 
-        plt.SaveFig(Path.Combine(OUTPUT_FOLDER, "periodogram.png"));
+        plt.SavePng(Path.Combine(OUTPUT_FOLDER, "periodogram.png"), 400, 200);
     }
 
     [Test]

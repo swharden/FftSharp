@@ -30,13 +30,13 @@ internal class FftFreqTests
         double[] fftFreq = FftSharp.FFT.FrequencyScale(fft.Length, sampleRateHz);
         Assert.That(fftFreq, Is.EqualTo(fftFreqKnown));
 
-        ScottPlot.Plot plt1 = new(400, 200);
-        plt1.AddSignal(samples, sampleRateHz);
+        ScottPlot.Plot plt1 = new();
+        plt1.Add.Signal(samples, 1.0 / sampleRateHz);
         TestTools.SaveFig(plt1, "signal");
 
-        ScottPlot.Plot plt2 = new(400, 200);
-        plt2.AddScatter(fftFreq, fft);
-        plt2.AddVerticalLine(2, System.Drawing.Color.Red, style: ScottPlot.LineStyle.Dash);
+        ScottPlot.Plot plt2 = new();
+        plt2.Add.Scatter(fftFreq, fft);
+        plt2.Add.VerticalLine(2, 2, ScottPlot.Colors.Red, ScottPlot.LinePattern.DenselyDashed);
         TestTools.SaveFig(plt2, "fft");
     }
 
