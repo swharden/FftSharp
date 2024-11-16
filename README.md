@@ -38,7 +38,7 @@ double samplePeriod = sampleRate / 1000.0;
 ScottPlot.Plot plt = new();
 plt.Add.Signal(signal, samplePeriod);
 plt.YLabel("Amplitude");
-plt.SavePng("time-series.png",500,200);
+plt.SavePng("time-series.png", 500, 200);
 ```
 
 <div align="center">
@@ -64,11 +64,11 @@ double[] psd = FftSharp.FFT.Power(spectrum);
 double[] freq = FftSharp.FFT.FrequencyScale(psd.Length, sampleRate);
 
 // plot the sample audio
-ScottPlot.Plot plt = new ScottPlot.Plot();
+ScottPlot.Plot plt = new();
 plt.Add.ScatterLine(freq, psd);
 plt.YLabel("Power (dB)");
 plt.XLabel("Frequency (Hz)");
-plt.SavePng("periodogram.png",500,200);
+plt.SavePng("periodogram.png", 500, 200);
 ```
 
 <div align="center">
@@ -90,7 +90,7 @@ System.Numerics.Complex[] buffer =
     new(real: 99, imaginary: 78),
 };
 
-FftSharp.Transform.FFT(buffer);
+FftSharp.FFT.Forward(buffer);
 ```
 
 ## Filtering
@@ -99,7 +99,7 @@ The `FftSharp.Filter` module has methods to apply low-pass, high-pass, band-pass
 
 ```cs
 double[] audio = FftSharp.SampleData.SampleAudio1();
-double[] filtered = FftSharp.Filter.LowPass(audio, sampleRate, maxFrequency: 2000);
+double[] filtered = FftSharp.Filter.LowPass(audio, sampleRate: 48000, maxFrequency: 2000);
 ```
 
 <div align="center">
