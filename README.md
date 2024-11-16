@@ -36,9 +36,9 @@ double samplePeriod = sampleRate / 1000.0;
 
 // plot the sample audio
 ScottPlot.Plot plt = new();
-plt.AddSignal(signal, samplePeriod);
+plt.Add.Signal(signal, samplePeriod);
 plt.YLabel("Amplitude");
-plt.SaveFig("time-series.png");
+plt.SavePng("time-series.png",500,500);
 ```
 
 <div align="center">
