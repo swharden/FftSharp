@@ -2,13 +2,52 @@
 
 namespace FftSharp;
 
-internal static class BluesteinOperations
+/// <summary>
+/// Methods for comuting the discrete Fourier transform (DFT) using Bluestein's chirp z-transform algorithm
+/// </summary>
+public static class Bluestein
 {
+    /// <summary>
+    /// Compute the discrete Fourier transform (DFT) of an array of any length.
+    /// </summary>
+    public static System.Numerics.Complex[] Forward(double[] real)
+    {
+        System.Numerics.Complex[] buffer = real.ToComplexArray();
+        Forward(buffer);
+        return buffer;
+    }
+
+    /// <summary>
+    /// Compute the discrete Fourier transform (DFT) of an array of any length.
+    /// </summary>
+    public static void Forward(System.Numerics.Complex[] buffer)
+    {
+        TransformBluestein(buffer, false);
+    }
+
+    /// <summary>
+    /// Compute the discrete Fourier transform (DFT) of an array of any length.
+    /// </summary>
+    public static System.Numerics.Complex[] Inverse(double[] real)
+    {
+        System.Numerics.Complex[] buffer = real.ToComplexArray();
+        Inverse(buffer);
+        return buffer;
+    }
+
+    /// <summary>
+    /// Compute the discrete Fourier transform (DFT) of an array of any length.
+    /// </summary>
+    public static void Inverse(System.Numerics.Complex[] buffer)
+    {
+        TransformBluestein(buffer, true);
+    }
+
     /* 
 	 * Computes the discrete Fourier transform (DFT) or inverse transform of the given complex vector, storing the result back into the vector.
 	 * The vector can have any length. This is a wrapper function. The inverse transform does not perform scaling, so it is not a true inverse.
 	 */
-    public static void Transform(System.Numerics.Complex[] vec, bool inverse)
+    private static void Transform(System.Numerics.Complex[] vec, bool inverse)
     {
         int n = vec.Length;
         if (n == 0)
@@ -24,7 +63,7 @@ internal static class BluesteinOperations
 	 * Computes the discrete Fourier transform (DFT) of the given complex vector, storing the result back into the vector.
 	 * The vector's length must be a power of 2. Uses the Cooley-Tukey decimation-in-time radix-2 algorithm.
 	 */
-    public static void TransformRadix2(System.Numerics.Complex[] vec, bool inverse)
+    private static void TransformRadix2(System.Numerics.Complex[] vec, bool inverse)
     {
         // Length variables
         int n = vec.Length;
@@ -71,13 +110,12 @@ internal static class BluesteinOperations
         }
     }
 
-
     /* 
 	 * Computes the discrete Fourier transform (DFT) of the given complex vector, storing the result back into the vector.
 	 * The vector can have any length. This requires the convolution function, which in turn requires the radix-2 FFT function.
 	 * Uses Bluestein's chirp z-transform algorithm.
 	 */
-    public static void TransformBluestein(System.Numerics.Complex[] vec, bool inverse)
+    private static void TransformBluestein(System.Numerics.Complex[] vec, bool inverse)
     {
         // Find a power-of-2 convolution length m such that m >= n * 2 + 1
         int n = vec.Length;
@@ -114,11 +152,10 @@ internal static class BluesteinOperations
             vec[i] = cvec[i] * expTable[i];
     }
 
-
     /* 
 	 * Computes the circular convolution of the given complex vectors. Each vector's length must be the same.
 	 */
-    public static void Convolve(System.Numerics.Complex[] xvec, System.Numerics.Complex[] yvec, System.Numerics.Complex[] outvec)
+    private static void Convolve(System.Numerics.Complex[] xvec, System.Numerics.Complex[] yvec, System.Numerics.Complex[] outvec)
     {
         int n = xvec.Length;
         if (n != yvec.Length || n != outvec.Length)
@@ -133,7 +170,6 @@ internal static class BluesteinOperations
         for (int i = 0; i < n; i++)  // Scaling (because this FFT implementation omits it)
             outvec[i] = xvec[i] / n;
     }
-
 
     private static int ReverseBits(int val, int width)
     {
