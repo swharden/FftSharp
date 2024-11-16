@@ -38,7 +38,7 @@ double samplePeriod = sampleRate / 1000.0;
 ScottPlot.Plot plt = new();
 plt.Add.Signal(signal, samplePeriod);
 plt.YLabel("Amplitude");
-plt.SavePng("time-series.png",500,500);
+plt.SavePng("time-series.png",500,200);
 ```
 
 <div align="center">
@@ -65,10 +65,10 @@ double[] freq = FftSharp.FFT.FrequencyScale(psd.Length, sampleRate);
 
 // plot the sample audio
 ScottPlot.Plot plt = new ScottPlot.Plot();
-plt.AddScatterLines(freq, psd);
+plt.Add.ScatterLine(freq, psd);
 plt.YLabel("Power (dB)");
 plt.XLabel("Frequency (Hz)");
-plt.SaveFig("periodogram.png");
+plt.SavePng("periodogram.png",500,200);
 ```
 
 <div align="center">
