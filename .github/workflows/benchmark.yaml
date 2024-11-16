@@ -1,0 +1,24 @@
+name: Benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  benchmark:
+    name: Run Benchmarks
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        dotnet-version: [8.x, 9.x]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{matrix.dotnet-version}}
+          dotnet-quality: "preview"
+      - name: Run benchmark
+        working-directory: src/FftSharp.Benchmark
+        run: dotnet run --exporters json --filter '*'

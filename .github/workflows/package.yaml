@@ -9,27 +9,17 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
-        uses: actions/checkout@v3
-      - name: ✨ Setup .NET 6
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: "6.0.x"
+        uses: actions/checkout@v4
+      - name: ✨ Setup .NET
+        uses: actions/setup-dotnet@v4
       - name: 🚚 Restore
         run: dotnet restore src
       - name: 🛠️ Build
-        run: dotnet build src --configuration Release --no-restore
+        run: dotnet build src
       - name: 🧪 Test
-        run: dotnet test src --configuration Release --no-build
+        run: dotnet test src
       - name: 📦 Pack
-        run: dotnet pack src --configuration Release --no-build
-      - name: 💾 Store
-        uses: actions/upload-artifact@v2
-        with:
-          name: Packages
-          retention-days: 1
-          path: |
-            src/FftSharp/bin/Release/*.nupkg
-            src/FftSharp/bin/Release/*.snupkg
+        run: dotnet pack src
       - name: 🔑 Secret
         uses: nuget/setup-nuget@v1
         with:
