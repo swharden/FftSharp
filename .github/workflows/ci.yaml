@@ -1,4 +1,4 @@
-name: Build and Test
+name: CI/CD
 
 on:
   workflow_dispatch:
@@ -10,46 +10,19 @@ on:
 
 jobs:
   build:
-    name: Build ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest]
-        arch: [x64]
-        dotnetVersion: [6.0.x, 8.0.x]
+    name: Build and Test
+    runs-on: windows-latest
     steps:
       - name: 🛒 Checkout
         uses: actions/checkout@v4
-      - name: ✨ Setup .NET ${{ matrix.dotnetVersion }}
-        uses: actions/setup-dotnet@v3
+      - name: ✨ Setup .NET
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ matrix.dotnetVersion }}
-      - name: Display Dotnet Versio  n
-        run: dotnet --version
+          dotnet-version: 9.0.x
+          dotnet-quality: "preview"
       - name: 🚚 Restore
-        run: |
-          dotnet restore src/FftSharp/FftSharp.csproj
-          dotnet restore src/FftSharp.Benchmark/FftSharp.Benchmark.csproj
-          dotnet restore src/FftSharp.Tests/FftSharp.Tests.csproj
+        run: dotnet restore src
       - name: 🛠️ Build
-        run: |
-          dotnet build src/FftSharp/FftSharp.csproj --configuration Release --no-restore
-          dotnet build src/FftSharp.Benchmark/FftSharp.Benchmark.csproj --configuration Release --no-restore
-          dotnet build src/FftSharp.Tests/FftSharp.Tests.csproj --configuration Release --no-restore
-      - name: 🧪 Benchmark
-        run: dotnet run --project src/FftSharp.Benchmark/FftSharp.Benchmark.csproj --configuration Release --no-build
-      - name: Benchmark Artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: benchmark-results
-          path: src/FftSharp.Benchmark/BenchmarkDotNet.Artifacts/results/*.md
+        run: dotnet build src
       - name: 🧪 Test
-        run: dotnet test src/FftSharp.Tests/FftSharp.Tests.csproj --configuration Release --no-build
-      - name: Build Windows Demo
-        if: matrix.os == 'windows-latest'
-        run: dotnet publish src/FftSharp.Demo/FftSharp.Demo.csproj --configuration Release --no-build --output ./build/windows --runtime win-x64
-      - name: Windows Demo Application Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: windows-demo
-          path: ./build/windows
+        run: dotnet test src
