@@ -30,8 +30,7 @@ public class FftBenchmark
     [Benchmark]
     public void FFT_BluesteinComparason()
     {
-#pragma warning disable CS0618 // Type or member is obsolete
-        var something = Experimental.Bluestein(this.Sample);
+        var something = FftSharp.Bluestein.Forward(Sample);
     }
 }
 

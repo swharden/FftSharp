@@ -27,8 +27,7 @@ public class BluesteinSizeBenchmark
     [Benchmark]
     public void Bluestein()
     {
-#pragma warning disable CS0618 // Type or member is obsolete
-        var something = Experimental.Bluestein(this.Sample);
+        var something = FftSharp.Bluestein.Forward(Sample);
     }
 }
 

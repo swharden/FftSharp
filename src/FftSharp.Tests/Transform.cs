@@ -37,7 +37,7 @@ public class Transform
 
         // FFT and DST output should be identical (aside from floating-point errors)
         System.Numerics.Complex[] fft = FftSharp.FFT.Forward(audio);
-        System.Numerics.Complex[] dft = FftSharp.Experimental.DFT(audio);
+        System.Numerics.Complex[] dft = FftSharp.DFT.Forward(audio);
 
         for (int i = 0; i < fft.Length; i++)
         {
@@ -81,14 +81,14 @@ public class Transform
         System.Numerics.Complex[] complex = new System.Numerics.Complex[128];
         for (int i = 0; i < complex.Length; i++)
             complex[i] = new System.Numerics.Complex(0, 0);
-        FftSharp.Experimental.DFT(complex);
+        FftSharp.DFT.Forward(complex);
     }
 
     [Test]
     public void Test_FftInput_Uninitialized()
     {
         System.Numerics.Complex[] complex = new System.Numerics.Complex[128];
-        FftSharp.Experimental.DFT(complex);
+        FftSharp.DFT.Forward(complex);
     }
 
     [Test]

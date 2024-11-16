@@ -11,7 +11,7 @@ internal class ExperimentalTests
     {
         double[] prime = { 1, 2, 3, 4, 5, 6, 7 };
         System.Numerics.Complex[] primeComplex = prime.Select(x => new System.Numerics.Complex(x, 0)).ToArray();
-        System.Numerics.Complex[] result = FftSharp.Experimental.DFT(primeComplex);
+        System.Numerics.Complex[] result = FftSharp.DFT.Forward(primeComplex);
 
         // tested with python
         double[] expectedReal = { 28.00000, -3.50000, -3.50000, -3.50000, -3.50000, -3.50000, -3.50000 };
@@ -31,7 +31,7 @@ internal class ExperimentalTests
     public void Test_Experimental_Bluestein()
     {
         double[] prime = { 1, 2, 3, 4, 5, 6, 7 };
-        System.Numerics.Complex[] result = FftSharp.Experimental.Bluestein(prime);
+        System.Numerics.Complex[] result = FftSharp.Bluestein.Forward(prime);
 
         // tested with python
         double[] expectedReal = { 28.00000, -3.50000, -3.50000, -3.50000, -3.50000, -3.50000, -3.50000 };

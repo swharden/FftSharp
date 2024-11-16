@@ -19,8 +19,8 @@ class Inverse
         for (int i = 0; i < original.Length; i++)
             original[i] = new System.Numerics.Complex(rand.NextDouble() - .5, rand.NextDouble() - .5);
 
-        System.Numerics.Complex[] fft = FftSharp.Experimental.DFT(original);
-        System.Numerics.Complex[] ifft = FftSharp.Experimental.DFT(fft, inverse: true);
+        System.Numerics.Complex[] fft = FftSharp.DFT.Forward(original);
+        System.Numerics.Complex[] ifft = FftSharp.DFT.Inverse(fft);
 
         for (int i = 0; i < ifft.Length; i++)
         {
